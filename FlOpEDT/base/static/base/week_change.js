@@ -59,14 +59,13 @@ function fetch_dispos() {
         contentType: "text/csv",
         success: function(msg) {
             console.log("in");
-//            console.log(msg);
 
             if (semaine_att == weeks.init_data[weeks.sel[0]].semaine &&
                 an_att == weeks.init_data[weeks.sel[0]].an) {
-                dispos = [];
+                dispos = {};
                 //user.dispos = [];
                 d3.csvParse(msg, translate_dispos_from_csv);
-
+		sort_preferences();
                 fetch.ongoing_dispos = false;
                 if (ckbox["dis-mod"].cked) {
                     create_dispos_user_data();
@@ -92,23 +91,103 @@ function fetch_dispos() {
 
 
 function translate_dispos_from_csv(d) {
-    // when merge with no-slot, take no-slot version
     if(Object.keys(dispos).indexOf(d.prof)==-1){
-        dispos[d.prof] = new Array(nbPer);
-        for (var i = 0; i < nbPer; i++) {
-            dispos[d.prof][i] = new Array(nbSl);
-            dispos[d.prof][i].fill(-1);
-        }
+	dispos[d.prof] = {} ;
+        for (var i = 0; i < days.length; i++) {
+	    dispos[d.prof][days[i].ref] = [] ;
+	}	
     }
-    dispos[d.prof][+d.jour][+d.heure] = +d.valeur;
+    dispos[d.prof][d.day].push({start_time:+d.start_time,
+			       duration: +d.duration,
+			       value: +d.valeur});
+}
+
+function sort_preferences() {
+    var i, d ;
+    var tutors = Object.keys(dispos) ;
+    for(i = 0 ; i < tutors.length ; i++) {
+	for(d = 0 ; d < days.length ; d++) {
+	    dispos[tutors[i]][days[d].ref].sort(
+		function (a,b) {
+		    return a.start_time - b.start_time ;
+		}
+	    );
+	}
+    }
+}
+
+// insert a valued interval into a list of valued interval
+// (splices it and divides it if needed)
+// pref: {start_time, duration, value}
+// list: list of pref
+function insert_interval(pref, list) {
+    var ts = time_settings.time ;
+    if (pref.start_time < ts.lunch_break_start_time) {
+	if (pref.start_time < ts.day_start_time) {
+	    pref.duration -= ts.day_start_time - pref.start_time ;
+	    pref.start_time = ts.day_start_time ;
+	}
+	if(pref.start_time + pref.duration > ts.lunch_break_start_time) {
+	    if(pref.start_time + pref.duration < ts.lunch_break_finish_time) {
+		pref.duration -= pref.start_time + pref.duration - ts.lunch_break_start_time ;
+	    } else {
+		insert_normalized_interval(
+		    {start_time: ts.lunch_break_finish_time,
+		     duration: pref.start_time + pref.duration - ts.lunch_break_finish_time,
+		     value: pref.value},
+		    list) ;
+		pref.duration = ts.lunch_break_start_time - pref.start_time ;
+	    }
+	}
+    } else if (pref.start_time + pref.duration < ts.lunch_break_finish_time) {
+	return ;
+    } else if (pref.start_time < ts.lunch_break_finish_time){
+	pref.duration -= ts.lunch_break_finish_time - pref.start_time ;
+	pref.start_time = ts.lunch_break_finish_time ;
+    }
+    insert_normalized_interval(pref,list);
+}
+
+// PRECOND: interval fully within the working hours
+// pref: {start_time, duration, value}
+// list: list of pref
+function insert_normalized_interval(pref, list) {
+//    list.splice(index, nbElements, item)
 }
 
 
+function allocate_dispos(tutor) {
+    dispos[tutor] = {} ;
+    for (var i = 0; i < days.length; i++) {
+	dispos[d.prof][days[i].ref] = [] ;
+    }	
+}
 
+// -- no slot --
+// --  begin  --
+// to change, maybe, if splitting intervals is not allowed
+// in the interface
+function fill_missing_preferences(tutor) {
+    for (var i = 0; i < days.length; i++) {
+	insert_interval({start_time: ts.day_start_time,
+			 duration: ts.day_finish_time-ts.day_start_time,
+			 value: -1},
+			dispos[tutor][days[i].ref]);
+    }
+
+}
+// --   end   --
+// -- no slot --
+
+
+// -- no slot --
+// --  begin  --
+// to be cleaned: user.dispos should be avoidable
 // off: offset useful for the view. Quite unclean.
 function create_dispos_user_data() {
 
-    var d, j, k, d2p;
+    var d, j, k, d2p, pref_list;
+    var ts = time_settings.time ;
 
     user.dispos = [];
     user.dispos_bu = [];
@@ -116,44 +195,47 @@ function create_dispos_user_data() {
     var current;
 
     if (dispos[user.nom] === undefined) {
-        dispos[user.nom] = new Array(nbPer);
-        for (var i = 0; i < nbPer; i++) {
-            dispos[user.nom][i] = new Array(nbSl);
-            dispos[user.nom][i].fill(-1);
-        }
+	allocate_dispos(tutor);
+	fill_missing_preferences(tutor);
     }
 
-
-    for (var j = 0; j < nbPer; j++) {
-        for (var k = 0; k < nbSl; k++) {
-            //	    if(!is_free(j,k)) {
+    for (var i = 0; i < days.length; i++) {
+	pref_list = dispos[user.nom][days[i].ref] ;
+	for (var k = 0 ; k<pref_list.length ; k++) {
             d2p = {
-                day: j,
-                hour: k,
-                val: dispos[user.nom][j][k],
-                off: -1
+		day: days[i].ref,
+		start_time: pref_list[k].start_time,
+		duration: pref_list[k].duration,
+		val: pref_list[k].value,
+		off: -1
             };
             user.dispos_bu.push(d2p);
-            if (dispos[user.nom][j][k] < 0) {
+            if (pref_list[k].value < 0) {
 		if (!pref_only) {
-                    dispos[user.nom][j][k] = user.dispos_type[day_hour_2_1D(d2p)].val;
+                    pref_list[k].val = get_dispos_type(d2p).val;
 		} else {
-		    dispos[user.nom][j][k] = par_dispos.nmax
+		    pref_list[k].val = par_dispos.nmax;
 		}
-                //console.log(j,k,day_hour_2_1D(d2p),user.dispos_type[day_hour_2_1D(d2p)])
+		//console.log(j,k,day_hour_2_1D(d2p),user.dispos_type[day_hour_2_1D(d2p)])
             }
+	    
+	    // different object
             user.dispos.push({
-                day: j,
-                hour: k,
-                val: dispos[user.nom][j][k],
-                off: -1
+		day: days[i].ref,
+		start_time: pref_list[k].start_time,
+		duration: pref_list[k].duration,
+		val: pref_list[k].value,
+		off: -1
             });
+	}
 
-            //	    }
-        }
     }
 
+    
+
 }
+// --   end   --
+// -- no slot --
 
 
 
@@ -381,12 +463,13 @@ function adapt_labgp(first) {
     var new_gp_dim;
 
     if (nbRows > 0) {
-        new_gp_dim = expected_ext_grid_dim / (nb_vert_labgp_in_grid() + nbRows) ;
-        if (new_gp_dim > labgp.hm) {
-            labgp.height = new_gp_dim;
-        } else {
-            labgp.height = labgp.hm;
-        }
+	// including bottom garbage
+        scale = expected_ext_grid_dim / (nb_minutes_in_grid() + garbage.duration*nbRows) ;
+        // if (new_gp_dim > labgp.hm) {
+        //     labgp.height = new_gp_dim;
+        // } else {
+        //     labgp.height = labgp.hm;
+        // }
     } // sinon ?
     svg.height = svg_height() ;
     console.log(svg.height);
@@ -436,12 +519,6 @@ function fetch_cours() {
             go_regen(null);
             go_alarm_pref();
 
-            var day_arr = JSON.parse(req.getResponseHeader('jours').replace(/\'/g, '"'));
-	    
-            for (var i = 0; i < day_arr.length; i++) {
-                data_grid_scale_day[i] = data_grid_scale_day_init[i] + " " + day_arr[i];
-            }
-            //console.log(data_grid_scale_day);
             if (semaine_att == weeks.init_data[weeks.sel[0]].semaine &&
                 an_att == weeks.init_data[weeks.sel[0]].an) {
 
@@ -540,8 +617,10 @@ function translate_cours_pl_from_csv(d) {
         group: translate_gp_name(d.gpe_nom),
         promo: set_promos.indexOf(d.gpe_promo),
         mod: d.module,
-        day: +d.jour,
-        slot: +d.heure,
+	c_type: d.coursetype,
+        day: d.day,
+        start: +d.start_time,
+        duration: constraints[d.coursetype].duration,
         room: d.room,
 	room_type: d.room_type,
 	color_bg: d.color_bg,
@@ -568,8 +647,10 @@ function translate_cours_pp_from_csv(d) {
         group: translate_gp_name(d.groupe),
         promo: set_promos.indexOf(d.promo),
         mod: d.module,
+	c_type: d.coursetype,
         day: garbage.day,
-        slot: garbage.slot,
+        start: garbage.start,
+        duration: constraints[d.coursetype].duration,
         room: une_salle,
 	room_type: d.room_type,
 	color_bg: d.color_bg,
@@ -601,52 +682,52 @@ function add_exception_course(cur_week, cur_year, targ_week, targ_year,
 
 
 // Pseudo fonction pour des possibles exceptions //
-/*
-"Passeport Avenir (Bénéficiaires d'une bourse)"
-"--- 13h30 ---"
-"Amphi 1"
-"exception"
-function add_exception(sem_att, an_att, sem_voulue, an_voulu, nom, l1, l2, l3){
-    if(sem_att==sem_voulue && an_att==an_voulu){
-	var gro = dg.append("g")
-	    .attr("class",nom);
+//
+// "Passeport Avenir (Bénéficiaires d'une bourse)"
+// "--- 13h30 ---"
+// "Amphi 1"
+// "exception"
+// function add_exception(sem_att, an_att, sem_voulue, an_voulu, nom, l1, l2, l3){
+//     if(sem_att==sem_voulue && an_att==an_voulu){
+// 	var gro = dg.append("g")
+// 	    .attr("class",nom);
 
-	var tlx = 3*(rootgp_width*labgp.width
-		     + dim_dispo.plot*(dim_dispo.width+dim_dispo.right))
-	    + groups[0]["P"].x*labgp.width ;
-	var tlx2 = tlx + .5*groups[0]["P"].width*labgp.width;
+// 	var tlx = 3*(rootgp_width*labgp.width
+// 		     + dim_dispo.plot*(dim_dispo.width+dim_dispo.right))
+// 	    + groups[0]["P"].x*labgp.width ;
+// 	var tlx2 = tlx + .5*groups[0]["P"].width*labgp.width;
 
-	var tly = (3*nbPromos + row_gp[0].y)*(labgp.height) ;
+// 	var tly = (3*nbPromos + row_gp[0].y)*(labgp.height) ;
 	
-	gro
-	    .append("rect")
-	    .attr("x", tlx  )
-	    .attr("y", tly )
-	    .attr("fill","red")
-	    .attr("width",groups[0]["P"].width*labgp.width)
-	    .attr("height",labgp.height);
+// 	gro
+// 	    .append("rect")
+// 	    .attr("x", tlx  )
+// 	    .attr("y", tly )
+// 	    .attr("fill","red")
+// 	    .attr("width",groups[0]["P"].width*labgp.width)
+// 	    .attr("height",labgp.height);
 
-	gro.append("text")
-	    .text(l1)
-	    .attr("font-weight","bold")
-	    .attr("x",tlx2 )
-	    .attr("y",tly + labgp.height/4);
-	gro.append("text")
-	    .text(l2)
-	    .attr("font-weight","bold")
-	    .attr("x",tlx2 )
-	    .attr("y",tly + 2*labgp.height/4);
-	gro.append("text")
-	    .text(l3)
-	    .attr("font-weight","bold")
-	    .attr("x",tlx2 )
-	    .attr("y",tly + 3*labgp.height/4);
+// 	gro.append("text")
+// 	    .text(l1)
+// 	    .attr("font-weight","bold")
+// 	    .attr("x",tlx2 )
+// 	    .attr("y",tly + labgp.height/4);
+// 	gro.append("text")
+// 	    .text(l2)
+// 	    .attr("font-weight","bold")
+// 	    .attr("x",tlx2 )
+// 	    .attr("y",tly + 2*labgp.height/4);
+// 	gro.append("text")
+// 	    .text(l3)
+// 	    .attr("font-weight","bold")
+// 	    .attr("x",tlx2 )
+// 	    .attr("y",tly + 3*labgp.height/4);
 	
-    } else {
-	d3.select("."+nom).remove();
-    }
-}
-*/
+//     } else {
+// 	d3.select("."+nom).remove();
+//     }
+// }
+
 
 function clean_prof_displayed() {
 
@@ -729,10 +810,16 @@ function fetch_unavailable_rooms() {
 }
 
 function translate_unavailable_rooms(d) {
+    var i ;
     console.log(d);
-    var slot = +d.heure ;
-    var day = +d.jour ;
-    unavailable_rooms[day][slot].push(d.room);
+    if (Object.keys(unavailable_rooms).indexOf(d.room)==-1){
+	unavailable_rooms[d.room] = {} ; 
+	for (i=0 ; i<days.length ; i++){
+	    unavailable_rooms[d.room][days[i].ref] = [] ;
+	}
+    }
+    unavailable_rooms[d.room][days[i].ref].push({start_time: +d.start_time,
+						 duration: +d.duration});
 }
 
 /*--------------------
