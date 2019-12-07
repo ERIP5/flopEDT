@@ -40,7 +40,7 @@ import sys
 BASE_DIR = os.path.dirname(os.path.dirname(
     os.path.dirname(os.path.abspath(__file__))))
 
-# 
+#
 # Application definition
 #
 
@@ -145,11 +145,11 @@ AUTH_USER_MODEL = 'people.User'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-   
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-# 
+#
 # EMAIL SETTINGS
 #
 
@@ -175,4 +175,4 @@ if 'ADMINS' in os.environ:
     ADMINS = [tuple(admin.split(",")) for admin in os.environ.get('ADMINS').split(" ")]
     MANAGERS = ADMINS
 
-COSMO_MODE = False
+COSMO_MODE = True
