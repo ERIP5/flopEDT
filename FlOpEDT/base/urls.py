@@ -1,21 +1,21 @@
 # This file is part of the FlOpEDT/FlOpScheduler project.
 # Copyright (c) 2017
 # Authors: Iulian Ober, Paul Renaud-Goud, Pablo Seban, et al.
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
 # published by the Free Software Foundation, either version 3 of the
 # License, or (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 # Affero General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Affero General Public
 # License along with this program. If not, see
 # <http://www.gnu.org/licenses/>.
-# 
+#
 # You can be released from the requirements of the license by purchasing
 # a commercial license. Buying such a license is mandatory as soon as
 # you develop activities involving the FlOpEDT/FlOpScheduler software
@@ -42,8 +42,9 @@ urlpatterns = [
     url(r'^preferences$', views.preferences, name="preferences"),
     url(r'^semaine-type$', views.stype, name="stype"),
     url(r'^aide$', views.aide, name="aide"),
-    url(r'^decale$', views.decale, name="decale"),    
+    url(r'^decale$', views.decale, name="decale"),
     url(r'^contact$', views.contact, name="contact"),
+    url(r'^heure-supplementaire$', views.heure_sup, name="heure_sup"),
     url(r'^((?P<year>\d{4}))?(/(?P<week>\d{1,2}))?$', views.edt, name="edt"),
     url(r'^tv(/(?P<year>\d+))?(/(?P<week>\d+))?$', views.edt_light, name="edt_light"),
 
@@ -58,8 +59,8 @@ urlpatterns = [
     path('fetch_course_default_week/<str:train_prog>/<str:course_type>', views.fetch_course_default_week, name="fetch_course_dweek"),
     url(r'^fetch_decale$', views.fetch_decale, name="fetch_decale"),
     url(r'^fetch_bknews/(?P<year>\d+)/(?P<week>\d+)$', views.fetch_bknews, name="fetch_bknews"),
-    url(r'^fetch_groups$', views.fetch_groups, name="fetch_groups"),    
-    url(r'^fetch_rooms$', views.fetch_rooms, name="fetch_rooms"),    
+    url(r'^fetch_groups$', views.fetch_groups, name="fetch_groups"),
+    url(r'^fetch_rooms$', views.fetch_rooms, name="fetch_rooms"),
     url(r'^fetch_constraints$', views.fetch_constraints, name="fetch_constraints"),
     path('fetch_course_types', views.fetch_course_types, name="fetch_course_types"),
     path('fetch_training_programmes', views.fetch_training_programmes, name="fetch_training_programmes"),

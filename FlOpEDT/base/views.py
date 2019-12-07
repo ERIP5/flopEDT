@@ -3,21 +3,21 @@
 # This file is part of the FlOpEDT/FlOpScheduler project.
 # Copyright (c) 2017
 # Authors: Iulian Ober, Paul Renaud-Goud, Pablo Seban, et al.
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
 # published by the Free Software Foundation, either version 3 of the
 # License, or (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 # Affero General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Affero General Public
 # License along with this program. If not, see
 # <http://www.gnu.org/licenses/>.
-# 
+#
 # You can be released from the requirements of the license by purchasing
 # a commercial license. Buying such a license is mandatory as soon as
 # you develop activities involving the FlOpEDT/FlOpScheduler software
@@ -95,8 +95,8 @@ def favicon(req, fav, **kwargs):
 def index(req):
     """
     Display department selection view.
-    
-    The view create a default department if not exist and 
+
+    The view create a default department if not exist and
     redirects to edt vue if only one department exist
     """
     def redirect_to_edt(department):
@@ -106,7 +106,7 @@ def index(req):
 
     departments = Department.objects.all()
 
-    if not departments:        
+    if not departments:
         # Create first department
         department = queries.create_first_department()
         return redirect(redirect_to_edt(department))
@@ -359,7 +359,7 @@ def fetch_cours_pl(req, year, week, num_copy, **kwargs):
         else:
             dataset = CoursPlaceResource()
         dataset = dataset.export(queries.get_scheduled_courses(
-                        department=department,                         
+                        department=department,
                         week=week,
                         year=year,
                         num_copy=num_copy)
@@ -367,8 +367,8 @@ def fetch_cours_pl(req, year, week, num_copy, **kwargs):
         ok = num_copy != 0 \
              or (version == queries \
                                 .get_edt_version(
-                                    department=department, 
-                                    week=week, 
+                                    department=department,
+                                    week=week,
                                     year=year))
 
     if dataset is None:
@@ -379,7 +379,7 @@ def fetch_cours_pl(req, year, week, num_copy, **kwargs):
     response['year'] = year
     response['days'] = str(num_all_days(year, week, req.department))
     response['num_copy'] = num_copy
-    
+
     cached = cache.set(cache_key, response)
     return response
 
@@ -455,7 +455,7 @@ def fetch_dispos(req, year, week, **kwargs):
                                            module__train_prog__department=department) \
                                    .distinct('tutor') \
                                    .values_list('tutor')
-                                           
+
     if COSMO_MODE:
         busy_inst_after = ScheduledCourse.objects.filter(course__week=week,
                                                          course__year=year,
@@ -516,7 +516,7 @@ def fetch_course_default_week(req, train_prog, course_type, **kwargs):
         else:
             response['more'] = 'No such course type'
         return response
-            
+
     dataset = CoursePreferenceResource() \
         .export(CoursePreference.objects \
                 .filter(week=None,
@@ -556,7 +556,7 @@ def fetch_unavailable_rooms(req, year, week, **kwargs):
 
     # dataset = DispoResource() \
     #     .export(RoomPreference.objects.filter(
-    #                                         room__departments = department, 
+    #                                         room__departments = department,
     #                                         week=week,
     #                                         year=year,
     #                                         value=0))
@@ -570,7 +570,7 @@ def fetch_unavailable_rooms(req, year, week, **kwargs):
     response['year'] = year
 
     return response
-   
+
 
 def fetch_all_tutors(req, **kwargs):
     '''
@@ -659,7 +659,7 @@ def fetch_decale(req, **kwargs):
             tutors.append(c.tutor.username)
 
     if module != '':
-        course_queryset = Course.objects.filter(module__train_prog__department=department)        
+        course_queryset = Course.objects.filter(module__train_prog__department=department)
         course = filt_m(course_queryset, module) \
             .order_by('tutor__username') \
             .distinct('tutor__username')
@@ -723,7 +723,7 @@ def fetch_week_infos(req, year, week, **kwargs):
         regen = str(Regen.objects.get(department=req.department, week=week, year=year))
     except ObjectDoesNotExist:
         regen = 'I'
-        
+
     response = JsonResponse({'version': version,
                              'proposed_pref': proposed_pref,
                              'required_pref': required_pref,
@@ -775,21 +775,21 @@ def fetch_rooms(req, **kwargs):
     Return rooms for a given department
     """
     rooms = queries.get_rooms(req.department.abbrev)
-    return JsonResponse(rooms, safe=False)    
+    return JsonResponse(rooms, safe=False)
 
 def fetch_constraints(req, **kwargs):
     """
     Return course type constraints for a given department
     """
     constraints = queries.get_coursetype_constraints(req.department.abbrev)
-    return JsonResponse(constraints, safe=False)    
+    return JsonResponse(constraints, safe=False)
 
 def fetch_departments(req, **kwargs):
     """
     Return departments
     """
     depts = queries.get_departments()
-    return JsonResponse(depts, safe=False)    
+    return JsonResponse(depts, safe=False)
 
 
 def fetch_course_types(req, **kwargs):
@@ -797,14 +797,14 @@ def fetch_course_types(req, **kwargs):
     Return course types
     """
     course_types = queries.get_course_types(req.department)
-    return JsonResponse(course_types, safe=False)    
+    return JsonResponse(course_types, safe=False)
 
 def fetch_training_programmes(req, **kwargs):
     """
     Return training programmes
     """
     programmes = queries.get_training_programmes(req.department)
-    return JsonResponse(programmes, safe=False)    
+    return JsonResponse(programmes, safe=False)
 
 
 def fetch_tutor_courses(req, year, week, tutor, **kwargs):
@@ -852,11 +852,11 @@ def fetch_extra_sched(req, year, week, **kwargs):
 def fetch_shared_roomgroups(req, year, week, **kwargs):
     # which room groups are shared among departments
     shared_roomgroups = []
-    for rg in RoomGroup.objects.all(): 
-        depts = set() 
-        for rt in rg.types.all(): 
-            depts.add(rt.department) 
-            if len(depts) > 1: 
+    for rg in RoomGroup.objects.all():
+        depts = set()
+        for rt in rg.types.all():
+            depts.add(rt.department)
+            if len(depts) > 1:
                 shared_roomgroups.append(rg)
 
     # courses in any shared room
@@ -887,7 +887,7 @@ def edt_changes(req, **kwargs):
     if not (req.user.is_tutor and req.user.is_staff):
         bad_response['more'] = "Pas membre de l'équipe encadrante"
         return JsonResponse(bad_response)
-        
+
 
     impacted_inst = set()
 
@@ -924,7 +924,7 @@ def edt_changes(req, **kwargs):
     old_version = json.loads(req.POST.get('v',-1))
     recv_changes = json.loads(req.POST.get('tab',[]))
 
-    
+
     version = EdtVersion.objects.filter(week=week,
                                         year=year).aggregate(Sum('version'))['version__sum']
 
@@ -1056,7 +1056,7 @@ def edt_changes(req, **kwargs):
                 cache.delete(get_key_course_pl(department.abbrev, new_year, new_week, work_copy))
             cache.delete(get_key_course_pl(department.abbrev, old_year, old_week, work_copy))
             cache.delete(get_key_course_pp(department.abbrev, old_year, old_week, work_copy))
-            
+
 
         # subject = '[Modif sur tierce] ' + req.user.username \
         #           + ' a déplacé '
@@ -1075,7 +1075,7 @@ def edt_changes(req, **kwargs):
         #         )
         logger.info('Envoi de mail')
         logger.info(msg)
-        
+
 
         return JsonResponse(good_response)
     else:
@@ -1119,7 +1119,7 @@ class HelperCoursePreference():
                                 start_time=start_time,
                                 duration=duration,
                                 value=value)
-        
+
 
 def preferences_changes(req, year, week, helper_pref):
     good_response = {'status':'OK', 'more':''}
@@ -1131,7 +1131,7 @@ def preferences_changes(req, year, week, helper_pref):
     logger.info("List of changes")
     for a in changes:
         logger.info(a)
-    
+
     # Default week at None
     if week == 0 or year == 0:
         week = None
@@ -1184,7 +1184,7 @@ def check_ajax_post(req):
 
 
 
-    
+
 @login_required
 def user_preferences_changes(req, year, week, username, **kwargs):
     response = check_ajax_post(req)
@@ -1192,12 +1192,12 @@ def user_preferences_changes(req, year, week, username, **kwargs):
         return response
 
     response = {'status':'KO', 'more':''}
-    
+
     usr_change = username
 
     logger.info(f"REQ: dispo change for {usr_change} by {req.user.username}")
     logger.info(f"     W{week} Y{year}")
-    
+
     tutor = None
     try:
         tutor = Tutor.objects.get(username=usr_change)
@@ -1224,7 +1224,7 @@ def user_preferences_changes(req, year, week, username, **kwargs):
 
     return response
 
-        
+
 
 
 
@@ -1235,7 +1235,7 @@ def course_preferences_changes(req, year, week, train_prog, course_type, **kwarg
         return response
 
     response = {'status':'KO', 'more':''}
-    
+
     tp = None
     ct = None
     try:
@@ -1279,7 +1279,7 @@ def decale_changes(req, **kwargs):
         edt_versions = EdtVersion.objects.select_for_update().filter(
             (Q(week=old_week) & Q(year=old_year))
              |(Q(week=new_week) & Q(year=new_year)), department=req.department)
-        
+
         with transaction.atomic():
             # was the course was scheduled before?
             if c['d'] != '' and c['t'] != -1:
@@ -1296,7 +1296,7 @@ def decale_changes(req, **kwargs):
                 ev.version += 1
                 ev.save()
             else:
-                cache.delete(get_key_course_pp(req.department.abbrev, 
+                cache.delete(get_key_course_pp(req.department.abbrev,
                                                old_year,
                                                old_week,
                                                0))
@@ -1320,7 +1320,7 @@ def decale_changes(req, **kwargs):
             changing_course.save()
             ev, _ = EdtVersion.objects.update_or_create(
                 year=new_year,
-                week=new_week, 
+                week=new_week,
                 department=req.department)
             ev.version += 1
             ev.save()
@@ -1358,6 +1358,45 @@ def contact(req, **kwargs):
             except:
                 ack = 'Envoi du mail impossible !'
                 return TemplateResponse(req, 'base/contact.html',
+                              {'form': form,
+                               'ack': ack
+                              })
+
+            return edt(req, None, None, 1)
+    else:
+        init_mail = ''
+        if req.user.is_authenticated:
+            init_mail = req.user.email
+        form = ContactForm(initial={
+            'sender': init_mail})
+    return TemplateResponse(req, 'base/contact.html',
+                  {'form': form,
+                   'ack': ack
+                  })
+
+
+def heure_sup(req, **kwargs):
+    ack = ''
+    if req.method == 'POST':
+        form = HeureSupForm(req.POST)
+        if form.is_valid():
+            dat = form.cleaned_data
+            recip_send = [Tutor.objects.get(username=
+                                            dat.get("recipient")).email,
+                          dat.get("sender")]
+            try:
+                email = EmailMessage(
+                    '[EdT IUT Blagnac] ' + dat.get("subject"),
+                    "(Cet e-mail vous a été envoyé depuis le site des emplois"
+                    " du temps de l'IUT de Blagnac)\n\n"
+                    + dat.get("message"),
+                    to=recip_send,
+                    reply_to=[dat.get("sender")]
+                )
+                email.send()
+            except:
+                ack = 'Envoi du mail impossible !'
+                return TemplateResponse(req, 'base/overtime.html',
                               {'form': form,
                                'ack': ack
                               })
@@ -1467,6 +1506,3 @@ def get_key_all_tutors(department_abbrev):
     return f'ALL-TUT-D{department_abbrev}'
 
 # </editor-fold desc="HELPERS">
-
-
-
