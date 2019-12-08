@@ -80,7 +80,7 @@
       {% endif %}
       <li><a href="{% url "base:preferences" department %}">Préférences</a></li>
       {% if user.is_authenticated %}
-      <li><a href="{% url "base:heure_sup" department %}">Heure supplémentaire</a></li>
+      <li><a href="{% url "base:overtime" department %}">Heures supplémentaires</a></li>
       {% endif %}
       <li><a href="{% url "ics:index" department %}">iCal</a></li>
       <li><a href="{% url "base:aide" department %}">Aide</a></li>
