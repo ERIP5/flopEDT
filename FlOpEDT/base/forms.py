@@ -3,27 +3,28 @@
 # This file is part of the FlOpEDT/FlOpScheduler project.
 # Copyright (c) 2017
 # Authors: Iulian Ober, Paul Renaud-Goud, Pablo Seban, et al.
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
 # published by the Free Software Foundation, either version 3 of the
 # License, or (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 # Affero General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Affero General Public
 # License along with this program. If not, see
 # <http://www.gnu.org/licenses/>.
-# 
+#
 # You can be released from the requirements of the license by purchasing
 # a commercial license. Buying such a license is mandatory as soon as
 # you develop activities involving the FlOpEDT/FlOpScheduler software
 # without disclosing the source code of your own applications.
 
 from django import forms
+from base.models import ScheduledCourse
 from people.models import Tutor, FullStaff
 
 
@@ -57,3 +58,16 @@ class PerfectDayForm(forms.Form):
         self.fields['max_hours_per_day'] = forms.IntegerField(label="Maximum", min_value=1, max_value=9,
                                                               required=False, initial=6)
 
+
+class OvertimeForm(forms.ModelForm):
+    '''
+    Ask for an overtime.
+    '''
+    class Meta:
+        '''Create form from ScheduledCourse.'''
+        model = ScheduledCourse
+        fields = ['day', 'start_time', 'room']
+
+    duration = forms.ChoiceField(label='Duration',
+                                 choices=[(30, '1/2h'), (60, '1h'),
+                                          (90, '1h 1/2'), (120, '2h')])
