@@ -54,7 +54,7 @@ from base.admin import CoursResource, DispoResource, VersionResource, \
 if COSMO_MODE:
     from base.admin import CoursPlaceResourceCosmo
 from displayweb.admin import BreakingNewsResource
-from base.forms import ContactForm, PerfectDayForm
+from base.forms import ContactForm, PerfectDayForm, OvertimeForm
 from base.models import Course, UserPreference, ScheduledCourse, EdtVersion, \
     CourseModification, Day, Time, RoomGroup, PlanningModification, \
     Regen, RoomPreference, Department, TimeGeneralSettings, CoursePreference, \
@@ -1375,43 +1375,46 @@ def contact(req, **kwargs):
                   })
 
 
-def heure_sup(req, **kwargs):
+def overtime(req, **kwargs):
+    '''
+    View of the form to ask for an overtime hour.
+    '''
     ack = ''
+    print('\n\nreq.__dict__:')
+    for item in req.__dict__:
+        print('\t{}'.format(item))
+    print('req.user.is_authenticated: {}'.format(req.user.is_authenticated))
+    print('req.user.__dict__: {}'.format(req.user.__dict__))
+    print('\n{}\tname: {}\tmail: {}\n'.format(req.user.pk, req.user.username, req.user.email))
     if req.method == 'POST':
-        form = HeureSupForm(req.POST)
+        form = OvertimeForm()
+        print(form.is_valid())
         if form.is_valid():
+            print('form is valid')
             dat = form.cleaned_data
-            recip_send = [Tutor.objects.get(username=
-                                            dat.get("recipient")).email,
-                          dat.get("sender")]
+            print('\ndat: {}'.format(dat))
             try:
-                email = EmailMessage(
-                    '[EdT IUT Blagnac] ' + dat.get("subject"),
-                    "(Cet e-mail vous a été envoyé depuis le site des emplois"
-                    " du temps de l'IUT de Blagnac)\n\n"
-                    + dat.get("message"),
-                    to=recip_send,
-                    reply_to=[dat.get("sender")]
-                )
+                print('envoi du mail')
+                email = EmailMessage(subject='test heure sup',
+                                     body='demande heure sup',
+                                     to='nicolas.jeanne@ntymail.com',
+                                     reply_to='nicolajea@yahoo.fr')
                 email.send()
-            except:
+            except Exception as ex:
                 ack = 'Envoi du mail impossible !'
-                return TemplateResponse(req, 'base/overtime.html',
-                              {'form': form,
-                               'ack': ack
-                              })
-
+                print(ack)
+                print(ex)
+                return TemplateResponse(req, 'base/heure-sup.html',
+                                        {'form': form,
+                                         'ack': ack})
             return edt(req, None, None, 1)
+        else:
+            print('form is not valid')
     else:
-        init_mail = ''
-        if req.user.is_authenticated:
-            init_mail = req.user.email
-        form = ContactForm(initial={
-            'sender': init_mail})
-    return TemplateResponse(req, 'base/contact.html',
-                  {'form': form,
-                   'ack': ack
-                  })
+        print('Pas POST')
+    print('Renvoi du formulaire')
+    form = OvertimeForm()
+    return TemplateResponse(req, 'base/heure-sup.html', {'form': form})
 
 
 # </editor-fold desc="EMAILS">
