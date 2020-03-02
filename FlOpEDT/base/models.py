@@ -375,6 +375,23 @@ class ScheduledCourse(models.Model):
         return self.start_time + self.course.type.duration
 
 
+class ScheduledCourseChange(models.Model):
+    idChange = models.CharField(max_length=30)
+    is_not_valid = models.SmallIntegerField(default=1)
+    scheduledCoursedBefore = models.OneToOneField('ScheduledCourse', related_name='sheduledBefore', on_delete=models.CASCADE)
+    new_day = models.CharField(max_length=2, choices=Day.CHOICES, default=Day.MONDAY)
+    # in minutes from 12AM
+    new_start_time = models.PositiveSmallIntegerField()
+    new_room = models.ForeignKey('RoomGroup', related_name='newRoom', blank=True, null=True, on_delete=models.CASCADE)
+    new_tutor = models.ForeignKey('people.Tutor',
+                              related_name='new_taught_scheduled_courses',
+                              null=True,
+                              default=None,
+                              on_delete=models.CASCADE)
+
+    #ScheduledCourseChange_related = models.ManyToManyField('ScheduledCourseChange')
+
+
 # </editor-fold desc="COURSES">
 
 # <editor-fold desc="PREFERENCES">

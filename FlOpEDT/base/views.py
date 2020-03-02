@@ -1502,6 +1502,22 @@ def contact(req, tutor, **kwargs):
                              })
 
 
+# <editor-fold desc="EMAILS">
+# ---------
+# BD
+# ---------
+
+def add_Change(change, code):
+
+    SCchange = ScheduledCourseChange()
+    SCchange.id = code
+    SCchange.new_day = change.day.n
+    SCchange.new_room = change.room.n
+    SCchange.new_start_time = change.start.n
+    SCchange.new_tutor = Tutor.objects.get(username=change.tutor.o)
+    SCchange.scheduledCoursedBefore = ScheduledCourse.objects.get(week=change.week.o,tutor=change.tutor.o,start_time=change.start.o,day=change.day.o,room=change.room.o)
+    SCchange.save()
+
 # </editor-fold desc="EMAILS">
 
 # <editor-fold desc="HELPERS">
