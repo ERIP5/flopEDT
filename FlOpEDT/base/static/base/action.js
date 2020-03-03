@@ -1321,6 +1321,13 @@ function confirm_contact_all(changes, conc_tutors, gps) {
 
 function send_mail_proposal(changes) {
 
+    var ids = [];
+    for(var i=0; i < changes.length; i++){
+        ids.push(makeid(30));
+        // Todo : Appeler la fonction add_change du fichier base/views.py
+        //add_Change(global_changes[i],ids[i]);
+    }
+
     var cur_week = wdw_weeks.get_selected();
     var sent_data = {} ;
     sent_data['version'] = JSON.stringify(version) ;
@@ -1362,6 +1369,16 @@ function mail_ack(msg) {
     splash(splash_disclaimer);
 }
 
+
+function makeid(length) {
+   var result           = '';
+   var caracteres       = 'azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN0123456789';
+   var charactersLength = caracteres.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += caracteres.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
 
 
 function array_to_msg(a) {
