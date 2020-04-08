@@ -21,6 +21,9 @@
 # you develop activities involving the FlOpEDT/FlOpScheduler software
 # without disclosing the source code of your own applications.
 
+import os
+from configparser import ConfigParser
+
 from .base import *
 
 SECRET_KEY = 'your_secret_key'
@@ -80,3 +83,26 @@ INSTALLED_APPS = INSTALLED_APPS + ['debug_toolbar']
 MIDDLEWARE = MIDDLEWARE + ['debug_toolbar.middleware.DebugToolbarMiddleware']
 
 INTERNAL_IPS = ['127.0.0.1']
+
+
+# Get configuration from config.ini
+#
+#
+config_file = ConfigParser()
+config_filename = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        'config.ini')
+# this makes ConfigParser keys case sensitive
+config_file.optionxform = str
+config_file.read(config_filename)
+
+# Override SECRET_KEY and DEBUG if present in config.ini
+if 'general' in config_file:
+    SECRET_KEY = config_file['general'].get('SECRET_KEY', SECRET_KEY)
+    if 'DEBUG' in config_file['general']:
+        DEBUG = config_file.getboolean('general', 'DEBUG')
+
+# Override DATABASES['default'] if present in config.ini
+if 'db' in config_file:
+    DATABASES['default'].update(config_file['db'])
+
