@@ -21,6 +21,7 @@
 # you develop activities involving the FlOpEDT/FlOpScheduler software
 # without disclosing the source code of your own applications.
 
+from rest_framework_recursive.fields import RecursiveField
 from rest_framework import serializers
 import base.models as bm
 import displayweb.models as dwm
@@ -360,10 +361,6 @@ class BKNewsSerializer(serializers.ModelSerializer):
 #                                     ----Decale----                                    #
 #                                     --------------                                    #
 
-
-#                                     --------------                                    #
-#                                     ----Groups----                                    #
-#                                     --------------                                    #
 
 #                                      -------------                                    #
 #                                      ----Rooms----                                    #

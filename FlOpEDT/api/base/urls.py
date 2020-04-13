@@ -20,8 +20,8 @@
 # a commercial license. Buying such a license is mandatory as soon as
 # you develop activities involving the FlOpEDT/FlOpScheduler software
 # without disclosing the source code of your own applications.
-from rest_framework import routers
 
+from rest_framework import routers
 from api.base import views
 
 routerBase = routers.SimpleRouter()
@@ -31,19 +31,10 @@ routerBase = routers.SimpleRouter()
 routerBase.register(r'departments', views.DepartmentViewSet)
 routerBase.register(r'trainingprogram/name', views.TrainingProgrammeNameViewSet, basename='trainingprogramme-name')
 routerBase.register(r'trainingprogram', views.TrainingProgrammeViewSet)
-routerBase.register(r'grouptypes', views.GroupTypesViewSet)
-routerBase.register(r'groups', views.GroupsViewSet, basename="groups")
 routerBase.register(r'holidays', views.HolidaysViewSet)
 routerBase.register(r'traininghalfdays', views.TrainingHalfDaysViewSet)
 routerBase.register(r'periods', views.PeriodsViewSet)
 routerBase.register(r'timesettings', views.TimeGeneralSettingsViewSet)
-routerBase.register(r'roomtypes', views.RoomTypesViewSet)
-routerBase.register(r'rooms', views.RoomViewSet)
-routerBase.register(r'roomsorts', views.RoomSortsViewSet)
-routerBase.register(r'module-full', views.ModuleFullViewSet)
-routerBase.register(r'coursetype/name', views.CourseTypeNameViewSet, basename='coursetype-name')
-routerBase.register(r'coursetype', views.CourseTypeViewSet)
-routerBase.register(r'courses', views.CoursesViewSet)
 routerBase.register(r'edtversions', views.EdtVersionsViewSet)
 routerBase.register(r'coursemodifications', views.CourseModificationsViewSet)
 routerBase.register(r'tutorcosts', views.TutorCostsViewSet)
@@ -52,24 +43,4 @@ routerBase.register(r'CourseStartTimeFilter', views.GroupFreeHalfDaysViewSet)
 routerBase.register(r'dependencies', views.DependenciesViewSet)
 routerBase.register(r'coursesstarttimeconstraints', views.CourseStartTimeConstraintsViewSet)
 routerBase.register(r'regens', views.RegensViewSet)
-routerBase.register(r'login', views.LoginView, basename="login")
-routerBase.register(r'logout', views.LogoutView, basename="logout")
 
-routerRooms = routers.SimpleRouter()
-
-routerRooms.register(r'types', views.RoomTypesViewSet)
-routerRooms.register(r'room/name', views.RoomNameViewSet)
-routerRooms.register(r'room', views.RoomViewSet)
-routerRooms.register(r'sorts', views.RoomSortsViewSet)
-
-routerCourses = routers.SimpleRouter()
-
-routerCourses.register(r'module', views.ModuleViewSet)
-routerCourses.register(r'type/name', views.CourseTypeNameViewSet, basename='type-name')
-routerCourses.register(r'type', views.CourseTypeViewSet, basename='type')
-routerCourses.register(r'courses', views.CoursesViewSet)
-
-routerGroups = routers.SimpleRouter()
-
-routerGroups.register(r'types', views.GroupTypesViewSet)
-routerGroups.register(r'groups', views.GroupsViewSet, basename="groups")

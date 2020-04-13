@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_auth',
     'rest_framework_swagger',
+    'rest_framework_recursive',
     'drf_yasg',
     'easter_egg'
 ]

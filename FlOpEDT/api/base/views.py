@@ -21,6 +21,7 @@
 # you develop activities involving the FlOpEDT/FlOpScheduler software
 # without disclosing the source code of your own applications.
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework.decorators import action
 
 from api.base import serializers
 from rest_framework import viewsets
@@ -32,12 +33,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import *
 from django.views.generic import TemplateView
 from django.conf import settings
-from django.utils.decorators import method_decorator
-from api.shared.params import week_param, year_param, dept_param
 
 # ------------
-# -- GROUPS --
+# -- Department --
 # ------------
+from api.shared.views_set import ListGenericViewSet
 
 
 class DepartmentViewSet(viewsets.ModelViewSet):
@@ -49,41 +49,11 @@ class DepartmentViewSet(viewsets.ModelViewSet):
     queryset = bm.Department.objects.all()
     serializer_class = serializers.DepartmentSerializer
 
-
-class GroupTypesViewSet(viewsets.ModelViewSet):
-    """
-    ViewSet to see all the group types
-
-    Can be filtered as wanted with every field of a GroupType object.
-    """
-    queryset = bm.GroupType.objects.all()
-    serializer_class = serializers.GroupTypesSerializer
-
-
-class GroupsFilterSet(filters.FilterSet):
-    dept = filters.CharFilter(field_name='train_prog__department__abbrev', required=True)
-
-    class Meta:
-        model = bm.Group
-        fields = ['dept']
-
-
-class GroupsViewSet(viewsets.ModelViewSet):
-    """
-    ViewSet to see all the groups
-
-    Can be filtered as wanted with parameter="dept"[required] of a Group object, with the function GroupsFilterSet
-    """
-    serializer_class = serializers.GroupsSerializer
-    queryset = bm.Group.objects.all()
-    filter_class = GroupsFilterSet
-
-
 # ------------
 # -- TIMING --
 # ------------
 
-class HolidaysViewSet(viewsets.ModelViewSet):
+class HolidaysViewSet(ListGenericViewSet):
     """
     ViewSet to see all the holidays
 
@@ -94,7 +64,7 @@ class HolidaysViewSet(viewsets.ModelViewSet):
     filterset_fields = '__all__'
 
 
-class TrainingHalfDaysViewSet(viewsets.ModelViewSet):
+class TrainingHalfDaysViewSet(ListGenericViewSet):
     """
     ViewSet to see all the half-day trainings
 
@@ -106,7 +76,7 @@ class TrainingHalfDaysViewSet(viewsets.ModelViewSet):
     filterset_fields = '__all__'
 
 
-class PeriodsViewSet(viewsets.ModelViewSet):
+class PeriodsViewSet(ListGenericViewSet):
     """
     ViewSet to see all the periods
 
@@ -126,7 +96,7 @@ class TimeGeneralFilter(filters.FilterSet):
         fields = ('department', 'days')
 
 
-class TimeGeneralSettingsViewSet(viewsets.ModelViewSet):
+class TimeGeneralSettingsViewSet(ListGenericViewSet):
     """
     ViewSet to see all the settings of time
 
@@ -137,177 +107,6 @@ class TimeGeneralSettingsViewSet(viewsets.ModelViewSet):
 
     filterset_class = TimeGeneralFilter
 
-
-# -----------
-# -- ROOMS --
-# -----------
-
-class RoomTypesViewSet(viewsets.ModelViewSet):
-    """
-    ViewSet to see all the room types
-
-    Can be filtered as wanted with every field of a RoomTypes object.
-    """
-    queryset = bm.RoomType.objects.all()
-    serializer_class = serializers.RoomTypesSerializer
-    filterset_fields = '__all__'
-
-
-class RoomViewSet(viewsets.ModelViewSet):
-    """
-    ViewSet to see a list which shows each room is with what kind of group.
-
-    Can be filtered as wanted with every field of a Room object.
-    """
-    queryset = bm.Room.objects.all()
-    serializer_class = serializers.RoomSerializer
-    filterset_fields = '__all__'
-
-
-class RoomFilterSet(filters.FilterSet):
-    dept = filters.CharFilter(field_name='departments__abbrev', required=True)
-
-    class Meta:
-        model = bm.Room
-        fields = ['dept']
-
-
-class RoomNameViewSet(viewsets.ModelViewSet):
-    """
-    ViewSet to see a list which shows each room is with what kind of group.
-
-    Can be filtered as wanted with every field of a Room object.
-    """
-    queryset = bm.Room.objects.all()
-    serializer_class = serializers.RoomNameSerializer
-    filter_class = RoomFilterSet
-
-
-class RoomViewSet(viewsets.ModelViewSet):
-    """
-    ViewSet to see all the rooms.
-
-    Can be filtered as wanted with parameter="dept"[required] of a Room object, with the function RoomsFilterSet
-    """
-    queryset = bm.Room.objects.all()
-    serializer_class = serializers.RoomSerializer
-    filter_class = RoomFilterSet
-
-    # filterset_fields = '__all__'
-
-
-class RoomSortsViewSet(viewsets.ModelViewSet):
-    """
-    ViewSet to see all the room sorts.
-
-    Can be filtered as wanted with every field of a RoomSort object.
-    """
-    queryset = bm.RoomSort.objects.all()
-    serializer_class = serializers.RoomSortsSerializer
-
-    filterset_fields = '__all__'
-
-
-# -------------
-# -- COURSES --
-# -------------
-
-@method_decorator(
-    name='list',
-    decorator=swagger_auto_schema(
-        operation_description='If (week,year) is given, any module that is taught in this week',
-        manual_parameters=[week_param(),
-                           year_param(),
-                           dept_param(required=True)])
-)
-class ModuleViewSet(viewsets.ModelViewSet):
-    """
-    Modules in a given department
-
-    TODO: (Header for list)
-
-    """
-    queryset = bm.Module.objects.all()
-    serializer_class = serializers.ModuleSerializer
-    filterset_fields = '__all__'
-
-    def get_queryset(self):
-        # Get the filters from the request
-        week = self.request.query_params.get('week', None)
-        year = self.request.query_params.get('year', None)
-        abbrev=self.request.query_params.get('dept', None)
-
-        # Applying filters
-        if week is not None and year is not None:
-            # Those 2 filters are needed to have returned data
-            # distinct method allows us to get each module only once
-            qs = bm.ScheduledCourse.objects.distinct('course__module').filter(course__week=week, course__year=year)
-            # Filtering with department
-            qs = qs.filter(course__module__train_prog__department__abbrev=abbrev)
-
-            # Getting every module that appears
-            qs_module = qs.values('course__module')
-            # Get all the modules that appears in the scheduled courses. Those primary keys come from the previous line
-            return bm.Module.objects.filter(pk__in=qs_module)
-        else:
-            return bm.Module.objects.filter(train_prog__department__abbrev=abbrev)
-
-
-class ModuleFullViewSet(viewsets.ModelViewSet):
-    """
-    ViewSet to see all the modules that have a Scheduled course in a given week/year couple.
-
-    can also be filtered with a department.
-    """
-    queryset = bm.Module.objects.all()
-    serializer_class = serializers.ModuleFullSerializer
-    filterset_fields = '__all__'
-
-
-class CourseTypeFilterSet(filters.FilterSet):
-    dept = filters.CharFilter(field_name='department__abbrev', required=True)
-
-    class Meta:
-        model = bm.CourseType
-        fields = ['dept']
-
-
-class CourseTypeViewSet(viewsets.ModelViewSet):
-    """
-    ViewSet to see all the course types.
-
-    Can be filtered as wanted with the department of a CourseType object, with the function CourseTypesFilterSet
-    """
-    queryset = bm.CourseType.objects.all()
-    serializer_class = serializers.CourseTypeSerializer
-    filter_class = CourseTypeFilterSet
-
-    filterset_fields = '__all__'
-
-
-class CourseTypeNameViewSet(viewsets.ModelViewSet):
-    """
-    ViewSet to see all the course types.
-
-    Can be filtered as wanted with the department of a CourseType object, with the function CourseTypesFilterSet
-    """
-    queryset = bm.CourseType.objects.all()
-    serializer_class = serializers.CourseTypeNameSerializer
-    filter_class = CourseTypeFilterSet
-
-    filterset_fields = '__all__'
-
-
-class CoursesViewSet(viewsets.ModelViewSet):
-    """
-    ViewSet to see all the courses
-
-    Can be filtered as wanted with every field of a Course object.
-    """
-    queryset = bm.Course.objects.all()
-    serializer_class = serializers.CoursesSerializer
-
-    filterset_fields = '__all__'
 
 # -----------------
 # - MODIFICATIONS -
@@ -482,7 +281,7 @@ class TrainingProgrammeFilterSet(filters.FilterSet):
         fields = ['dept']
 
 
-class TrainingProgrammeNameViewSet(viewsets.ModelViewSet):
+class TrainingProgrammeNameViewSet(viewsets.ReadOnlyModelViewSet):
     """
     ViewSet to see all the training programs
     """

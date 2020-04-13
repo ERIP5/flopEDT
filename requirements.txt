@@ -20,6 +20,7 @@ ipython
 openpyxl
 djangorestframework
 djangorestframework-csv
+djangorestframework-recursive
 django-rest-auth
 django-rest-swagger
 Markdown~=3.1.1

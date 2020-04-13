@@ -21,12 +21,13 @@
 # you develop activities involving the FlOpEDT/FlOpScheduler software
 # without disclosing the source code of your own applications.
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.utils.decorators import method_decorator
 import django_filters.rest_framework as filters
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets
+from rest_framework.decorators import action
 from rest_framework.response import Response
 
 import base.models as bm
@@ -35,6 +36,8 @@ import displayweb.models as dwm
 
 from api.fetch import serializers
 from api.shared.params import dept_param, week_param, year_param, user_param
+from api.shared.views_set import ListGenericViewSet
+from base import queries
 
 
 class ScheduledCourseFilterSet(filters.FilterSet):
@@ -50,7 +53,7 @@ class ScheduledCourseFilterSet(filters.FilterSet):
         fields = ['dept', 'week', 'year']
 
 
-class ScheduledCoursesViewSet(viewsets.ModelViewSet):
+class ScheduledCoursesViewSet(ListGenericViewSet):
     """
     ViewSet to see all the scheduled courses
 
@@ -74,7 +77,7 @@ class ScheduledCoursesViewSet(viewsets.ModelViewSet):
                                             description="N° of work copy",
                                             type=openapi.TYPE_INTEGER), ])
                   )
-class UnscheduledCoursesViewSet(viewsets.ModelViewSet):
+class UnscheduledCoursesViewSet(ListGenericViewSet):
     """
     ViewSet to see all the unscheduled courses
 
@@ -119,7 +122,7 @@ class UnscheduledCoursesViewSet(viewsets.ModelViewSet):
                   decorator=swagger_auto_schema(
                       manual_parameters=[week_param(), year_param(), dept_param()])
                   )
-class AvailabilitiesViewSet(viewsets.ModelViewSet):
+class AvailabilitiesViewSet(ListGenericViewSet):
     """
     ViewSet to see all the availabilities of the tutors.
 
@@ -161,7 +164,7 @@ class AvailabilitiesViewSet(viewsets.ModelViewSet):
                           dept_param()
                       ])
                   )
-class CourseTypeDefaultWeekViewSet(viewsets.ModelViewSet):
+class CourseTypeDefaultWeekViewSet(ListGenericViewSet):
     """
     ViewSet to see all the Preferences of a given course type in a training program
 
@@ -196,7 +199,7 @@ class AllVersionsFilterSet(filters.FilterSet):
         fields = ['dept']
 
 
-class AllVersionsViewSet(viewsets.ModelViewSet):
+class AllVersionsViewSet(ListGenericViewSet):
     """
     ViewSet to see all the versions of the Scheduler
 
@@ -208,7 +211,7 @@ class AllVersionsViewSet(viewsets.ModelViewSet):
     filter_class = AllVersionsFilterSet
 
 
-class DepartmentsViewSet(viewsets.ModelViewSet):
+class DepartmentsViewSet(ListGenericViewSet):
     """
     ViewSet to see all the departments
 
@@ -232,7 +235,7 @@ class TutorCoursesFilterSet(filters.FilterSet):
         fields = ['tutor_name', 'year', 'week', 'dept']
 
 
-class TutorCoursesViewSet(viewsets.ModelViewSet):
+class TutorCoursesViewSet(ListGenericViewSet):
     """
     ViewSet to see all the courses of a tutor
 
@@ -249,7 +252,7 @@ class TutorCoursesViewSet(viewsets.ModelViewSet):
                       manual_parameters=[week_param(), year_param(), user_param(required=True),
                                          dept_param(required=True)])
                   )
-class ExtraSchedCoursesViewSet(viewsets.ModelViewSet):
+class ExtraSchedCoursesViewSet(ListGenericViewSet):
     """
     ViewSet to see all the Scheduled courses of a tutor in an other department
 
@@ -297,7 +300,7 @@ class BKNewsFilterSet(filters.FilterSet):
         fields = ['dept', 'week', 'year']
 
 
-class BKNewsViewSet(viewsets.ModelViewSet):
+class BKNewsViewSet(ListGenericViewSet):
     """
     ViewSet to see all the BKNews
 
@@ -352,3 +355,25 @@ class UnavailableRoomViewSet(viewsets.ViewSet):
                for d in dataset]
 
         return Response(res)
+
+
+@method_decorator(name='list',
+                  decorator=swagger_auto_schema(
+                      manual_parameters=[dept_param(required=True)]),
+
+                  )
+class ConstraintsQueriesViewSet(viewsets.ViewSet):
+    """
+    Return course type constraints for a given department
+    """
+
+    def list(self, req):
+        try:
+            department = req.query_params.get('dept')
+            if department == 'None':
+                department = None
+        except ValueError:
+            return HttpResponse("KO")
+
+        constraints = queries.get_coursetype_constraints(department)
+        return JsonResponse(constraints, safe=False)

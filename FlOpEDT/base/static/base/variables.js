@@ -976,3 +976,12 @@ splash_hold = false;
 
 var modules_info = {};
 var tutors_info = {};
+
+
+
+
+/*--------------------
+   --- API CONTEXT ---
+  --------------------*/
+
+const context_dept = {dept: department}
