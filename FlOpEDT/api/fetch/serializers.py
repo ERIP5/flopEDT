@@ -54,11 +54,12 @@ class ModuleDisplay_SC_Serializer(serializers.Serializer):
 
 class Module_SC_Serializer(serializers.Serializer):
     name = serializers.CharField()
+    abbrev = serializers.CharField()
     display = ModuleDisplay_SC_Serializer()
 
     class Meta:
         model = bm.Module
-        fields = ['name', 'display']
+        fields = ['name', 'abbrev', 'display']
 
 
 class Group_SC_Serializer(serializers.Serializer):

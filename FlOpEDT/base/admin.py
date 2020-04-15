@@ -198,6 +198,7 @@ class MultiDepartmentTutorResource(resources.ModelResource):
         model = ScheduledCourse
         fields = ('tutor', 'department', 'day', 'start_time', 'duration')
 
+
 class SharedRoomsResource(resources.ModelResource):
     room = fields.Field(column_name='room',
                         attribute='room',

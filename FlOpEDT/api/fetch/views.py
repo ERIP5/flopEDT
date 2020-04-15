@@ -38,6 +38,7 @@ from api.fetch import serializers
 from api.shared.params import dept_param, week_param, year_param, user_param
 from api.shared.views_set import ListGenericViewSet
 from base import queries
+from base.weeks import num_all_days
 
 
 class ScheduledCourseFilterSet(filters.FilterSet):
@@ -65,6 +66,24 @@ class ScheduledCoursesViewSet(ListGenericViewSet):
     serializer_class = serializers.ScheduledCoursesSerializer
     filter_class = ScheduledCourseFilterSet
 
+
+class WeekDaysViewSet(viewsets.ViewSet):
+
+    def list(self, req):
+        try:
+            week = int(req.query_params.get('week'))
+            year = int(req.query_params.get('year'))
+            department = bm.Department.objects.get(abbrev=req.query_params.get('dept'))
+            print(department)
+            if department == None:
+                print('KO')
+                department = None
+        except ValueError:
+            return HttpResponse("KO")
+
+        data = num_all_days(year, week, department)
+        print(data)
+        return JsonResponse(data, safe=False)
 
 @method_decorator(name='list',
                   decorator=swagger_auto_schema(

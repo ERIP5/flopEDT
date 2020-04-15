@@ -158,7 +158,7 @@ file_fetch.constraints.callback = function () {
 };
 
 file_fetch.department.callback = function () {
-  departments.data = this.data;
+  departments.data = this.data.map(value => value.abbrev);
   //create_dept_redirection();
 };
 

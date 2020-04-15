@@ -117,7 +117,7 @@ file_fetch.groups.callback = function () {
 
   create_edt_grid();
 
-  //    go_promo(promo_display);
+  //go_promo(promo_display);
 
 
   //update_all_groups();
@@ -147,20 +147,43 @@ function fetch_cours_light() {
   var week_att = week;
   var year_att = year;
 
+  const context_fetchcourses = {
+    year: year_att,
+    week: week_att,
+    dept: department
+  }
+
+  // Wekk days
+  $.ajax({
+    type: "GET",
+    dataType: 'text',
+    url: build_url(url_weekdays, context_fetchcourses),
+    async: true,
+    contentType: "application/json",
+    success: function(msg, ts, req) {
+      var sel_week = wdw_weeks.get_selected();
+      if (Week.compare(exp_week, sel_week) === 0) {
+        week_days = new WeekDays(JSON.parse(msg));
+      }
+    }
+  })
+
   $.ajax({
     type: "GET", //rest Type
     dataType: 'text',
-    url: url_cours_pl + year_att + "/" + week_att + "/0",
+    url: build_url(url_cours_pl, context_fetchcourses),
     async: false,
-    contentType: "text/csv",
+    contentType: "application/json",
     success: function (msg, ts, req) {
-      days = JSON.parse(req.getResponseHeader('days').replace(/'/g, '"'));
+      const msg_parsed = JSON.parse(msg);
+      // days = JSON.parse(req.getResponseHeader('days').replace(/'/g, '"'));
 
       tutors.pl = [];
       modules.pl = [];
       salles.pl = [];
 
-      cours_pl = d3.csvParse(msg, translate_cours_pl_from_csv);
+      // cours_pl = d3.csvParse(msg, translate_cours_pl_from_csv);
+      cours_pl = msg_parsed.map(value => translate_cours_pl_from_json(value))
 
       fetch.ongoing_cours_pl = false;
       fetch_ended(true);

@@ -33,11 +33,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import *
 from django.views.generic import TemplateView
 from django.conf import settings
+from api.shared.views_set import ListGenericViewSet
 
 # ------------
 # -- Department --
 # ------------
-from api.shared.views_set import ListGenericViewSet
 
 
 class DepartmentViewSet(viewsets.ModelViewSet):
