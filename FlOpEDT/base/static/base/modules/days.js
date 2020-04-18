@@ -31,14 +31,14 @@ function Day(day = {
   this.date = day.date;
   this.ref = day.ref;
   this.name = day.name;
-  var sp = day.date.split('/');
+  const sp = day.date.split('/');
   this.day = +sp[0];
   this.month = +sp[1];
 }
 
 // maximum number of days in a month
 Day.prototype.max_days_in_month = function () {
-  if (this.month == 2) {
+  if (this.month === 2) {
     return 29;
   } else if ([1, 3, 5, 7, 8, 10, 12].includes(this.month)) {
     return 31;
@@ -75,7 +75,7 @@ WeekDays.prototype.day_by_ref = function (ref) {
 
 WeekDays.prototype.day_by_num = function (num) {
   return this.day_list.find(function (d) {
-    return d.num == num;
+    return d.num === num;
   });
 };
 
@@ -97,7 +97,7 @@ WeekDays.prototype.add_day = function (day = {
   ref: "m",
   name: "Lun."
 }) {
-  var new_day = new Day(day);
+  const new_day = new Day(day);
   this.day_list.push(new_day);
   this.day_dict[new_day.ref] = new_day;
 };
@@ -135,17 +135,17 @@ WeekDayHeader.prototype.data = function () {
 };
 
 WeekDayHeader.prototype.update = function (quick, half_day_rect) {
-  var t = get_transition(quick);
+  const t = get_transition(quick);
 
-  var day_scale = this.layout
-    .selectAll(".gridsckd")
-    .data(this.data(),
-      Day.id_fun);
+  const day_scale = this.layout
+      .selectAll(".gridsckd")
+      .data(this.data(),
+          Day.id_fun);
 
-  var day_sc_g = day_scale
-    .enter()
-    .append("g")
-    .attr("class", "gridsckd");
+  const day_sc_g = day_scale
+      .enter()
+      .append("g")
+      .attr("class", "gridsckd");
 
   day_sc_g
     .append("text")
@@ -208,7 +208,7 @@ function WeekDayMix(par, days) {
     return 0;
   };
   this.grid_day_am_height = function () {
-    var t = time_settings.time;
+    const t = time_settings.time;
     return scale * nbRows * (t.lunch_break_start_time - t.day_start_time);
   };
   this.grid_day_am_width = function () {
@@ -218,12 +218,12 @@ function WeekDayMix(par, days) {
     return this.grid_day_am_x(d);
   };
   this.grid_day_pm_y = function () {
-    var t = time_settings.time;
+    const t = time_settings.time;
     return this.grid_day_am_y() + this.grid_day_am_height()
       + bknews_h();
   };
   this.grid_day_pm_height = function () {
-    var t = time_settings.time;
+    const t = time_settings.time;
     return scale * nbRows * (t.day_finish_time - t.lunch_break_finish_time);
   };
   this.grid_day_pm_width = function () {

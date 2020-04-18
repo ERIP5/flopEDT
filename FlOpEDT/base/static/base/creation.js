@@ -74,15 +74,15 @@ function create_pref_modes() {
   svg.get_dom("pmg")
     .attr("transform", pmg_trans());
 
-  var buttons = svg.get_dom("pmg")
-    .append("g")
-    .attr("id", "pm-but-head")
-    .attr("transform", pref_mode_trans());
+  const buttons = svg.get_dom("pmg")
+      .append("g")
+      .attr("id", "pm-but-head")
+      .attr("transform", pref_mode_trans());
 
-  var choices_but = svg.get_dom("pmg")
-    .append("g")
-    .attr("id", "pm-choices")
-    .attr("transform", pref_mode_choice_trans());
+  const choices_but = svg.get_dom("pmg")
+      .append("g")
+      .attr("id", "pm-choices")
+      .attr("transform", pref_mode_choice_trans());
 
   go_pref_mode();
 }
@@ -120,7 +120,7 @@ function add_garbage() {
 
   if (slot_case) {
 
-    var garbage_dsg = {
+    const garbage_dsg = {
       day: garbage.day,
       start: garbage.start,
       duration: rev_constraints[garbage.start],
@@ -135,11 +135,11 @@ function add_garbage() {
   }
 }
 function remove_garbage() {
-  var found = false;
-  var i = 0;
+  let found = false;
+  let i = 0;
   while (!found && i < data_slot_grid.length) {
-    if (data_slot_grid[i].day == garbage.day
-      && data_slot_grid[i].slot == garbage.slot) {
+    if (data_slot_grid[i].day === garbage.day
+      && data_slot_grid[i].slot === garbage.slot) {
       found = true;
       data_slot_grid.splice(i, 1);
     }
@@ -155,10 +155,10 @@ function create_slot_grid_data(c) {
     // does not depend on course c
 
     week_days.forEach(function (day) {
-      for (var s in rev_constraints) {
-        var start = +s;
+      for (let s in rev_constraints) {
+        const start = +s;
         if (start < time_settings.time.day_finish_time) {
-          var gs = {
+          const gs = {
             day: day.ref,
             start: start,
             duration: rev_constraints[s],
@@ -172,9 +172,9 @@ function create_slot_grid_data(c) {
       }
     });
   } else {
-    var ok_starts = constraints[c.c_type].allowed_st;
+    const ok_starts = constraints[c.c_type].allowed_st;
     week_days.forEach(function (day) {
-      for (var s = 0; s < ok_starts.length; s++) {
+      for (let s = 0; s < ok_starts.length; s++) {
         data_slot_grid.push({
           c_type: c.c_type,
           day: day.ref,
@@ -203,9 +203,9 @@ function create_grid_data() {
     if (slot_case) {
       for (let s = 0; s < Object.keys(rev_constraints).length; s++) {
         for (let r = 0; r < set_rows.length; r++) {
-          var start = Object.keys(rev_constraints)[s];
+          const start = Object.keys(rev_constraints)[s];
           if (start < time_settings.time.day_finish_time) {
-            var gscp = {
+            const gscp = {
               row: r,
               start: start,
               duration: rev_constraints[start],
@@ -232,11 +232,11 @@ function create_grid_data() {
 function create_but_scale() {
   def_drag_sca();
 
-  var grp = svg.get_dom("edt-fg")
-    .append("g")
-    .attr("class", "h-sca")
-    .attr("cursor", "pointer")
-    .call(drag_listener_hs);
+  let grp = svg.get_dom("edt-fg")
+      .append("g")
+      .attr("class", "h-sca")
+      .attr("cursor", "pointer")
+      .call(drag_listener_hs);
 
   grp
     .append("rect")
@@ -322,7 +322,7 @@ function def_drag_sca() {
         }
         drag.sel.attr("transform", "translate(0,0)");
         drag.sel.select("rect").attr("x", drag.init + drag.x);
-        if (rootgp_width != 0) {
+        if (rootgp_width !== 0) {
           labgp.width = ((drag.x + drag.init) / week_days.nb_days() - dim_dispo.plot * (dim_dispo.width + dim_dispo.right)) / rootgp_width;
         }
         drag.sel.select("path").attr("d", but_sca_tri_h(0));
@@ -397,23 +397,23 @@ function def_drag_sca() {
 
 // Only for the current case
 function set_butgp() {
-  var topx = 0;//615 + 4*30;
+  const topx = 0;//615 + 4*30;
 
-  var cur_buty = 0;
-  var cur_rootgp;
-  for (var nrow = 0; nrow < set_rows.length; nrow++) {
-    var cur_maxby = 0;
-    var tot_row_gp = 0;
-    var cur_butx = topx;
+  let cur_buty = 0;
+  let cur_rootgp;
+  for (let nrow = 0; nrow < set_rows.length; nrow++) {
+    let cur_maxby = 0;
+    let tot_row_gp = 0;
+    let cur_butx = topx;
 
-    for (var npro = 0; npro < row_gp[nrow].promos.length; npro++) {
+    for (let npro = 0; npro < row_gp[nrow].promos.length; npro++) {
       cur_rootgp = root_gp[row_gp[nrow].promos[npro]];
       cur_rootgp.buty = cur_buty;
       if (cur_rootgp.maxby > cur_maxby) {
         cur_maxby = cur_rootgp.maxby;
       }
       tot_row_gp += cur_rootgp.gp.width * butgp.width;
-      tot_row_gp += (npro == 0) ? 0 : (butgp.mar_h);
+      tot_row_gp += (npro === 0) ? 0 : (butgp.mar_h);
       // console.log(cur_rootgp.gp.width, butgp.width);
       cur_rootgp.butx = cur_butx;
       cur_butx += butgp.mar_h + cur_rootgp.gp.width * butgp.width;
@@ -424,24 +424,24 @@ function set_butgp() {
 
   // Compute dimensions of the group selection popup
 
-  var minx, maxx, miny, maxy, curminx, curmaxx, curminy, curmaxy, curp;
+  let minx, maxx, miny, maxy, curminx, curmaxx, curminy, curmaxy, curp;
 
-  for (var p = 0; p < set_promos.length; p++) {
+  for (let p = 0; p < set_promos.length; p++) {
     curp = root_gp[p];
     curminx = curp.butx;
     curminy = curp.buty;
-    if (p == 0 || curminx < minx) {
+    if (p === 0 || curminx < minx) {
       minx = curminx;
     }
-    if (p == 0 || curminy < miny) {
+    if (p === 0 || curminy < miny) {
       miny = curminy;
     }
     curmaxx = curminx + curp.gp.bw * butgp.width;
     curmaxy = curminy + curp.maxby * butgp.height;
-    if (p == 0 || curmaxx > maxx) {
+    if (p === 0 || curmaxx > maxx) {
       maxx = curmaxx;
     }
-    if (p == 0 || curmaxy > maxy) {
+    if (p === 0 || curmaxy > maxy) {
       maxy = curmaxy;
     }
   }
@@ -454,8 +454,8 @@ function set_butgp() {
 
 
 function indexOf_promo(promo) {
-  for (var p = 0; p < set_promos.length; p++) {
-    if (set_promos[p] == promo_init) {
+  for (let p = 0; p < set_promos.length; p++) {
+    if (set_promos[p] === promo_init) {
       return p;
     }
   }
@@ -463,19 +463,19 @@ function indexOf_promo(promo) {
 }
 
 function go_promo_gp_init(button_available) {
-  var gp_2_click = [];
-  var found_gp, gpk, gpc, gpa;
+  const gp_2_click = [];
+  let found_gp, gpk, gpc, gpa;
 
   promo_init = indexOf_promo(promo_init);
   if (promo_init >= 0) {
-    if (gp_init == "") {
+    if (gp_init === "") {
       gp_init = root_gp[promo_init].gp.name;
     }
-    if (Object.keys(groups[promo_init]).map(function (g) { return groups[promo_init][g].name; }).indexOf(gp_init) != -1) {
+    if (Object.keys(groups[promo_init]).map(function (g) { return groups[promo_init][g].name; }).indexOf(gp_init) !== -1) {
       apply_gp_display(groups[promo_init][gp_init], true, button_available);
     }
-  } else if (gp_init != "") {
-    if (Object.keys(groups[0]).map(function (g) { return groups[0][g].name; }).indexOf(gp_init) != -1) {
+  } else if (gp_init !== "") {
+    if (Object.keys(groups[0]).map(function (g) { return groups[0][g].name; }).indexOf(gp_init) !== -1) {
       apply_gp_display(groups[0][gp_init], true, button_available);
     }
   }
@@ -483,7 +483,7 @@ function go_promo_gp_init(button_available) {
 
 
 function create_groups(data_groups) {
-  var root;
+  let root;
 
   extract_all_groups_structure(data_groups);
 
@@ -503,7 +503,7 @@ function create_groups(data_groups) {
     }
   }
   for (let p = 0; p < set_promos.length; p++) {
-    var keys = Object.keys(groups[p]);
+    const keys = Object.keys(groups[p]);
     for (let g = 0; g < keys.length; g++) {
       groups[p][keys[g]].bx = groups[p][keys[g]].x;
       groups[p][keys[g]].bw = groups[p][keys[g]].width;
@@ -515,11 +515,11 @@ function create_groups(data_groups) {
 
 
 function extract_all_groups_structure(r) {
-  var init_nbPromos = r.length;
+  const init_nbPromos = r.length;
   for (let npro = 0; npro < init_nbPromos; npro++) {
     extract_groups_structure(r[npro], -1, -1);
   }
-  var sorted_rows = set_rows.sort();
+  const sorted_rows = set_rows.sort();
   for (let npro = 0; npro < set_promos.length; npro++) {
     root_gp[npro].row = sorted_rows.indexOf(set_rows[root_gp[npro].row]);
   }
@@ -527,7 +527,7 @@ function extract_all_groups_structure(r) {
 }
 
 function extract_groups_structure(r, npro, nrow) {
-  var gr = {
+  const gr = {
     name: r.name,
     ancetres: null,
     descendants: null,
@@ -554,7 +554,7 @@ function extract_groups_structure(r, npro, nrow) {
   }
 
 
-  if (r.parent == "null") {
+  if (r.parent === "null") {
 
     // promo number should be unique
     set_promos.push(r.promo);
@@ -570,7 +570,7 @@ function extract_groups_structure(r, npro, nrow) {
 
     root_gp[npro].gp = gr;
 
-    if (set_rows.indexOf(r.row) == -1) {
+    if (set_rows.indexOf(r.row) === -1) {
       set_rows.push(r.row);
       row_gp[set_rows.indexOf(r.row)] = {};
       row_gp[set_rows.indexOf(r.row)].promos = [];
@@ -588,7 +588,7 @@ function extract_groups_structure(r, npro, nrow) {
   gr.promo = npro;
 
 
-  if ("undefined" === typeof r.children || r.children.length == 0) {
+  if ("undefined" === typeof r.children || r.children.length === 0) {
     gr.children = [];
   } else {
     gr.children = r.children.map(function (d) {
@@ -604,7 +604,7 @@ function extract_groups_structure(r, npro, nrow) {
 
 
 function create_static_att_groups(node) {
-  var child;
+  let child;
 
   if (node.parent == null) {
     node.by = 0;
@@ -617,8 +617,8 @@ function create_static_att_groups(node) {
   node.descendants = [];
 
 
-  if (node.children.length != 0) {
-    for (var i = 0; i < node.children.length; i++) {
+  if (node.children.length !== 0) {
+    for (let i = 0; i < node.children.length; i++) {
       child = groups[node.promo][node.children[i]];
       child.by = node.by + node.buth;
       create_static_att_groups(child);
@@ -631,7 +631,7 @@ function create_static_att_groups(node) {
 // Earliest Starting Time (i.e. leftest possible position)
 // for a node and its descendance, given node.est
 function compute_promo_est_n_wh(node) {
-  var child;
+  let child;
 
 
   if (node.parent == null) {
@@ -641,7 +641,7 @@ function compute_promo_est_n_wh(node) {
 
 
   node.width = 0;
-  if (node.children.length == 0) {
+  if (node.children.length === 0) {
     if (node.display) {
       node.width = 1;
     } else {
@@ -668,9 +668,9 @@ function compute_promo_est_n_wh(node) {
 // Latest Finishing Time (i.e. rightest possible position)
 // for a node and its descendance, given node.lft
 function compute_promo_lft(node) {
-  var child;
-  var eaten = 0;
-  for (var i = node.children.length - 1; i >= 0; i--) {
+  let child;
+  let eaten = 0;
+  for (let i = node.children.length - 1; i >= 0; i--) {
     child = groups[node.promo][node.children[i]];
     child.lft = node.lft - eaten;
     compute_promo_lft(child);
@@ -681,7 +681,7 @@ function compute_promo_lft(node) {
 
 // Least Mobile X 
 function compute_promo_lmx(node) {
-  var child;
+  let child;
 
   //    console.log(node.promo,node.name,node.x,node.maxx);
 
@@ -692,19 +692,19 @@ function compute_promo_lmx(node) {
     node.x = node.lft - node.width;
   }
 
-  if (node.children.length == 0) {
+  if (node.children.length === 0) {
     node.maxx = node.x + node.width;
   } else {
-    var lastmax = node.x;
-    var lastmin = -1;
-    for (var i = 0; i < node.children.length; i++) {
+    let lastmax = node.x;
+    let lastmin = -1;
+    for (let i = 0; i < node.children.length; i++) {
       child = groups[node.promo][node.children[i]];
       if (child.display) {
         if (child.x < lastmax) {
           child.x = lastmax;
         }
         compute_promo_lmx(child);
-        if (lastmin == -1) {
+        if (lastmin === -1) {
           lastmin = child.x;
         }
         lastmax = child.maxx;
@@ -720,8 +720,8 @@ function compute_promo_lmx(node) {
 
 
 function update_all_groups() {
-  var max_rw = 0;
-  var cur_rw, root, disp;
+  let max_rw = 0;
+  let cur_rw, root, disp;
 
   // compute EST and width, and compute display row
   for (let r = 0; r < set_rows.length; r++) {
@@ -743,11 +743,11 @@ function update_all_groups() {
   rootgp_width = max_rw;
 
   // should not occur; can occur when there is no group in the department
-  if (rootgp_width == 0) {
+  if (rootgp_width === 0) {
     rootgp_width = 5;
   }
 
-  if (pos_rootgp_width == 0) {
+  if (pos_rootgp_width === 0) {
     pos_rootgp_width = rootgp_width;
   }
   labgp.width *= pos_rootgp_width / rootgp_width;
@@ -793,7 +793,7 @@ function update_all_groups() {
   }
 
   if (nbRows > 0) {
-    if (pos_nbRows == 0) {
+    if (pos_nbRows === 0) {
       pos_nbRows = nbRows;
     }
     scale *= pos_nbRows / nbRows;
@@ -805,9 +805,8 @@ function update_all_groups() {
 
 // data related to leaves
 function compute_promo_leaves(node) {
-  var gp;
 
-  if (node.children.length == 0) {
+  if (node.children.length === 0) {
     week_days.forEach(function (day) {
       data_grid_scale_gp.push({
         day: day.num,
@@ -817,7 +816,7 @@ function compute_promo_leaves(node) {
   }
 
   for (var i = 0; i < node.children.length; i++) {
-    child = groups[node.promo][node.children[i]];
+    const child = groups[node.promo][node.children[i]];
     compute_promo_leaves(child);
   }
 }
@@ -889,9 +888,9 @@ function create_regen() {
 
 
 function create_bknews() {
-  var flash = svg.get_dom("edt-fig")
-    .append("g")
-    .attr("class", "flashinfo");
+  const flash = svg.get_dom("edt-fig")
+      .append("g")
+      .attr("class", "flashinfo");
 
 
   flash
@@ -976,8 +975,8 @@ function translate_quote_from_csv(d) {
 
 
 function def_drag() {
-  var cur_over = null;
-  var slots_over = null;
+  let cur_over = null;
+  let slots_over = null;
   dragListener = d3.drag()
     .on("start", function (c) {
       cancel_cm_adv_preferences();
@@ -1017,8 +1016,8 @@ function def_drag() {
         });
         if (!is_garbage(cur_over)) {
           slots_over = data_slot_grid.filter(function (c) {
-            return c.day == cur_over.day
-              && c.start == cur_over.start_time;
+            return c.day === cur_over.day
+              && c.start === cur_over.start_time;
           });
           slots_over.forEach(function (s) {
             s.display = true;
@@ -1060,7 +1059,7 @@ function def_drag() {
             // 	    && s.start == cur_over.start_time;
             // });
 
-            var pending_change = {
+            const pending_change = {
               day: cur_over.day,
               start: cur_over.start_time
             };
@@ -1127,26 +1126,26 @@ function fill_grid_slot(c2m, grid_slot) {
   // if ((logged_usr.rights >> 2) % 2 == 1) {
   // 	return ;
   // }
-  var wanted_course = Object.assign({}, c2m);
+  const wanted_course = Object.assign({}, c2m);
   Object.assign(wanted_course, { day: grid_slot.day, start: grid_slot.start });
 
   var check = check_course(wanted_course);
 
-  if (check.length == 0) {
+  if (check.length === 0) {
     return;
   } else {
     grid_slot.dispo = false;
-    if (check.nok_type == 'stable') {
+    if (check.nok_type === 'stable') {
       grid_slot.reason = "Cours fixe";
-    } else if (check.nok_type == 'train_prog_unavailable') {
+    } else if (check.nok_type === 'train_prog_unavailable') {
       grid_slot.reason = "CRENEAU NON DISPO POUR " + check.train_prog;
-    } else if (check.nok_type == 'tutor_busy') {
+    } else if (check.nok_type === 'tutor_busy') {
       grid_slot.reason = "PB PROF OCCUPE";
-    } else if (check.nok_type == 'group_busy') {
+    } else if (check.nok_type === 'group_busy') {
       grid_slot.reason = "PB GROUPE";
-    } else if (check.nok_type == 'tutor_unavailable') {
+    } else if (check.nok_type === 'tutor_unavailable') {
       grid_slot.reason = "PB PROF PAS DISPO";
-    } else if (check.nok_type == 'tutor_availability_unknown') {
+    } else if (check.nok_type === 'tutor_availability_unknown') {
       grid_slot.reason = "PB DISPO NON DECLAREE";
     }
     return;
@@ -1155,32 +1154,32 @@ function fill_grid_slot(c2m, grid_slot) {
 }
 
 function warning_check(check_tot) {
-  var ret = [];
+  let ret = [];
   ret = check_tot.map(function (check) {
     var expand;
-    if (check.nok == 'stable') {
+    if (check.nok === 'stable') {
       expand = "Le cours était censé être fixe.";
-    } else if (check.nok == 'train_prog_unavailable') {
+    } else if (check.nok === 'train_prog_unavailable') {
       expand = "La promo " + check.more.train_prog + " ne devait pas avoir cours à ce moment-là.";
-    } else if (check.nok == 'tutor_busy') {
+    } else if (check.nok === 'tutor_busy') {
       expand = "L'enseignant·e " + check.more.tutor + " avait déjà un cours prévu.";
-    } else if (check.nok == 'group_busy') {
+    } else if (check.nok === 'group_busy') {
       expand = "Le groupe " + check.more.group + " avait déjà un cours prévu.";
-    } else if (check.nok == 'tutor_unavailable') {
+    } else if (check.nok === 'tutor_unavailable') {
       expand = "L'enseignant·e " + check.more.tutor + " s'était déclaré·e indisponible.";
-    } else if (check.nok == 'tutor_availability_unknown') {
+    } else if (check.nok === 'tutor_availability_unknown') {
       expand = "L'enseignant·e " + check.more.tutor + " n'a pas déclaré ses dispos.";
-    } else if (check.nok == 'tutor_busy_other_dept') {
+    } else if (check.nok === 'tutor_busy_other_dept') {
       expand = "L'enseignant·e " + check.more.tutor + " est occupé dans un autre département.";
-    } else if (check.nok == 'tutor_free_week') {
+    } else if (check.nok === 'tutor_free_week') {
       expand = "L'enseignant·e " + check.more.tutor + " ne donne pas de cours cette week.";
-    } else if (check.nok == 'room_busy') {
-      if (check.more.rooms.length == 1) {
+    } else if (check.nok === 'room_busy') {
+      if (check.more.rooms.length === 1) {
         expand = "La salle " + check.more.rooms[0] + " est déjà prise.";
       } else {
         expand = "Les salles " + check.more.rooms.join(", ") + " sont déjà prises.";
       }
-    } else if (check.nok == 'room_busy_other_dept') {
+    } else if (check.nok === 'room_busy_other_dept') {
       expand = "La salle " + check.more.room + " est utilisée par un autre département.";
     }
     return expand;
@@ -1192,10 +1191,10 @@ function warning_check(check_tot) {
 // return all simultaneous courses
 function simultaneous_courses(target_course) {
   return cours.filter(function (c) {
-    return (c.day == target_course.day
+    return (c.day === target_course.day
       && !(c.start + c.duration <= target_course.start
         || c.start >= target_course.start + target_course.duration)
-      && c.id_course != target_course.id_course);
+      && c.id_course !== target_course.id_course);
   });
 }
 
@@ -1231,7 +1230,7 @@ function check_course(wanted_course) {
   if (!pending.pass.core) {
 
     // course was supposed to be fix
-    if (wanted_course.id_course == -1) {
+    if (wanted_course.id_course === -1) {
       ret.push({ nok: 'stable' });
     }
 
@@ -1253,10 +1252,10 @@ function check_course(wanted_course) {
 
     // group is busy
     conflicts = possible_conflicts.filter(function (c) {
-      return ((c.group == wanted_course.group
+      return ((c.group === wanted_course.group
         || groups[wanted_course.promo][wanted_course.group].ancetres.indexOf(c.group) > -1
         || groups[wanted_course.promo][wanted_course.group].descendants.indexOf(c.group) > -1)
-        && c.promo == wanted_course.promo);
+        && c.promo === wanted_course.promo);
     });
 
     if (conflicts.length > 0) {
@@ -1278,7 +1277,7 @@ function check_course(wanted_course) {
   // tutor availability
   if (!pending.pass.tutor) {
     conflicts = possible_conflicts.filter(function (c) {
-      return (c.prof == wanted_course.prof);
+      return (c.prof === wanted_course.prof);
     });
 
 
@@ -1298,12 +1297,12 @@ function check_course(wanted_course) {
       // in the current department
       var pref_tut = get_preference(dispos[wanted_course.prof][wanted_course.day],
         wanted_course.start, wanted_course.duration);
-      if (pref_tut == 0) {
+      if (pref_tut === 0) {
         ret.push({
           nok: 'tutor_unavailable',
           more: { tutor: wanted_course.prof }
         });
-      } else if (pref_tut == -1) {
+      } else if (pref_tut === -1) {
         ret.push({
           nok: 'tutor_availability_unknown',
           more: { tutor: wanted_course.prof }
@@ -1313,7 +1312,7 @@ function check_course(wanted_course) {
       // in other departments
       var extra_unavailable = find_in_pref(extra_pref.tutors, wanted_course.prof, wanted_course);
 
-      if (extra_unavailable == 0) {
+      if (extra_unavailable === 0) {
         ret.push({
           nok: 'tutor_busy_other_dept',
           more: { tutor: wanted_course.prof }
@@ -1369,7 +1368,7 @@ function check_course(wanted_course) {
 
     extra_unavailable = find_in_pref(extra_pref.rooms, wanted_course.room, wanted_course);
 
-    if (extra_unavailable == 0) {
+    if (extra_unavailable === 0) {
       ret.push({
         nok: 'room_busy_other_dept',
         more: { room: wanted_course.room }
@@ -1386,7 +1385,7 @@ function splash_violated_constraints(check_list, step) {
   var warn_check = warning_check(check_list);
   console.log(warn_check);
   //console.log(pending.wanted_course.id_course);
-  if ((logged_usr.rights >> 2) % 2 == 1) {
+  if ((logged_usr.rights >> 2) % 2 === 1) {
     var privilege_warning = "Des privilèges vous ont été accordés, et vous en profitez pour outrepasser ";
     if (warn_check.length > 1) {
       privilege_warning += "les contraintes suivantes :";
@@ -1468,7 +1467,7 @@ function splash_violated_constraints(check_list, step) {
 
 function clean_pending() {
   // clean pending without waiting for confirmation
-  if ((logged_usr.rights >> 2) % 2 != 1) {
+  if ((logged_usr.rights >> 2) % 2 !== 1) {
     pending.back_init();
     go_courses(false);
   }
@@ -1477,10 +1476,10 @@ function clean_pending() {
 
 
 function check_pending_course() {
-  var warn_check = check_course(pending.wanted_course);
+  const warn_check = check_course(pending.wanted_course);
   console.log(warn_check);
 
-  if (warn_check.length == 0) {
+  if (warn_check.length === 0) {
 
     add_bouge(pending.init_course);
     //pending.save_wanted() ;
@@ -1492,15 +1491,15 @@ function check_pending_course() {
   } else { //if (!ngs.dispo) {
     // -- no slot --
     // && (logged_usr.rights >> 2) % 2 == 1) {
-    var tutor_constraints = warn_check.filter(function (constraint) {
+    const tutor_constraints = warn_check.filter(function (constraint) {
       return constraint.nok.startsWith("tutor");
     });
 
-    var room_constraints = warn_check.filter(function (constraint) {
+    const room_constraints = warn_check.filter(function (constraint) {
       return constraint.nok.startsWith("room");
     });
 
-    var core_constraints = warn_check.filter(function (constraint) {
+    const core_constraints = warn_check.filter(function (constraint) {
       return !constraint.nok.startsWith("tutor") && !constraint.nok.startsWith("room");
     });
 
@@ -1550,10 +1549,10 @@ if (gs.length==1) {
 
 
 function which_slot(x, y, c) {
-  var wday = (rootgp_width * labgp.width +
-    dim_dispo.plot *
-    (dim_dispo.width + dim_dispo.right));
-  var iday = Math.floor((x + .5 * cours_width(c)) / wday);
+  const wday = (rootgp_width * labgp.width +
+      dim_dispo.plot *
+      (dim_dispo.width + dim_dispo.right));
+  const iday = Math.floor((x + .5 * cours_width(c)) / wday);
   return {
     day: week_days.day_by_num(iday).ref,
     start_time: indexOf_constraints(c, y) // day-independent
@@ -1562,7 +1561,7 @@ function which_slot(x, y, c) {
 
 // date {day, start_time}
 function is_garbage(date) {
-  var t = time_settings.time;
+  const t = time_settings.time;
   return (date.start_time < t.day_start_time
     || date.start_time >= t.day_finish_time);
 }
@@ -1575,22 +1574,22 @@ function is_free(date, promo) {
 // find the closest possible start_time in the current day,
 // in terms of distance on the screen
 function indexOf_constraints(c, y) {
-  var course_duration_y = c.duration * nbRows * scale;
-  var cst = constraints[c.c_type].allowed_st.map(
-    function (d) {
-      return {
-        y: cours_y({
-          start: d,
-          promo: c.promo,
-        }),
-        start: d
-      };
-    }
+  const course_duration_y = c.duration * nbRows * scale;
+  const cst = constraints[c.c_type].allowed_st.map(
+      function (d) {
+        return {
+          y: cours_y({
+            start: d,
+            promo: c.promo,
+          }),
+          start: d
+        };
+      }
   );
-  var t = time_settings.time;
+  const t = time_settings.time;
 
-  var after = false;
-  var i = 0;
+  let after = false;
+  let i = 0;
   while (!after && i < cst.length) {
     if (cst[i].y > y) {
       after = true;
@@ -1598,13 +1597,13 @@ function indexOf_constraints(c, y) {
       i++;
     }
   }
-  if (i == cst.length) {
+  if (i === cst.length) {
     if (y < cst[cst.length - 1].y + course_duration_y) {
       return cst[cst.length - 1].start;
     } else {
       return t.day_finish_time;
     }
-  } else if (i == 0) {
+  } else if (i === 0) {
     // if (y < 0 - course_duration_y) {
     //     return t.day_start_time - c.duration ;
     // } else {
@@ -1706,7 +1705,7 @@ function create_val_but() {
   --------------------*/
 
 function create_stype() {
-  var t, dat, datdi, datsmi;
+  let t, dat, datdi, datsmi;
 
   // -- no slot --
   // --  begin  --
@@ -1730,10 +1729,9 @@ function create_stype() {
       did.tlx + "," +
       did.tly + ")");
 
-  var datdisi = datdi
-    .append("g")
-    .attr("class", "dispot-si");
-
+  const datdisi = datdi
+      .append("g")
+      .attr("class", "dispot-si");
 
 
   datdisi
@@ -1763,13 +1761,13 @@ function create_stype() {
 
   svg.get_dom("stg").attr("visibility", "hidden");
 
-  var dis_but = svg.get_dom("stg")
-    .append("g")
-    .attr("but", "dis")
-    .on("mouseover", but_bold)
-    .on("mouseout", but_back)
-    .on("click", send_dis_change)
-    .attr("cursor", "pointer");
+  const dis_but = svg.get_dom("stg")
+      .append("g")
+      .attr("but", "dis")
+      .on("mouseover", but_bold)
+      .on("mouseout", but_back)
+      .on("click", send_dis_change)
+      .attr("cursor", "pointer");
 
   dis_but
     .append("rect")
@@ -1791,13 +1789,13 @@ function create_stype() {
     .attr("x", did.tlx + .5 * valid.w)
     .attr("y", did.tly + .5 * valid.h);
 
-  var stap_but = svg.get_dom("stg")
-    .append("g")
-    .attr("but", "st-ap")
-    .on("mouseover", st_but_bold)
-    .on("mouseout", st_but_back)
-    .on("click", apply_stype)
-    .attr("cursor", st_but_ptr);
+  const stap_but = svg.get_dom("stg")
+      .append("g")
+      .attr("but", "st-ap")
+      .on("mouseover", st_but_bold)
+      .on("mouseout", st_but_back)
+      .on("click", apply_stype)
+      .attr("cursor", st_but_ptr);
 
   stap_but
     .append("rect")
@@ -1832,7 +1830,7 @@ function create_stype() {
 
 
 function fetch_dispos_type() {
-  if (user.name != "") {
+  if (user.name !== "") {
     show_loader(true);
     $.ajax({
       type: "GET", //rest Type
@@ -1877,10 +1875,10 @@ function translate_dispos_type_from_csv(d) {
 // to be extended: intervals could be different
 // dt {day, start_time}
 function get_dispos_type(dt) {
-  var s = user.dispos_type.filter(function (d) {
-    return d.day == dt.day && d.start_time == dt.start_time;
+  const s = user.dispos_type.filter(function (d) {
+    return d.day === dt.day && d.start_time === dt.start_time;
   });
-  if (s.length != 1) {
+  if (s.length !== 1) {
     return null;
   } else {
     return s[0];
@@ -1926,7 +1924,7 @@ function select_entry_cm() {
 function def_cm_change() {
   entry_cm_settings.click = function (d) {
     context_menu.room_tutor_hold = true;
-    if (d.content == 'Salle') {
+    if (d.content === 'Salle') {
       // don't consider other constraints than room's
       pending.pass.tutor = true;
       pending.pass.core = true;
@@ -1943,7 +1941,7 @@ function def_cm_change() {
 
   tutor_module_cm_settings.click = function (d) {
     context_menu.room_tutor_hold = true;
-    if (d.content == '+') {
+    if (d.content === '+') {
       select_tutor_filters_change();
     } else {
       confirm_tutor_change(d);
@@ -1959,7 +1957,7 @@ function def_cm_change() {
 
   tutor_cm_settings.click = function (d) {
     context_menu.room_tutor_hold = true;
-    if (d.content == arrow.back) {
+    if (d.content === arrow.back) {
       select_tutor_filters_change();
     } else {
       confirm_tutor_change(d);
@@ -1970,7 +1968,7 @@ function def_cm_change() {
   for (var level = 0; level < room_cm_settings.length; level++) {
     room_cm_settings[level].click = function (d) {
       context_menu.room_tutor_hold = true;
-      if (d.content == '+') {
+      if (d.content === '+') {
         room_cm_level += 1;
         select_room_change();
       } else {
@@ -1982,7 +1980,7 @@ function def_cm_change() {
 
   salarie_cm_settings.click = function (d) {
     context_menu.room_tutor_hold = true;
-    if (d.content == '+') {
+    if (d.content === '+') {
       salarie_cm_level += 1;
       select_salarie_change();
     } else {
@@ -1997,9 +1995,9 @@ function def_cm_change() {
 // buttons to open selection view
 function create_selections() {
 
-  var avg = svg.get_dom("catg")
-    .selectAll(".gen-selection")
-    .data(sel_popup.available);
+  const avg = svg.get_dom("catg")
+      .selectAll(".gen-selection")
+      .data(sel_popup.available);
 
   var contg = avg
     .enter()
@@ -2025,12 +2023,12 @@ function create_selections() {
     .attr("x", .5 * sel_popup.selw)
     .attr("y", .5 * sel_popup.selh);
 
-  var forall = svg.get_dom("catg")
-    .append("g")
-    .attr("class", "sel_forall")
-    .attr("transform", sel_forall_trans())
-    .attr("cursor", "pointer")
-    .on("click", apply_cancel_selections);
+  const forall = svg.get_dom("catg")
+      .append("g")
+      .attr("class", "sel_forall")
+      .attr("transform", sel_forall_trans())
+      .attr("cursor", "pointer")
+      .on("click", apply_cancel_selections);
 
   forall
     .append("rect")
@@ -2054,21 +2052,21 @@ function create_selections() {
 // already present
 function add_panel(d) {
 
-  var same = sel_popup.panels.find(function (p) {
-    return p.type == d.type;
+  const same = sel_popup.panels.find(function (p) {
+    return p.type === d.type;
   });
 
   if (typeof same === 'undefined') {
-    var title = "";
-    var px = sel_popup.x;
-    var py = sel_popup.y;
-    var infos = sel_popup.get_available(d.type);
+    let title = "";
+    let px = sel_popup.x;
+    let py = sel_popup.y;
+    const infos = sel_popup.get_available(d.type);
     if (typeof infos !== 'undefined') {
       title = infos.buttxt;
       px = infos.x;
       py = infos.y;
     }
-    var panel = {
+    const panel = {
       type: d.type,
       x: px,
       y: py,
@@ -2080,7 +2078,7 @@ function add_panel(d) {
 
     go_selection_popup();
 
-    if (panel.type == "group") {
+    if (panel.type === "group") {
       go_gp_buttons();
     }
   }
@@ -2104,39 +2102,39 @@ function popup_data(type) {
 // refreshes filter panels
 function go_selection_popup() {
 
-  var bound = svg.get_dom("selg")
-    .selectAll(".sel-pop-g")
-    .data(sel_popup.panels, function (p) {
-      return p.type;
-    });
+  const bound = svg.get_dom("selg")
+      .selectAll(".sel-pop-g")
+      .data(sel_popup.panels, function (p) {
+        return p.type;
+      });
 
 
-  var g_new = bound
-    .enter()
-    .append("g")
-    .attr("class", "sel-pop-g")
-    .attr("id", popup_panel_type_id)
-    .call(drag_popup);
+  const g_new = bound
+      .enter()
+      .append("g")
+      .attr("class", "sel-pop-g")
+      .attr("id", popup_panel_type_id)
+      .call(drag_popup);
 
   g_new
     .merge(bound)
     .attr("transform", popup_trans);
 
-  var bg_new = g_new
-    .append("rect")
-    .attr("class", "sel-pop-bg")
-    .attr("x", - sel_popup.mar_side)
-    .attr("y", - (sel_popup.mar_side + but_exit.side + but_exit.mar_next))
-    .attr("width", popup_bg_w);
+  const bg_new = g_new
+      .append("rect")
+      .attr("class", "sel-pop-bg")
+      .attr("x", -sel_popup.mar_side)
+      .attr("y", -(sel_popup.mar_side + but_exit.side + but_exit.mar_next))
+      .attr("width", popup_bg_w);
 
   bg_new
     .merge(bound.select(".sel-pop-bg"))
     .attr("height", popup_bg_h);
 
-  var exit_new = g_new
-    .append("g")
-    .attr("class", "sel-pop-exit")
-    .attr("cursor", "pointer");
+  const exit_new = g_new
+      .append("g")
+      .attr("class", "sel-pop-exit")
+      .attr("cursor", "pointer");
 
   exit_new
     .merge(bound.select(".sel-pop-exit"))
@@ -2178,14 +2176,14 @@ function go_selection_popup() {
     .attr("y", popup_title_y);
 
 
-  var contg = g_new
-    .filter(function (p) {
-      return p.type != "group";
-    })
-    .append("g")
-    .attr("class", "sel-pop-all")
-    .attr("cursor", "pointer")
-    .on("click", apply_selection_display_all);
+  const contg = g_new
+      .filter(function (p) {
+        return p.type !== "group";
+      })
+      .append("g")
+      .attr("class", "sel-pop-all")
+      .attr("cursor", "pointer")
+      .on("click", apply_selection_display_all);
 
   contg
     .append("rect")
@@ -2212,17 +2210,17 @@ function go_selection_popup() {
 
 // create buttons for department redirection
 function create_dept_redirection() {
-  var avg = svg.get_dom("catg")
-    .selectAll(".dept-selection")
-    .data(departments.data);
+  const avg = svg.get_dom("catg")
+      .selectAll(".dept-selection")
+      .data(departments.data);
 
-  var contg = avg
-    .enter()
-    .append("g")
-    .attr("class", "dept-selection")
-    .attr("transform", depts_trans)
-    .attr("cursor", "pointer")
-    .on("click", redirect_dept);
+  const contg = avg
+      .enter()
+      .append("g")
+      .attr("class", "dept-selection")
+      .attr("transform", depts_trans)
+      .attr("cursor", "pointer")
+      .on("click", redirect_dept);
 
   contg
     .append("rect")

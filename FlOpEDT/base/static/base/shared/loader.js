@@ -2,7 +2,7 @@
    ------ LOADER -------
   ----------------------*/
 
-var cpt_loader = 0;
+let cpt_loader = 0;
 
 // show/hide le div 'loader' and count method's call
 // the loader is hide only if cpt_loader==0

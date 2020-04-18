@@ -2076,7 +2076,7 @@ function redirect_dept(d) {
   // change dept
   split_addr[split_addr.length - 2] = d;
   // clean
-  if (split_addr[split_addr.length - 1] == "") {
+  if (split_addr[split_addr.length - 1] === "") {
     split_addr.splice(-1, 1);
   }
   // go to the right week
