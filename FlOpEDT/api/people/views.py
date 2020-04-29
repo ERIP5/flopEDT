@@ -24,13 +24,15 @@ from django.utils.decorators import method_decorator
 import django_filters.rest_framework as filters
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets
+from rest_framework.decorators import action, permission_classes
 from rest_framework.permissions import IsAuthenticated
-
+from rest_framework.response import Response
 
 import people.models as pm
 import base.models as bm
 from api.people import serializers
 from api.shared.params import week_param, year_param
+from api.shared.views_set import ListGenericViewSet
 
 
 class UsersViewSet(viewsets.ModelViewSet):
@@ -73,40 +75,6 @@ class StudentsViewSet(viewsets.ModelViewSet):
     """
     queryset = pm.Student.objects.all()
     serializer_class = serializers.StudentsSerializer
-
-
-# class StudentPreferencesViewSet(viewsets.ModelViewSet):
-#     """
-#     ViewSet to see all the students' preferences.
-
-#     Can be filtered as wanted with every field of a StudentPreference object.
-#     """
-#     permission_classes = (IsAuthenticated,)
-#     serializer_class = serializers.StudentPreferencesSerializer
-#     filterset_fields = '__all__'
-
-#     def get_queryset(self):
-#         # Creating a queryset containing every StudentPreference
-#         qs = pm.StudentPreferences.objects.all()
-
-#         # Getting the filters
-#         username = self.request.query_params.get('username', None)
-
-#         # Applying filters
-#         if username == None:
-#             return None
-#         return qs.filter(username=username)
-
-
-# class GroupPreferencesViewSet(viewsets.ModelViewSet):
-#     """
-#     ViewSet to see all the groups' preferences.
-
-#     Can be filtered as wanted with every field of a GroupPreference object.
-#     """
-#     permission_classes = (IsAuthenticated,)
-#     queryset = pm.GroupPreferences.objects.all()
-#     serializer_class = serializers.GroupPreferencesSerializer
 
 
 class TutorFilterSet(filters.FilterSet):
@@ -152,3 +120,22 @@ class TutorViewSet(viewsets.ModelViewSet):
 
     serializer_class = serializers.TutorSerializer
     filter_class = TutorFilterSet
+
+
+@method_decorator(name='list',
+                  decorator=swagger_auto_schema(
+                      operation_description="Get current user")
+                  )
+class CurrentUserViewSet(ListGenericViewSet):
+    queryset = pm.User.objects.all()
+    serializer_class = serializers.UserSerializer
+
+    @permission_classes([IsAuthenticated])
+    def list(self, request):
+        queryset = request.user
+        serializer = serializers.UserSerializer(queryset)
+        print(self.request)
+        print(self.request.auth)
+        print(self.request.user)
+        print(queryset)
+        return Response(serializer.data)

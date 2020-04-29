@@ -73,10 +73,12 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     'rest_framework_recursive',
     'drf_yasg',
-    'easter_egg'
+    'easter_egg',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -208,3 +210,9 @@ TEMPLATE_DIRS = (
 SHELL_PLUS_MODEL_IMPORTS_RESOLVER = 'django_extensions.collision_resolvers.AppLabelSuffixCR'
 
 COSMO_MODE = False
+
+CORS_ORIGIN_ALLOW_ALL = False
+
+# CORS_ORIGIN_WHITELIST = (
+#     'http://localhost:8080',
+# )

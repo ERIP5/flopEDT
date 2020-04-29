@@ -374,3 +374,20 @@ class BKNewsSerializer(serializers.ModelSerializer):
 #                                   ------------------                                  #
 #                                   ----Week infos----                                  #
 #                                   ------------------                                  #
+
+class WeekSerializer(serializers.Serializer):
+    week = serializers.IntegerField()
+    year = serializers.IntegerField()
+
+    class Meta:
+        fields = ['week', 'year']
+
+
+class WeekDaySerializer(serializers.Serializer):
+    num = serializers.CharField()
+    date = serializers.CharField()
+    ref = serializers.CharField()
+    name = serializers.CharField()
+
+    class Meta:
+        fields = ['num', 'date', 'ref', 'name']

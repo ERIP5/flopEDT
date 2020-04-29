@@ -27,3 +27,4 @@ Markdown~=3.1.1
 django-debug-toolbar
 django-filter
 drf-yasg
+django-cors-headers

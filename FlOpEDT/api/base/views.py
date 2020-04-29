@@ -89,6 +89,7 @@ class PeriodsViewSet(ListGenericViewSet):
 
 
 class TimeGeneralFilter(filters.FilterSet):
+    department = filters.CharFilter(field_name='department__abbrev', required=True)
     days = filters.CharFilter(lookup_expr='icontains')
 
     class Meta:

@@ -507,7 +507,12 @@ function fetch_cours() {
 
   show_loader(true);
 
-  // Wekk days
+  const context_fetchcourses = {
+    year: exp_week.year,
+    week: exp_week.week,
+    dept: department
+  }
+  // Week days
   $.ajax({
     type: "GET",
     dataType: 'text',

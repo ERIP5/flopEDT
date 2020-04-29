@@ -38,7 +38,7 @@ from api.fetch import serializers
 from api.shared.params import dept_param, week_param, year_param, user_param
 from api.shared.views_set import ListGenericViewSet
 from base import queries
-from base.weeks import num_all_days
+from base.weeks import num_all_days, week_list, current_week
 
 
 class ScheduledCourseFilterSet(filters.FilterSet):
@@ -66,24 +66,6 @@ class ScheduledCoursesViewSet(ListGenericViewSet):
     serializer_class = serializers.ScheduledCoursesSerializer
     filter_class = ScheduledCourseFilterSet
 
-
-class WeekDaysViewSet(viewsets.ViewSet):
-
-    def list(self, req):
-        try:
-            week = int(req.query_params.get('week'))
-            year = int(req.query_params.get('year'))
-            department = bm.Department.objects.get(abbrev=req.query_params.get('dept'))
-            print(department)
-            if department == None:
-                print('KO')
-                department = None
-        except ValueError:
-            return HttpResponse("KO")
-
-        data = num_all_days(year, week, department)
-        print(data)
-        return JsonResponse(data, safe=False)
 
 @method_decorator(name='list',
                   decorator=swagger_auto_schema(
@@ -396,3 +378,45 @@ class ConstraintsQueriesViewSet(viewsets.ViewSet):
 
         constraints = queries.get_coursetype_constraints(department)
         return JsonResponse(constraints, safe=False)
+
+
+# WEEK SERVICE
+
+class WeekViewSet(viewsets.ViewSet):
+
+    @action(methods=['GET'], detail=False, name='all', url_path='all', url_name='all')
+    @swagger_auto_schema(responses={200: serializers.WeekSerializer(many=True)})
+    def all(self, req):
+        query = week_list()
+        weeks = serializers.WeekSerializer(data=query, many=True)
+        print(weeks.is_valid())
+        return Response(query)
+
+    @action(methods=['GET'], detail=False, name='currentWeek', url_path='currentWeek', url_name='currentWeek')
+    @swagger_auto_schema(responses={200: serializers.WeekSerializer})
+    def current_week(self, req):
+        query = current_week()
+        current = serializers.WeekSerializer(data=query)
+        print(current.is_valid())
+        return Response(current.data)
+
+    @action(methods=['GET'], detail=False, name='days', url_path='days', url_name='days')
+    @swagger_auto_schema(manual_parameters=[week_param(required=True),
+                                            year_param(required=True),
+                                            dept_param(required=True)],
+                         responses={200: serializers.WeekDaySerializer(many=True)})
+    def days(self, req):
+        try:
+            week = int(req.query_params.get('week'))
+            year = int(req.query_params.get('year'))
+            department = bm.Department.objects.get(abbrev=req.query_params.get('dept'))
+
+            if department is None:
+                department = None
+        except ValueError:
+            return HttpResponse("KO")
+
+        data = num_all_days(year, week, department)
+        week_days = serializers.WeekDaySerializer(data=data, many=True)
+        print(week_days.is_valid())
+        return Response(week_days.data)

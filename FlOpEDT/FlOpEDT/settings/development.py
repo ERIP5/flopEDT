@@ -85,3 +85,9 @@ SECRET_KEY = 'al0bzdna)@6&n9mfn_vlm0wl&38#xrf@h%&^^h-q783g$e&*h!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:8080',
+    'http://localhost:8081',
+)

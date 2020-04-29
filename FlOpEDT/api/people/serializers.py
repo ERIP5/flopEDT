@@ -75,3 +75,9 @@ class GroupPreferencesSerializer(serializers.ModelSerializer):
     class Meta:
         model = pm.Preferences
         fields = ['group', 'morning_weight', 'free_half_day_weight']
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = pm.User
+        fields = ['username', 'first_name', 'last_name', 'is_superuser', 'is_tutor', 'is_student']
