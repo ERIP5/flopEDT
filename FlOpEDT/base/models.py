@@ -392,6 +392,16 @@ class ScheduledCourse(models.Model):
         return self.start_time + self.course.type.duration
 
 
+class CoursesNumberByAttributes(models.Model):
+    tutor = models.ForeignKey('people.Tutor', on_delete=models.CASCADE, related_name='CNBA_as_tutor')
+    course_type = models.ForeignKey('base.CourseType', on_delete=models.CASCADE)
+    module = models.ForeignKey('base.Module', on_delete=models.CASCADE)
+    room_type = models.ForeignKey('base.RoomType', on_delete=models.CASCADE)
+    groups = models.ManyToManyField('base.Group')
+    supp_tutors = models.ManyToManyField('people.Tutor', related_name='CNBA_as_supp_tutor')
+    possible_tutors = models.ManyToManyField('people.Tutor', related_name='CNBA_as_possible_tutor')
+    number = models.PositiveSmallIntegerField(default=0)
+
 # </editor-fold desc="COURSES">
 
 # <editor-fold desc="PREFERENCES">

@@ -30,4 +30,15 @@ from TTapp.TTConstraint import TTConstraint
 from TTapp.ilp_constraints.constraint import Constraint
 
 
+class StabilizationBetweenWeeks(TTConstraint):
+    """
+    Ensures that a course present in different weeks is scheduled in the same slot
+    """
 
+    def enrich_model(self, ttmodel, week, ponderation=1000):
+        if week != ttmodel.weeks[0]:
+            return
+        pass
+
+    def one_line_description(self):
+        pass

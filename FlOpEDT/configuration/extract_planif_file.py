@@ -30,7 +30,8 @@ from openpyxl import *
 
 from base.weeks import actual_year
 from base.models import Group, Module, Course, CourseType, RoomType,\
-    TrainingProgramme, Dependency, Period, Department, CoursePossibleTutors, ModuleTutorRepartition
+    TrainingProgramme, Dependency, Period, Department, CoursePossibleTutors, ModuleTutorRepartition, \
+    CoursesNumberByAttributes
 from people.models import Tutor, UserDepartmentSettings
 from people.tutor import fill_default_user_preferences
 from misc.assign_colors import assign_module_color
@@ -67,7 +68,7 @@ def do_assign(module, course_type, week, year, book):
     print(f"Assignation done for {module.abbrev} / {course_type.name}!")
 
 
-def ReadPlanifWeek(department, book, feuille, week, year):
+def ReadPlanifWeek(department, book, feuille, week, year, semaineA_semaineB = False):
     sheet = book[feuille]
     period=Period.objects.get(name=feuille, department=department)
 
@@ -180,7 +181,20 @@ def ReadPlanifWeek(department, book, feuille, week, year):
 
             GROUPS = list(Group.objects.filter(name__in=groups, train_prog=PROMO))
 
-            N=int(N)
+            N = int(N)
+
+            if semaineA_semaineB:
+                #Count the maximum number of identical courses for given attributes
+                CNBA, created = CoursesNumberByAttributes.\
+                    objects.get_or_create(tutor = TUTOR,
+                                          course_type = COURSE_TYPE,
+                                          module = MODULE,
+                                          room_type = ROOMTYPE,
+                                          groups = GROUPS,
+                                          supp_tutors = supp_profs,
+                                          possible_tutors = possible_profs)
+                CNBA.number = max(CNBA.number, N)
+                CNBA.save()
 
             for i in range(N):
                 C = Course(tutor=TUTOR, type=COURSE_TYPE, module=MODULE, week=week, year=year,
@@ -201,6 +215,7 @@ def ReadPlanifWeek(department, book, feuille, week, year):
                         t = Tutor.objects.get(username=pp)
                         cpt.possible_tutors.add(t)
                     cpt.save()
+
 
                 for after_type in [x for x in comments + local_comments if x[0] == 'A']:
                     try:
@@ -234,22 +249,22 @@ def ReadPlanifWeek(department, book, feuille, week, year):
             raise Exception(f"Exception ligne {row}, semaine {week} de {feuille}: {e} \n")
 
 
-def extract_period(department, book, period, year):
+def extract_period(department, book, period, year, semaineA_semaineB):
     if period.starting_week < period.ending_week:
         if period.ending_week < 31:
             year += 1
         for week in range(period.starting_week, period.ending_week + 1):
-            ReadPlanifWeek(department, book, period.name, week, year)
+            ReadPlanifWeek(department, book, period.name, week, year, semaineA_semaineB)
             print(week, year)
 
     else:
         for week in range(period.starting_week, 53):
-            ReadPlanifWeek(department, book, period.name, week, year)
+            ReadPlanifWeek(department, book, period.name, week, year, semaineA_semaineB)
         for week in range(1, period.ending_week + 1):
-            ReadPlanifWeek(department, book, period.name, week, year+1)
+            ReadPlanifWeek(department, book, period.name, week, year+1, semaineA_semaineB)
 
 
-def extract_planif(department, bookname=None):
+def extract_planif(department, bookname=None, semaineA_semaineB=False):
     '''
     Generate the courses from bookname; the school year starts in actual_year
     '''
@@ -257,7 +272,7 @@ def extract_planif(department, bookname=None):
         bookname = 'media/configuration/planif_file_'+department.abbrev+'.xlsx'
     book = load_workbook(filename=bookname, data_only=True)
     for period in Period.objects.filter(department=department):
-        extract_period(department, book, period, actual_year)
+        extract_period(department, book, period, actual_year, semaineA_semaineB)
     assign_module_color(department)
 
 
