@@ -2003,6 +2003,36 @@ function compute_cm_room_tutor_direction() {
   }
 }
 
+function getDateOfWeek(w, y) {
+    var simple = new Date(y, 0, 1 + (w - 1) * 7);
+    var dow = simple.getDay();
+    var weekStart = simple;
+    if (dow <= 4)
+        weekStart.setDate(simple.getDate() - simple.getDay() + 1);
+    else
+        weekStart.setDate(simple.getDate() + 8 - simple.getDay());
+    return weekStart;
+}
+
+function get_course_timestamp(cours) {
+  let sel_week = wdw_weeks.get_selected().week ;
+  let sel_year = wdw_weeks.get_selected().year ;
+  let date_week = getDateOfWeek(sel_week, sel_year) ;
+  let dateOfWeek = {
+    'm':0,
+    'tu':1,
+    'w':2,
+    'th':3,
+    'f':4
+  };
+  date_week.setDate(date_week.getDate() + dateOfWeek[cours.day]);
+  date_week.setTime(date_week.getTime() + (cours.start-5)*60000);
+  let beg_timestamp = date_week.getTime() ;
+  date_week.setTime(date_week.getTime() + (cours.duration +10)*60000);
+  let end_timestamp = date_week.getTime() ;
+  return [beg_timestamp, end_timestamp];
+}
+
 function show_detailed_courses(cours) {
   remove_details();
   var details = svg.get_dom("dg").append("g")
@@ -2020,7 +2050,15 @@ function show_detailed_courses(cours) {
     strokeWidth = 2;
   }
 
-  let room_info = {'txt': cours.room} ;
+  let room_info = {'txt': cours.room.name} ;
+  let room_grafana_id;
+
+  if (cours.room.grafana != null) {
+    room_grafana_id = cours.room.grafana.co2_id;
+  } else {
+    room_grafana_id = '';
+  }
+  
   if (cours.id_visio > -1) {
     let visio_link = links_by_id[String(cours.id_visio)] ;
     if (typeof visio_link !== 'undefined') {
@@ -2028,11 +2066,12 @@ function show_detailed_courses(cours) {
       room_info.url = visio_link.url ;
     }
   }
-  
-  
+  let timestamps = get_course_timestamp(cours);
+
   let infos = [
     {'txt':modules_info[cours.mod].name, 'url':modules_info[cours.mod].url},
     room_info,
+    {'txt': 'Mesures CO2', 'url' : department_settings.url_grafana + timestamps[0] + '&to=' + timestamps[1] + '&viewPanel=' + room_grafana_id },
     {'txt':cours.comment},
     {'txt':tutors_info[cours.prof].full_name},
     {'txt':tutors_info[cours.prof].email, 'url': url_contact + cours.prof}

@@ -20,33 +20,11 @@
 # a commercial license. Buying such a license is mandatory as soon as
 # you develop activities involving the FlOpEDT/FlOpScheduler software
 # without disclosing the source code of your own applications.
+from rest_framework import routers
 
-import base.models as bm
-from api.base.grafana.serializers import RoomGrafanaSerializer
-from rest_framework import serializers
+from api.base.rooms import views
 
-class RoomTypesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = bm.RoomType
-        fields = '__all__'
+routerGrafana = routers.SimpleRouter()
 
-
-class RoomSerializer(serializers.ModelSerializer):
-    grafana = RoomGrafanaSerializer()
-    class Meta:
-        model = bm.Room
-        fields = '__all__'  # ['id', 'name', 'subroom_of', 'departments']
-
-
-class RoomNameSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = bm.Room
-        fields = ['name']
-
-
-class RoomSortsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = bm.RoomSort
-        fields = '__all__'
-
+routerGrafana.register(r'grafana', views.RoomGrafanaViewSet)
 

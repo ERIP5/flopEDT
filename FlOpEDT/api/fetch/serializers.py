@@ -25,6 +25,7 @@ from rest_framework import serializers
 import base.models as bm
 import displayweb.models as dwm
 import people.models as pm
+from api.base.rooms.serializers import RoomSerializer
 
 
 #    --------------------------------------------------------------------------------
@@ -90,7 +91,7 @@ class Course_SC_Serializer(serializers.Serializer):
 class ScheduledCoursesSerializer(serializers.Serializer):
     # Spécification des champs voulus
     id = serializers.IntegerField()
-    room = serializers.CharField(allow_null=True)
+    room = RoomSerializer()
     start_time = serializers.IntegerField()
     day = serializers.CharField()
     course = Course_SC_Serializer()

@@ -22,31 +22,15 @@
 # without disclosing the source code of your own applications.
 
 import base.models as bm
-from api.base.grafana.serializers import RoomGrafanaSerializer
+
 from rest_framework import serializers
 
-class RoomTypesSerializer(serializers.ModelSerializer):
+class RoomGrafanaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = bm.RoomType
-        fields = '__all__'
+        model = bm.RoomGrafana
+        fields = ('co2_id',)
 
-
-class RoomSerializer(serializers.ModelSerializer):
-    grafana = RoomGrafanaSerializer()
+class DeptGrafanaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = bm.Room
-        fields = '__all__'  # ['id', 'name', 'subroom_of', 'departments']
-
-
-class RoomNameSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = bm.Room
-        fields = ['name']
-
-
-class RoomSortsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = bm.RoomSort
-        fields = '__all__'
-
-
+        model = bm.DeptGrafana
+        fields = ('grafana_url')

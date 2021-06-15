@@ -301,7 +301,8 @@ def get_department_settings(dept):
          'days': ts.days,
          'mode':
          {'cosmo': str(mode.cosmo),
-          'visio': str(mode.visio)}
+          'visio': str(mode.visio)},
+         'url_grafana': dept.grafana.grafana
         }
     return department_settings
 

@@ -24,9 +24,11 @@
 import base.models as bm
 import people.models as pm
 from rest_framework import serializers
+from api.base.grafana.serializers import DeptGrafanaSerializer
 
 
 class DepartmentSerializer(serializers.ModelSerializer):
+    grafana = DeptGrafanaSerializer()
     class Meta:
         model = bm.Department
         fields = '__all__'

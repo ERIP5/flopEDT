@@ -837,7 +837,7 @@ function cours_txt_bot_txt(c) {
     if (c.id_visio > -1) {
       return 'Visio' ;
     } else {
-      return c.room ;
+      return c.room.name ;
     }
   }
 }

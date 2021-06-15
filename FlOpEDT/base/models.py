@@ -285,6 +285,36 @@ class RoomSort(models.Model):
 
 # </editor-fold>
 
+# <editor-fold desc="GRAFANA">
+# -------------
+# -- GRAFANA --
+# -------------
+
+
+class RoomGrafana(models.Model):
+    room = models.OneToOneField(
+        'Room',
+        on_delete=models.CASCADE,
+        related_name='grafana')
+    co2_id = models.IntegerField(
+        null=True,
+        blank=True)
+
+    def __str__(self):
+        return str(self.room) + ' id: ' + str(self.co2_id)
+
+class DeptGrafana(models.Model):
+    dept = models.OneToOneField(
+        'Department',
+        on_delete=models.CASCADE,
+        related_name='grafana')
+    grafana = models.URLField(null=True, blank=True, default=None)
+
+    def __str__(self):
+        return str(self.dept) + ' URL: ' + str(self.grafana)
+
+# </editor-fold>
+
 # <editor-fold desc="COURSES">
 # -------------
 # -- COURSES --
