@@ -78,9 +78,7 @@ def create_first_department():
     return department
 
 
-def get_edt_version(department, week_nb, year, create=False):
-
-    week = Week.objects.get(nb=week_nb, year=year)
+def get_edt_version(department, week, create=False):
 
     params = {'week': week, 'department': department}
 

@@ -23,6 +23,7 @@
 
 from random import randint
 
+from django.db.models import Q
 import django_filters.rest_framework as filters
 from django.utils.decorators import method_decorator
 from drf_yasg.utils import swagger_auto_schema
@@ -37,6 +38,9 @@ import quote.models as qm
 from api import serializers
 from api.shared.params import week_param, year_param, dept_param
 from api.permissions import IsTutorOrReadOnly, IsAdminOrReadOnly
+
+from TTapp.models import NoTutorCourseOnDay, TutorsLunchBreak
+from TTapp.slots import midday
 
 # ----------
 # -- QUOTE -
@@ -148,32 +152,70 @@ class GroupDisplaysViewSet(viewsets.ModelViewSet):
 # --- WEEK-INFOS  ----
 # --------------------
 
-def pref_requirements(department, tutor, year, week):
+def pref_requirements(department, tutor, week):
     """
     Return a pair (filled, required): number of preferences
     that have been proposed VS required number of prefs, according
     to local policy
     """
     courses_time =sum(c.type.duration for c in
-                      bm.Course.objects.filter(tutor=tutor,
-                                               week__nb=week,
-                                               week__year=year))
+                      bm.Course.objects.filter(Q(tutor=tutor)|Q(supp_tutor=tutor),
+                                               week=week))
+    week_days = queries.get_working_days(department)
     week_av = bm.UserPreference \
         .objects \
         .filter(user=tutor,
-                week__nb=week,
-                week__year=year,
-                day__in=queries.get_working_days(department))
+                week=week,
+                day__in=week_days)
     if not week_av.exists():
         week_av = bm.UserPreference \
             .objects \
             .filter(user=tutor,
                     week=None,
-                    day__in=queries.get_working_days(department))
+                    day__in=week_days)
+
+    NTCOD = NoTutorCourseOnDay.objects.filter(Q(weeks=None)|Q(weeks=week),
+                                              Q(tutors=None)|Q(tutors=tutor)|Q(tutor_status=tutor.tutor.status),
+                                              department=department)
+    if NTCOD.exists():
+        for ntcod in NTCOD:
+            if ntcod.period == 'AM':
+                week_av=week_av.exclude(day=ntcod.weekday, start_time__lte=midday)
+            elif ntcod.period == 'PM':
+                week_av=week_av.exclude(day=ntcod.weekday, start_time__gte=midday)
+            else:
+                week_av = week_av.exclude(day=ntcod.weekday)
+
+    to_be_subtracted = 0
+    TLB = TutorsLunchBreak.objects.filter(Q(tutors=None) | Q(tutors=tutor),
+                                          weeks=week,
+                                          department=department)
+    if not TLB.exists():
+        TLB = TutorsLunchBreak.objects.filter(Q(tutors=None) | Q(tutors=tutor),
+                                              weeks=None,
+                                              department=department)
+    if TLB.exists():
+        tlb = TLB.first()
+        considered_week_days = set(week_days)
+        lunch_length = tlb.lunch_length
+        slot_size = tlb.end_time - tlb.start_time
+        max_acceptable_pref = slot_size - lunch_length
+        if tlb.weekdays:
+            considered_week_days &= set(tlb.weekdays)
+        for cwd in considered_week_days:
+            considered_pref = week_av.filter(day=cwd, start_time__gte=tlb.start_time, start_time__lt=tlb.end_time,
+                                             value__gte=1)
+            if considered_pref.exists():
+                considered_pref_duration = sum(pref.duration for pref in considered_pref)
+                if considered_pref_duration > max_acceptable_pref:
+                    tbs = considered_pref_duration - max_acceptable_pref
+                    to_be_subtracted += tbs
+
     filled = sum(a.duration for a in
                  week_av.filter(value__gte=1,
                                 day__in=queries.get_working_days(department))
-                 )
+                 ) - to_be_subtracted
+
     return filled, courses_time
 
 
@@ -196,6 +238,7 @@ class WeekInfoViewSet(viewsets.ViewSet):
     def list(self, request, format=None):
         week_nb = int(request.query_params.get('week'))
         year = int(request.query_params.get('year'))
+        week = bm.Week.objects.get(nb=week_nb, year=year)
 
         try:
             department = bm.Department.objects.get(
@@ -206,14 +249,14 @@ class WeekInfoViewSet(viewsets.ViewSet):
 
         version = 0
         for dept in bm.Department.objects.all():
-            version += queries.get_edt_version(dept, week_nb, year, create=True)
+            version += queries.get_edt_version(dept, week, create=True)
 
         proposed_pref, required_pref = \
-            pref_requirements(department, request.user, year, week_nb) if request.user.is_authenticated \
+            pref_requirements(department, request.user, week) if request.user.is_authenticated \
                 else (-1, -1)
 
         try:
-            regen = str(bm.Regen.objects.get(department=department, week__nb=week_nb, week__year=year))
+            regen = str(bm.Regen.objects.get(department=department, week=week))
         except bm.Regen.DoesNotExist:
             regen = 'I'
 
