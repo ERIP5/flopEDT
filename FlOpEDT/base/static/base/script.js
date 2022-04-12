@@ -58,7 +58,7 @@ function init() {
 // Début de fonction pour récupérer les cours
 // stockés sur le serveur
 function fetch_courses() {
-  courses = thedata.slice();
+  //courses = thedata.slice();
   display_grid() ;
   //display_courses() ;
 }
