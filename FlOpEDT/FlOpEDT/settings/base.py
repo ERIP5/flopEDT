@@ -70,7 +70,6 @@ INSTALLED_APPS = [
     'configuration',
     'easter_egg',
     'MyFlOp',
-    'reservation',
 #    'importation'
     'api',
     'rest_framework.authtoken',
