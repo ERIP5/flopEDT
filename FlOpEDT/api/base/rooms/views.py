@@ -54,7 +54,7 @@ class RoomFilterSet(filters.FilterSet):
 
     permission_classes = [IsAdminOrReadOnly]
 
-    dept = filters.CharFilter(field_name='departments__abbrev', required=True)
+    dept = filters.CharFilter(field_name='departments__abbrev', required=False)
 
     class Meta:
         model = bm.Room
@@ -91,6 +91,7 @@ class RoomNameViewSet(viewsets.ModelViewSet):
                   decorator=swagger_auto_schema(
                       manual_parameters=[dept_param()])
                   )
+
 class RoomAllViewSet(viewsets.ViewSet):
     queryset = bm.Room.objects.all()
     filter_class = RoomFilterSet
@@ -100,8 +101,11 @@ class RoomAllViewSet(viewsets.ViewSet):
         room_filtered = RoomFilterSet(data=req.query_params)
         if not room_filtered.is_valid():
             return HttpResponse(room_filtered.errors)
-        department = room_filtered.data.get('dept')
-        rooms = queries.get_room_types_groups(department)
+        department = room_filtered.data.get('dept', None)
+        if department:
+            rooms = queries.get_room_types_groups(department)
+        else:
+            rooms = [{'room': room.name} for room in queries.get_rooms(None, basic=True)]
         return JsonResponse(rooms, safe=False)
 
 
