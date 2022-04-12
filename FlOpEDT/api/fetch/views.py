@@ -150,36 +150,38 @@ class ScheduledCoursesViewSet(viewsets.ReadOnlyModelViewSet):
                     course__groups__train_prog=self.train_prog)
 
         if group_name is None and self.train_prog is None:
-            if self.dept is None:
-                if self.tutor is None:
-                    raise exceptions.NotAcceptable(
-                        detail='You should either a group and a training programme, or a tutor, or a department')
-            else:
-                queryset = queryset.filter(
-                    course__module__train_prog__department=self.dept)
             if self.tutor is not None:
                 queryset = queryset.filter(
                     Q(tutor=self.tutor) | Q(course__supp_tutor=self.tutor))
+            elif self.dept is not None:
+                queryset = queryset.filter(
+                    course__module__train_prog__department=self.dept)
+
 
         return queryset
 
     def get_serializer_class(self):
         # get the department
-        if self.dept is None:
+        dept = None
+        if self.dept is not None:
+            dept = self.dept
+        else:
             if self.tutor is not None:
                 for d in self.tutor.departments.all():
                     uds = pm.UserDepartmentSettings.objects.get(department=d,
                                                                 user=self.tutor)
                     if uds.is_main:
-                        self.dept = uds.department
+                        dept = uds.department
                         break
 
                 # no primary department
-                if self.dept is None:
-                    self.dept = self.tutor.departments.first()
+                if dept is None:
+                    dept = self.tutor.departments.first()
+            elif self.request.query_params.get('group', None):
+                dept = self.groups[0].train_prog.department
             else:
-                self.dept = self.groups[0].train_prog.department
-        if self.dept.mode.cosmo:
+                dept = bm.Department.objects.first()
+        if dept.mode.cosmo:
             return serializers.ScheduledCoursesCosmoSerializer
         else:
             return serializers.ScheduledCoursesSerializer
