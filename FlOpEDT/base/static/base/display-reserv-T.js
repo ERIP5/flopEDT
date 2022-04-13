@@ -17,6 +17,10 @@ var each_room_height = 120
 
 var each_text_y = days_y() + 20
 
+var res_posy = days_y()
+var res_height = 75
+
+
 var room =[{}]
 var each_room = [
 { "day" : "m", "room" : "Amphi1", "start": 8, "end" : 9, "name" : "PSE" },
@@ -58,6 +62,19 @@ function display_text(res){
 function each_text_posy(){
     var y = each_text_y;
     each_text_y += each_room_height;
+    return y;
+}
+function res_x(res){
+    for (element of days){
+        if (element["ref"] ==  res["day"]){
+            return days_width*element["num"]+room_width
+        }
+    }
+}
+
+function res_y(){
+var y = res_posy;
+    res_posy += each_room_height;
     return y;
 }
 
@@ -141,8 +158,27 @@ d3.select("svg")
   .attr("height",days_height())
   }
 
+function display_res(){
+c_res = d3.select("svg")
+          .selectAll("rect_res")
+          .data(each_room);
+
+c_res
+    .enter()
+    .append("rect")
+    .attr("class","rect_res")
+    .attr("fill","none")
+    .attr("stroke","black")
+    .attr("stroke-width",5)
+    .attr("x", res_x)
+    .attr("y", res_y)
+    .attr("width", days_width)
+    .attr("height", res_height)
+}
+
 
 display_date();
+display_res();
 display_each_room();
 display_room();
 display_grid();
