@@ -15,7 +15,7 @@ var date_margtop = 20
 var each_room_y = days_y()
 var each_room_height = 120
 
-var each_text_y = days_y() + 20
+var each_text_y = days_y() + 60
 
 var res_posy = days_y()
 var res_height = 75
@@ -136,7 +136,7 @@ c_room
   .enter()
   .append("text")
   .text(display_text)
-  .attr("x",10)
+  .attr("x",25)
   .attr("y", each_text_posy)
 
   }
