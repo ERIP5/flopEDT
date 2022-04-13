@@ -12,7 +12,8 @@ var days = [{num: 0, ref: "m", name: "Lundi"},
 **********************/
 
 function days_x(day){
-    return days_width*(day.num+1)}
+
+    return days_width*(day.num)+room_width}
 
 function days_y(){
     return 0
@@ -34,7 +35,7 @@ d3.select("svg")
   .attr("stroke-width",5)
   .attr("x",0)
   .attr("y",0)
-  .attr("width",days_width)
+  .attr("width",room_width)
   .attr("height",days_heigth)
   }
 
