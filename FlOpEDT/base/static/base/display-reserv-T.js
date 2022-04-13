@@ -150,6 +150,7 @@ c_res = d3.select("svg")
           .selectAll("rect_res")
           .data(each_room);
 
+
 c_res
     .enter()
     .append("rect")
