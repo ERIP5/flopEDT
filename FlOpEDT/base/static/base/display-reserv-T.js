@@ -12,10 +12,7 @@ var date_width = days_width*5
 var date_height = 50
 var date_margtop = 20
 
-var days_height = 0
-
 var each_room_y = days_y()
-var heightt = 0
 
 var room =[{}]
 var each_room = [
@@ -41,13 +38,14 @@ function days_y(){
 }
 
 
-function cac_days_height(){
-    return each_room_y - days_y
+function days_height(){
+    return (each_room_y - days_y())
 }
 
 function each_room_posy(){
     var y = each_room_y;
     each_room_y += 100;
+    console.log(each_room_y);
     return y;
 }
 
@@ -84,15 +82,16 @@ d3.select("svg")
   .attr("x",0)
   .attr("y",days_y)
   .attr("width",room_width)
-  .attr("height",days_height)
+  .attr("height",days_height())
   }
 
 function display_each_room(){
 
 c_room = d3.select("svg")
   .selectAll("rect_each_room")
-  .data(each_room)
+  .data(each_room);
 
+c_room
   .enter()
   .append("rect")
   .attr("class","rect_each_room")
@@ -119,17 +118,13 @@ d3.select("svg")
   .attr("x",days_x)
   .attr("y",days_y)
   .attr("width",days_width)
-  .attr("height",days_height)
+  .attr("height",days_height())
   }
 
-function svg_width(){
-    return days_height+ date_height+ date_margtop
-}
 
 display_date();
 display_each_room();
 display_room();
-cac_days_height();
 display_grid();
 
 d3.select("svg")
