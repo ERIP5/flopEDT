@@ -98,8 +98,10 @@
       {% if request.department %}
       {% if request.is_department_admin %}
       <li><a href="#" onclick="openNav()">☰</a></li>
+
       {% endif %}
       <li><a href="{% url "base:edt" department %}">{% trans 'Schedule_banner' %}</a></li>
+
       {% if request.has_department_perm %}
       <li><a href="{% url "base:decale" department %}">{% trans 'Move/Cancel' %}</a></li>
       {% endif %}
