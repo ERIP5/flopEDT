@@ -13,11 +13,14 @@ var date_height = 50
 var date_margtop = 20
 
 var each_room_y = days_y()
+var each_room_height = 120
+
+var each_text_y = days_y() + 20
 
 var room =[{}]
 var each_room = [
 { "day" : "m", "room" : "Amphi1", "start": 8, "end" : 9, "name" : "PSE" },
-{ "day" : "m", "room" : "Amphi1", "start": 14, "end" : 16, "name" : "PSE" },
+{ "day" : "m", "room" : "Amphi2", "start": 14, "end" : 16, "name" : "PSE" },
 { "day" : "tu", "room" : "B115", "start": 8, "end" : 18, "name" : "ALE" },
 { "day" : "w", "room" : "B007", "start": 10, "end" : 14, "name" : "MCV" },
 { "day" : "w", "room" : "B007", "start": 8, "end" : 10, "name" : "MCV" },
@@ -44,8 +47,17 @@ function days_height(){
 
 function each_room_posy(){
     var y = each_room_y;
-    each_room_y += 100;
-    console.log(each_room_y);
+    each_room_y += each_room_height;
+    return y;
+}
+
+function display_text(res){
+    return res["room"]
+}
+
+function each_text_posy(){
+    var y = each_text_y;
+    each_text_y += each_room_height;
     return y;
 }
 
@@ -101,7 +113,15 @@ c_room
   .attr("x",0)
   .attr("y", each_room_posy)
   .attr("width",room_width)
-  .attr("height",100)
+  .attr("height",each_room_height);
+
+c_room
+  .enter()
+  .append("text")
+  .text(display_text)
+  .attr("x",10)
+  .attr("y", each_text_posy)
+
   }
 
 
