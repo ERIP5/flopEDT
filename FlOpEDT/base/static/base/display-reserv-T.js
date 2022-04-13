@@ -80,8 +80,12 @@ d3.select("svg")
   .attr("width",days_width)
   .attr("height",days_height)
   }
+
+function svg_width(){
+    return days_height+ date_height+ date_margtop
+}
 d3.select("svg")
-        .attr("height", days_height)
+        .attr("height", svg_width)
         .attr("width", 1000) ;
 display_date();
 display_room();
