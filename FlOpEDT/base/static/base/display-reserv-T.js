@@ -17,6 +17,9 @@ var each_room_height = 120
 
 var each_text_y = days_y() + 20
 
+var res_posy = days_y()
+var res_height = 75
+
 var room =[{}]
 var each_room = [
 { "day" : "m", "room" : "Amphi1", "start": 8, "end" : 9, "name" : "PSE" },
@@ -27,6 +30,7 @@ var each_room = [
 { "day" : "th", "room" : "B111", "start": 8, "end" : 9, "name" : "OT" },
 { "day" : "th", "room" : "B112", "start": 8, "end" : 9, "name" : "LN" }
 ]
+
 var date =[{}]
 /**********************
 *gestion des variables*
@@ -55,9 +59,23 @@ function display_text(res){
     return res["room"]
 }
 
-function each_text_posy(){
+function each_room_posy(){
     var y = each_text_y;
     each_text_y += each_room_height;
+    return y;
+}
+
+function res_x(res){
+    for (element of days){
+        if (element["ref"] ==  res["day"]){
+            return days_width*element["num"]+room_width
+        }
+    }
+}
+
+function res_y(){
+var y = res_posy;
+    res_posy += each_room_height;
     return y;
 }
 
@@ -95,6 +113,9 @@ d3.select("svg")
   .attr("y",days_y)
   .attr("width",room_width)
   .attr("height",days_height())
+
+// pour afficher une seule fois les salles, voir pour trier la liste par ordre alphabtique des room puis utiliser un if afin de vérifier si la
+// précdente est la même afin de ne pas l'écrire 2 fois
   }
 
 function display_each_room(){
@@ -120,10 +141,27 @@ c_room
   .append("text")
   .text(display_text)
   .attr("x",10)
-  .attr("y", each_text_posy)
+  .attr("y", each_room_posy)
 
   }
 
+function display_res(){
+c_res = d3.select("svg")
+          .selectAll("rect_res")
+          .data(each_room);
+
+c_res
+    .enter()
+    .append("rect")
+    .attr("class","rect_res")
+    .attr("fill","none")
+    .attr("stroke","black")
+    .attr("stroke-width",5)
+    .attr("x", res_x)
+    .attr("y", res_y)
+    .attr("width", days_width)
+    .attr("height", res_height)
+}
 
 function display_grid(){
 d3.select("svg")
@@ -143,6 +181,7 @@ d3.select("svg")
 
 
 display_date();
+display_res();
 display_each_room();
 display_room();
 display_grid();
