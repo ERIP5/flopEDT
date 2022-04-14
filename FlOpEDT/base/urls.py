@@ -57,7 +57,7 @@ urlpatterns = [
     url(r'^email-modif$', views.send_email_proposal, name='email-proposal'),
 
     #Show all the reservation made for each rooms
-    url(r'^reservationT', views.test, name="reservationT"),
+    url(r'^reservationT', views.reservation_total, name="reservationT"),
     #Show all the reservation made for one room
     url(r'^reservationS', views.preferences, name="reservationS"),
 
