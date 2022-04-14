@@ -24,7 +24,7 @@ var course = []
 
 var room =[{}]
 let rooms = [
-  {"name": "B112", "display":true, "type":"A","y":0, "height":0, 'courses':[{'m':[{
+  {"name": "B112", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[{
     "id_course": 137455,
     "department": 'INFO',
     "mod": "ExplBD",
@@ -44,9 +44,9 @@ let rooms = [
     "group": "4B",
     "promo": 0,
     "from_transversal": null
-  }],'tu':[],'w':[], 'th':[],'f':[]}]},
-  {"name": "E002", "display":true, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[], 'th':[],'f':[]}]},
-  {"name": "414", "display":true, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[{
+  }],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "E002", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "414", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[{
     "id_course": 137455,
     "department": 'INFO',
     "mod": "ExplBD",
@@ -66,13 +66,13 @@ let rooms = [
     "group": "4B",
     "promo": 0,
     "from_transversal": null
-  }], 'th':[],'f':[]}]},
-  {"name": "G21", "display":false, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[], 'th':[],'f':[]}]},
-  {"name": "G26", "display":false, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[], 'th':[],'f':[]}]},
-  {"name": "E209", "display":true, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[], 'th':[],'f':[]}]},
-  {"name": "B111", "display":true, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[], 'th':[],'f':[]}]},
-  {"name": "B002", "display":true, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[], 'th':[],'f':[]}]},
-  {"name": "B203", "display":true, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[], 'th':[],'f':[]}]}
+  }], 'th':[],'f':[]}},
+  {"name": "G21", "display":false, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "G26", "display":false, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "E209", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "B111", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "B002", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "B203", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}}
 ]
 var date =[{}]
 /**********************
@@ -129,9 +129,9 @@ function getday(day){
     return day["name"]
 }
 
-function getsalle(res)
+function room_class(res)
 {
-    return res["name"]
+    return 'Room' + res["name"]
 }
 
 
@@ -181,11 +181,11 @@ c_room_all = d3.select(".room_lines")
 c_room_gr = c_room_all
     .enter()
     .append("g")
-    .attr("class",getsalle)
+    .attr("class", room_class)
 
 c_room = c_room_gr
     .append("g")
-    .attr("class", "bolck_title")
+    .attr("class", "block_title")
 
 c_room
   .append("rect")
@@ -257,14 +257,15 @@ c_all_courses = d3.select(".room_lines");
 for(room of rooms)
 {
     c_all_courses_day = c_all_courses
-        .select("."+room["name"])
-            for(element of days){
-            console.log(element["ref"])
-            console.log(room)
+        .select("."+room_class(room))
+            for(day of days){
+            courses_all = room.courses[day.ref]
+            console.log(courses_all)
+            console.log(room, day)
             c_all_courses_day
-                .select("."+element["name"])
+                .select("."+day.name)
                 .selectAll("test")
-                .data(course)
+                .data(room.courses[day.ref])
                 .enter()
                 .append("g")
                 .attr("class","test")
