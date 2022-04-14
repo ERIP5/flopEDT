@@ -29,7 +29,7 @@ let rooms = [
     "department": 'INFO',
     "mod": "ExplBD",
     "c_type": "Projet",
-    "day": "f",
+    "day": "m",
     "start": 585,
     "duration": 85,
     "room": "B102",
@@ -51,7 +51,7 @@ let rooms = [
     "department": 'INFO',
     "mod": "ExplBD",
     "c_type": "Projet",
-    "day": "f",
+    "day": "w",
     "start": 585,
     "duration": 85,
     "room": "B102",
@@ -132,6 +132,10 @@ function getday(day){
 function room_class(res)
 {
     return 'Room' + res["name"]
+}
+
+function getcourses(course){
+    return course.mod
 }
 
 
@@ -230,27 +234,6 @@ c_grid = d3.select(".grille")
   }
 
 function display_res(){
-/*
-c_res= d3.select(".room_lines")
-          .data(rooms);
-
-c_res
-    .append("rect")
-    .attr("class","cadre_reservation")
-    .attr("fill","none")
-    .attr("stroke","black")
-    .attr("stroke-width",5)
-    .attr("x", res_x)
-    .attr("y", res_y)
-    .attr("width", days_width)
-    .attr("height", res_height)
-c_res
-    .enter()
-    .append("text")
-    .text(text_heure_res)
-    .attr("x",)
-    .attr("y", )*/
-
 
 c_all_courses = d3.select(".room_lines");
 
@@ -262,13 +245,25 @@ for(room of rooms)
             courses_all = room.courses[day.ref]
             console.log(courses_all)
             console.log(room, day)
-            c_all_courses_day
+            c_course_res = c_all_courses_day
                 .select("."+day.name)
                 .selectAll("test")
                 .data(room.courses[day.ref])
                 .enter()
                 .append("g")
-                .attr("class","test")
+                .attr("class",getcourses)
+
+            c_course_res
+                .append("rect")
+                .attr("class","display_res_frame")
+                .attr("fill","none")
+                .attr("stroke","black")
+                .attr("stroke-width",5)
+                .attr("x",res_x)
+                .attr("y",days_y)
+                .attr("width",days_width)
+                .attr("height",50)
+
         }
 }
 }
