@@ -20,16 +20,59 @@ var each_text_y = days_y() + 60
 var res_posy = days_y()
 var res_height = 75
 
+var course = []
 
 var room =[{}]
-var each_room = [
-{ "day" : "m", "room" : "Amphi1", "start": 8, "end" : 9, "name" : "PSE" },
-{ "day" : "m", "room" : "Amphi2", "start": 14, "end" : 16, "name" : "PSE" },
-{ "day" : "tu", "room" : "B115", "start": 8, "end" : 18, "name" : "ALE" },
-{ "day" : "w", "room" : "B007", "start": 10, "end" : 14, "name" : "MCV" },
-{ "day" : "w", "room" : "B007", "start": 8, "end" : 10, "name" : "MCV" },
-{ "day" : "th", "room" : "B111", "start": 8, "end" : 9, "name" : "OT" },
-{ "day" : "th", "room" : "B112", "start": 8, "end" : 9, "name" : "LN" }
+let rooms = [
+  {"name": "B112", "display":true, "type":"A","y":0, "height":0, 'courses':[{'m':[{
+    "id_course": 137455,
+    "department": 'INFO',
+    "mod": "ExplBD",
+    "c_type": "Projet",
+    "day": "f",
+    "start": 585,
+    "duration": 85,
+    "room": "B102",
+    "room_type": "M",
+    "display": true,
+    "id_visio": -1,
+    "graded": false,
+    "color_bg": "#ec4dd8",
+    "color_txt": "#000000",
+    "tutor": "PSE",
+    "supp_tutors" : [],
+    "group": "4B",
+    "promo": 0,
+    "from_transversal": null
+  }],'tu':[],'w':[], 'th':[],'f':[]}]},
+  {"name": "E002", "display":true, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[], 'th':[],'f':[]}]},
+  {"name": "414", "display":true, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[{
+    "id_course": 137455,
+    "department": 'INFO',
+    "mod": "ExplBD",
+    "c_type": "Projet",
+    "day": "f",
+    "start": 585,
+    "duration": 85,
+    "room": "B102",
+    "room_type": "M",
+    "display": true,
+    "id_visio": -1,
+    "graded": false,
+    "color_bg": "#ec4dd8",
+    "color_txt": "#000000",
+    "tutor": "PSE",
+    "supp_tutors" : [],
+    "group": "4B",
+    "promo": 0,
+    "from_transversal": null
+  }], 'th':[],'f':[]}]},
+  {"name": "G21", "display":false, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[], 'th':[],'f':[]}]},
+  {"name": "G26", "display":false, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[], 'th':[],'f':[]}]},
+  {"name": "E209", "display":true, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[], 'th':[],'f':[]}]},
+  {"name": "B111", "display":true, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[], 'th':[],'f':[]}]},
+  {"name": "B002", "display":true, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[], 'th':[],'f':[]}]},
+  {"name": "B203", "display":true, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[], 'th':[],'f':[]}]}
 ]
 var date =[{}]
 /**********************
@@ -56,7 +99,7 @@ function each_room_posy(){
 }
 
 function display_text(res){
-    return res["room"]
+    return res["name"]
 }
 
 function each_text_posy(){
@@ -88,8 +131,9 @@ function getday(day){
 
 function getsalle(res)
 {
-    return res["room"]
+    return res["name"]
 }
+
 
 /**********
 *affichage*
@@ -130,14 +174,22 @@ d3.select("svg")
 
 function display_each_room(){
 
-c_room = d3.select(".salles")
+c_room_all = d3.select(".room_lines")
   .selectAll("rect_each_room")
-  .data(each_room);
+  .data(rooms);
+
+c_room_gr = c_room_all
+    .enter()
+    .append("g")
+    .attr("class",getsalle)
+
+c_room = c_room_gr
+    .append("g")
+    .attr("class", "bolck_title")
 
 c_room
-  .enter()
   .append("rect")
-  .attr("class","rect_each_room")
+  .attr("class","block_title_frame")
   .attr("fill","none")
   .attr("stroke","black")
   .attr("stroke-width",5)
@@ -147,26 +199,25 @@ c_room
   .attr("height",each_room_height);
 
 c_room
-  .enter()
   .append("text")
   .text(display_text)
+  .attr("class","room_name")
   .attr("x",25)
   .attr("y", each_text_posy)
 
+
+for(element of days){
+c_room_gr
+    .append("g")
+    .attr("class", element["name"])
+}
   }
 
 
 function display_grid(){
-c_gridall = d3.select(".grille")
+c_grid = d3.select(".grille")
   .selectAll(".rect_grid")
   .data(days)
-
-c_grid = c_gridall
-    .enter()
-    .append("g")
-    .attr("class",getday)
-
-
   .append("rect")
   .attr("class","rect_grid")
   .attr("fill","none")
@@ -179,14 +230,9 @@ c_grid = c_gridall
   }
 
 function display_res(){
-c_resall= d3.select(".reservation")
-          .selectAll("cadre_reservation")
-          .data(each_room);
-
-c_res = c_resall
-    .enter()
-    .append("g")
-    .attr("class",getsalle)
+/*
+c_res= d3.select(".room_lines")
+          .data(rooms);
 
 c_res
     .append("rect")
@@ -198,24 +244,46 @@ c_res
     .attr("y", res_y)
     .attr("width", days_width)
     .attr("height", res_height)
-/*
 c_res
     .enter()
     .append("text")
     .text(text_heure_res)
     .attr("x",)
     .attr("y", )*/
+
+
+c_all_courses = d3.select(".room_lines");
+
+for(room of rooms)
+{
+    c_all_courses_day = c_all_courses
+        .select("."+room["name"])
+            for(element of days){
+            console.log(element["ref"])
+            console.log(room)
+            c_all_courses_day
+                .select("."+element["name"])
+                .selectAll("test")
+                .data(course)
+                .enter()
+                .append("g")
+                .attr("class","test")
+        }
+}
 }
 
+/***********
+*gestion svg
+***********/
+function create_days(){
+}
 
 display_date();
-display_res();
 display_each_room();
-display_room();
-display_grid();
+display_res();
 
 d3.select("svg")
-        .attr("height", 1000)
-        .attr("width", 1000) ;
+        .attr("height", 10000)
+        .attr("width", 10000) ;
 
 
