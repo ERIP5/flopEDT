@@ -73,6 +73,7 @@ if 'rosetta' in settings.INSTALLED_APPS:
 
 urlpatterns += i18n_patterns(
     re_path(r'reservation_total$', views.reservation_total, name="reservation_total"),
+    re_path(r'reservation_salle$', views.reservation_salle, name="reservation_salle"),
     re_path(r'^jsi18n/$', JavaScriptCatalog.as_view(), name='javascript-catalog'),
     re_path(r'^admin$', RedirectView.as_view(url='/admin/')),
     re_path(r'^admin/', admin.site.urls),

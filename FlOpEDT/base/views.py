@@ -1713,3 +1713,6 @@ def get_key_all_tutors(department_abbrev):
 
 def reservation_total (req):
     return TemplateResponse(req,"base/reservationT.html");
+
+def reservation_salle (req):
+    return TemplateResponse(req,"base/reservationS.html");
