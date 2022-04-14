@@ -8,7 +8,6 @@ let thedata = [
 { "day" : "th", "room" : "B112", "start": 8, "end" : 9, "name" : "LN" }
 ];
 
-
 let courses = [
   {
     "id_course": 137455,

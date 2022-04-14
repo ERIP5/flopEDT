@@ -59,7 +59,7 @@ urlpatterns = [
     #Show all the reservation made for each rooms
     url(r'^reservationT', views.reservation_total, name="reservationT"),
     #Show all the reservation made for one room
-    url(r'^reservationS', views.preferences, name="reservationS"),
+    url(r'^reservationS', views.reservation_salle, name="reservationS"),
 
     # exchanges with the db via django
     # ---------------------------------

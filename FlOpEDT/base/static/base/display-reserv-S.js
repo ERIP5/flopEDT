@@ -78,12 +78,25 @@ var y = res_posy;
     return y;
 }
 
+function text_heure_res(res){
+    return (res["start"] + " - " + res["end"]);
+}
+
+function getday(day){
+    return day["name"]
+}
+
+function getsalle(res)
+{
+    return res["room"]
+}
+
 /**********
 *affichage*
 **********/
 
 function display_date(){
-d3.select("svg")
+d3.select(".dates")
   .selectAll("rect")
   .data(date)
   .enter()
@@ -100,6 +113,7 @@ d3.select("svg")
 
 function display_room(){
 d3.select("svg")
+  .select(".salles")
   .selectAll("rect_room")
   .data(room)
   .enter()
@@ -116,7 +130,7 @@ d3.select("svg")
 
 function display_each_room(){
 
-c_room = d3.select("svg")
+c_room = d3.select(".salles")
   .selectAll("rect_each_room")
   .data(each_room);
 
@@ -143,10 +157,16 @@ c_room
 
 
 function display_grid(){
-d3.select("svg")
-  .selectAll("rect_grid")
+c_gridall = d3.select(".grille")
+  .selectAll(".rect_grid")
   .data(days)
-  .enter()
+
+c_grid = c_gridall
+    .enter()
+    .append("g")
+    .attr("class",getday)
+
+
   .append("rect")
   .attr("class","rect_grid")
   .attr("fill","none")
@@ -159,14 +179,18 @@ d3.select("svg")
   }
 
 function display_res(){
-c_res = d3.select("svg")
-          .selectAll("rect_res")
+c_resall= d3.select(".reservation")
+          .selectAll("cadre_reservation")
           .data(each_room);
 
-c_res
+c_res = c_resall
     .enter()
+    .append("g")
+    .attr("class",getsalle)
+
+c_res
     .append("rect")
-    .attr("class","rect_res")
+    .attr("class","cadre_reservation")
     .attr("fill","none")
     .attr("stroke","black")
     .attr("stroke-width",5)
@@ -174,6 +198,13 @@ c_res
     .attr("y", res_y)
     .attr("width", days_width)
     .attr("height", res_height)
+/*
+c_res
+    .enter()
+    .append("text")
+    .text(text_heure_res)
+    .attr("x",)
+    .attr("y", )*/
 }
 
 
