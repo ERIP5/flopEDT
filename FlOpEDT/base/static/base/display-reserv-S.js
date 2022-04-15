@@ -76,7 +76,7 @@ let courses = [
   {
     "id_course": 137456,
     "department": 'INFO',
-    "mod": "ExplBD",
+    "mod": "IE",
     "c_type": "Projet",
     "day": "tu",
     "start": 800,
@@ -87,7 +87,7 @@ let courses = [
     "id_visio": -1,
     "graded": false,
     "color_bg": "#ec4dd8",
-    "color_txt": "#000000",
+    "color_txt": "#FFFFFF",
     "tutor": "PSE",
     "supp_tutors" : [],
     "group": "4B",
@@ -258,10 +258,27 @@ function course_x(day){
     }
 
 function course_y(){
-    rr = date_height+date_margin_top
-    console.log(rr)
     return date_height+date_margin_top+courses[i].start-echelle_start_time
 }
+
+function course_y_text_module(){
+    rr = date_height+date_margin_top
+    console.log(rr)
+    return date_height+date_margin_top+courses[i].start-echelle_start_time+10
+}
+
+function course_y_text_c_type(){
+    rr = date_height+date_margin_top
+    console.log(rr)
+    return date_height+date_margin_top+courses[i].start-echelle_start_time+25
+}
+
+function course_y_text_tutor(){
+    rr = date_height+date_margin_top
+    console.log(rr)
+    return date_height+date_margin_top+courses[i].start-echelle_start_time+40
+}
+
 
  /***************
 *function display*
@@ -481,12 +498,35 @@ function display_reservation(){
                 c_reservations
                     .append("rect")
                     .attr("class", "rect_grid")
-                    .attr("fill","none")
+                    .attr("fill",courses[i].color_bg)
                     .attr("stroke", "black")
                     .attr("x", course_x(courses[i].day))
                     .attr("y", course_y)
                     .attr("width", days_width)
                     .attr("height", courses[i].duration)
+
+                c_reservations
+                    .append("text")
+                    .text(courses[i].mod)
+                    .attr("x", course_x(courses[i].day)+50)
+                    .attr("y", course_y_text_module)
+                    .attr("style_color", courses[i].color_txt)
+
+                c_reservations
+                    .append("text")
+                    .text(courses[i].c_type)
+                    .attr("x", course_x(courses[i].day)+50)
+                    .attr("y", course_y_text_c_type)
+                    .attr("style.color", courses[i].color_txt)
+
+                c_reservations
+                    .append("text")
+                    .text(courses[i].tutor)
+                    .attr("x", course_x(courses[i].day)+50)
+                    .attr("y", course_y_text_tutor)
+                    .attr("text_color", courses[i].color_txt)
+
+
             }
         }
     }
