@@ -13,12 +13,20 @@ var date_height = 50
 var date_margtop = 20
 
 var each_room_y = days_y()
-var each_room_height = 120
+var compt_room_height = 0
+var compt_room_posy = 0
+var compt_text_posy = 0
+var y_room_act = days_y()
+var y_text_act = days_y()
+var room_max_courses = []
+var all_room_height = []
+
+var add_button_height = 50
 
 var each_text_y = days_y() + 60
 
 var res_posy = days_y()
-var res_height = 75
+var res_height = 100
 
 var course = []
 
@@ -66,6 +74,26 @@ let rooms = [
     "group": "4B",
     "promo": 0,
     "from_transversal": null
+  },{
+    "id_course": 137455,
+    "department": 'INFO',
+    "mod": "ExplBD",
+    "c_type": "Projet",
+    "day": "w",
+    "start": 585,
+    "duration": 85,
+    "room": "B102",
+    "room_type": "M",
+    "display": true,
+    "id_visio": -1,
+    "graded": false,
+    "color_bg": "#ec4dd8",
+    "color_txt": "#000000",
+    "tutor": "PSE",
+    "supp_tutors" : [],
+    "group": "4B",
+    "promo": 0,
+    "from_transversal": null
   }], 'th':[],'f':[]}},
   {"name": "G21", "display":false, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
   {"name": "G26", "display":false, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
@@ -92,20 +120,16 @@ function days_height(){
     return (each_room_y - days_y())
 }
 
-function each_room_posy(){
-    var y = each_room_y;
-    each_room_y += each_room_height;
-    return y;
-}
-
 function display_text(res){
     return res["name"]
 }
 
 function each_text_posy(){
-    var y = each_text_y;
-    each_text_y += each_room_height;
-    return y;
+        var y = y_text_act + (all_room_height[compt_text_posy]/2)
+        y_text_act += all_room_height[compt_text_posy]
+        compt_text_posy +=1
+        console.log(y_text_act)
+        return y
 }
 function res_x(res){
     for (element of days){
@@ -138,6 +162,40 @@ function getcourses(course){
     return course.mod
 }
 
+function max(){
+for (room of rooms){
+     var taller = 0
+     for (day of days){
+        if(room.courses[day.ref].length > taller){
+            taller = room.courses[day.ref].length
+            }
+     }
+    room_max_courses.push(taller)
+
+}
+console.log(room_max_courses)
+}
+
+function cac_room_height(){
+        var h = all_room_height[compt_room_height]
+        compt_room_height +=1
+        return h
+}
+
+function cac_room_y(){
+        var y = y_room_act
+        y_room_act += all_room_height[compt_room_posy]
+        compt_room_posy +=1
+        return y
+}
+
+function cac_all_height(){
+cpt = 0
+    for (h of room_max_courses){
+        all_room_height[cpt] = (res_height*h)+add_button_height
+        cpt +=1
+    }
+}
 
 /**********
 *affichage*
@@ -177,7 +235,9 @@ d3.select("svg")
   }
 
 function display_each_room(){
-
+compt_room_height = 0
+compt_room_posy = 0
+compt_text_posy = 0
 c_room_all = d3.select(".room_lines")
   .selectAll("rect_each_room")
   .data(rooms);
@@ -198,15 +258,15 @@ c_room
   .attr("stroke","black")
   .attr("stroke-width",5)
   .attr("x",0)
-  .attr("y", each_room_posy)
+  .attr("y", cac_room_y)
   .attr("width",room_width)
-  .attr("height",each_room_height);
+  .attr("height",cac_room_height);
 
 c_room
   .append("text")
   .text(display_text)
   .attr("class","room_name")
-  .attr("x",25)
+  .attr("x",30)
   .attr("y", each_text_posy)
 
 
@@ -230,7 +290,7 @@ c_grid = d3.select(".grille")
   .attr("x",days_x)
   .attr("y",days_y)
   .attr("width",days_width)
-  .attr("height",days_height())
+  .attr("height",res_y)
   }
 
 function display_res(){
@@ -260,7 +320,7 @@ for(room of rooms)
                 .attr("x",res_x)
                 .attr("y",days_y)
                 .attr("width",days_width)
-                .attr("height",50)
+                .attr("height",res_height)
 
         }
 }
@@ -273,8 +333,12 @@ function create_days(){
 }
 
 display_date();
+max();
+cac_room_height();
+cac_all_height();
 display_each_room();
 display_res();
+display_grid();
 
 d3.select("svg")
         .attr("height", 10000)
