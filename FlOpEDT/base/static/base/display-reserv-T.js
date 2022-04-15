@@ -30,6 +30,8 @@ var res_height = 100
 
 var course = []
 
+var couple_room_y = new Map();
+
 var room =[{}]
 let rooms = [
   {"name": "B112", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[{
@@ -40,7 +42,7 @@ let rooms = [
     "day": "m",
     "start": 585,
     "duration": 85,
-    "room": "B102",
+    "room": "B112",
     "room_type": "M",
     "display": true,
     "id_visio": -1,
@@ -57,12 +59,12 @@ let rooms = [
   {"name": "414", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[{
     "id_course": 137455,
     "department": 'INFO',
-    "mod": "ExplBD",
+    "mod": "ExploJAVA",
     "c_type": "Projet",
     "day": "w",
     "start": 585,
     "duration": 85,
-    "room": "B102",
+    "room": "414",
     "room_type": "M",
     "display": true,
     "id_visio": -1,
@@ -82,7 +84,7 @@ let rooms = [
     "day": "w",
     "start": 585,
     "duration": 85,
-    "room": "B102",
+    "room": "414",
     "room_type": "M",
     "display": true,
     "id_visio": -1,
@@ -94,7 +96,7 @@ let rooms = [
     "group": "4B",
     "promo": 0,
     "from_transversal": null
-  }], 'th':[],'f':[]}},
+  },], 'th':[],'f':[]}},
   {"name": "G21", "display":false, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
   {"name": "G26", "display":false, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
   {"name": "E209", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
@@ -103,6 +105,7 @@ let rooms = [
   {"name": "B203", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}}
 ]
 var date =[{}]
+var plus =[{}]
 /**********************
 *gestion des variables*
 **********************/
@@ -128,7 +131,6 @@ function each_text_posy(){
         var y = y_text_act + (all_room_height[compt_text_posy]/2)
         y_text_act += all_room_height[compt_text_posy]
         compt_text_posy +=1
-        console.log(y_text_act)
         return y
 }
 function res_x(res){
@@ -139,9 +141,9 @@ function res_x(res){
     }
 }
 
-function res_y(){
-var y = res_posy;
-    res_posy += each_room_height;
+function res_y(course){
+    var y = couple_room_y.get(course.room)
+    couple_room_y.set(course.room, (y+res_height))
     return y;
 }
 
@@ -173,7 +175,6 @@ for (room of rooms){
     room_max_courses.push(taller)
 
 }
-console.log(room_max_courses)
 }
 
 function cac_room_height(){
@@ -182,10 +183,11 @@ function cac_room_height(){
         return h
 }
 
-function cac_room_y(){
+function cac_room_y(room){
         var y = y_room_act
         y_room_act += all_room_height[compt_room_posy]
         compt_room_posy +=1
+        couple_room_y.set(room.name, y)
         return y
 }
 
@@ -301,30 +303,32 @@ for(room of rooms)
 {
     c_all_courses_day = c_all_courses
         .select("."+room_class(room))
+
             for(day of days){
-            courses_all = room.courses[day.ref]
             c_course_res = c_all_courses_day
                 .select("."+day.name)
                 .selectAll("test")
                 .data(room.courses[day.ref])
-                .enter()
-                .append("g")
-                .attr("class",getcourses)
+                .enter();
+
 
             c_course_res
+                .append("g")
+                .attr("class",getcourses)
                 .append("rect")
                 .attr("class","display_res_frame")
                 .attr("fill","none")
                 .attr("stroke","black")
                 .attr("stroke-width",5)
                 .attr("x",res_x)
-                .attr("y",days_y)
+                .attr("y",res_y)
                 .attr("width",days_width)
                 .attr("height",res_height)
-
         }
 }
 }
+
+
 
 /***********
 *gestion svg
@@ -337,6 +341,7 @@ max();
 cac_room_height();
 cac_all_height();
 display_each_room();
+console.log(couple_room_y)
 display_res();
 display_grid();
 
