@@ -243,8 +243,6 @@ for(room of rooms)
         .select("."+room_class(room))
             for(day of days){
             courses_all = room.courses[day.ref]
-            console.log(courses_all)
-            console.log(room, day)
             c_course_res = c_all_courses_day
                 .select("."+day.name)
                 .selectAll("test")
