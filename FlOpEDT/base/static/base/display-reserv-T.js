@@ -199,6 +199,11 @@ cpt = 0
     }
 }
 
+function plus_x(day)
+{
+    return (day.num*days_width+room_width)
+}
+
 /**********
 *affichage*
 **********/
@@ -328,8 +333,32 @@ for(room of rooms)
 }
 }
 
+function display_plus(){
+c_all_rooms = d3.select(".room_lines")
+for (room of rooms){
+    c_one_room = c_all_rooms
+        .select(".Room"+room.name)
+        for (day of days){
+            c_one_room
+                .select("."+day.name)
+                .selectAll("plus")
+                .data(plus)
+                .enter()
+                .append("g")
+                .attr("class","plus")
+                .append("rect")
+                .attr("class","display_res_frame")
+                .attr("fill","none")
+                .attr("stroke","black")
+                .attr("stroke-width",5)
+                .attr("x",plus_x(day))
+                .attr("y",couple_room_y.get(room.name))
+                .attr("width",days_width)
+                .attr("height",add_button_height)
+        }
 
-
+    }
+}
 /***********
 *gestion svg
 ***********/
@@ -341,8 +370,8 @@ max();
 cac_room_height();
 cac_all_height();
 display_each_room();
-console.log(couple_room_y)
 display_res();
+display_plus();
 display_grid();
 
 d3.select("svg")
