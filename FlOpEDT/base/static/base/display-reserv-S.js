@@ -58,7 +58,7 @@ let courses = [
     "mod": "ExplBD",
     "c_type": "Projet",
     "day": "m",
-    "start": 585,
+    "start": 495,
     "duration": 85,
     "room": "B102",
     "room_type": "M",
@@ -78,7 +78,7 @@ let courses = [
     "department": 'INFO',
     "mod": "ExplBD",
     "c_type": "Projet",
-    "day": "m",
+    "day": "tu",
     "start": 800,
     "duration": 100,
     "room": "B102",
@@ -95,11 +95,32 @@ let courses = [
     "from_transversal": null
   },
   {
+    "id_course": 137456,
+    "department": 'INFO',
+    "mod": "ExplBD",
+    "c_type": "Projet",
+    "day": "w",
+    "start": 800,
+    "duration": 100,
+    "room": "B102",
+    "room_type": "M",
+    "display": false,
+    "id_visio": -1,
+    "graded": false,
+    "color_bg": "#ec4dd8",
+    "color_txt": "#000000",
+    "tutor": "PSE",
+    "supp_tutors" : [],
+    "group": "4B",
+    "promo": 0,
+    "from_transversal": null
+  },
+  {
     "id_course": 137457,
     "department": 'INFO',
     "mod": "ExplBD",
     "c_type": "Projet",
-    "day": "m",
+    "day": "th",
     "start": 585,
     "duration": 85,
     "room": "B103",
@@ -214,9 +235,32 @@ function reserv_dispo(){
             console.log(courses[i].id_course+" is not in the right room")
             }
     }
-}*/
+}
+*/
 
-function reserv_dispo() {
+function course_x(day){
+    //console.log(courses[i].day)
+    if (courses[i].day == "m"){
+        return days_width*(0)+horaire_width
+        }
+    if (courses[i].day == "tu"){
+        return days_width*(1)+horaire_width
+        }
+    if (courses[i].day == "w"){
+        return days_width*(2)+horaire_width
+        }
+    if (courses[i].day == "th"){
+        return days_width*(3)+horaire_width
+        }
+    if (courses[i].day == "f"){
+        return days_width*(4)+horaire_width
+        }
+    }
+
+function course_y(){
+    rr = date_height+date_margin_top
+    console.log(rr)
+    return date_height+date_margin_top+courses[i].start-echelle_start_time
 }
 
  /***************
@@ -425,12 +469,28 @@ c_echelle = d3.select(".echelles")
 
 }
 
-/*function display_reservation(){
+function display_reservation(){
     c_reservations = d3.select(".reservations")
     .selectAll("rect")
-    .data(reservations)
+    .data(courses)
     .enter();
-}*/
+
+    for (i=0; i<courses.length;i++){
+        if (courses[i].display == true) {
+            if (current_room == courses[i].room) {
+                c_reservations
+                    .append("rect")
+                    .attr("class", "rect_grid")
+                    .attr("fill","none")
+                    .attr("stroke", "black")
+                    .attr("x", course_x(courses[i].day))
+                    .attr("y", course_y)
+                    .attr("width", days_width)
+                    .attr("height", courses[i].duration)
+            }
+        }
+    }
+}
 
 /*******
 *display*
@@ -438,8 +498,8 @@ c_echelle = d3.select(".echelles")
 display_date();
 display_grid();
 display_echelle();
-//display_reservation();
-reserv_dispo();
+display_reservation();
+//reserv_dispo();
 
 d3.select("svg")
         .attr("height", 1600)
