@@ -31,7 +31,7 @@ let courses = [
     "from_transversal": null
   },
   {
-    "id_course": 137455,
+    "id_course": 137456,
     "department": 'INFO',
     "mod": "ExplBD",
     "c_type": "Projet",

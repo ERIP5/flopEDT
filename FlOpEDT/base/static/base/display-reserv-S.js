@@ -21,25 +21,10 @@ var horaire_width = 150
 
 var date_width = days_width*5
 
-
 var each_hour_y = days_y()
 var each_hour_yy = days_y()
 
 var each_time_text = 9
-
-
-/*
-// a changer
-var each_case_y = days_y()
-var each_case_height = 120 //(each_reserv.end-each_reserv.start)*2
-*/
-
-/*
-// a changer
-var res_posy = days_y()
-var res_height = 110 // each_case_height
-*/
-
 
 var room =[{}]
 
@@ -47,12 +32,15 @@ var date =[{}]
 
 var echelle =[{}]
 
+var current_room = "B102"
+
 var days = [{num: 0, ref: "m", name: "Lundi"},
             {num: 1, ref: "tu", name: "Mardi"},
             {num: 2, ref: "w", name: "Mercredi"},
             {num: 3, ref: "th", name: "Jeudi"},
             {num: 4, ref: "f", name: "Vendredi"}] ;
 
+/*
 var each_reserv = [
 { "day" : "m", "room" : "Amphi1", "start": 480, "end" : 540, "name" : "PSE" },
 { "day" : "m", "room" : "Amphi2", "start": 840, "end" : 960, "name" : "PSE" },
@@ -61,7 +49,72 @@ var each_reserv = [
 { "day" : "w", "room" : "B007", "start": 480, "end" : 600, "name" : "MCV" },
 { "day" : "th", "room" : "B111", "start": 480, "end" : 540, "name" : "OT" },
 { "day" : "th", "room" : "B112", "start": 480, "end" : 540, "name" : "LN" }
-]
+]*/
+
+let courses = [
+  {
+    "id_course": 137455,
+    "department": 'INFO',
+    "mod": "ExplBD",
+    "c_type": "Projet",
+    "day": "m",
+    "start": 585,
+    "duration": 85,
+    "room": "B102",
+    "room_type": "M",
+    "display": true,
+    "id_visio": -1,
+    "graded": false,
+    "color_bg": "#ec4dd8",
+    "color_txt": "#000000",
+    "tutor": "PSE",
+    "supp_tutors" : [],
+    "group": "4B",
+    "promo": 0,
+    "from_transversal": null
+  },
+  {
+    "id_course": 137456,
+    "department": 'INFO',
+    "mod": "ExplBD",
+    "c_type": "Projet",
+    "day": "m",
+    "start": 800,
+    "duration": 100,
+    "room": "B102",
+    "room_type": "M",
+    "display": true,
+    "id_visio": -1,
+    "graded": false,
+    "color_bg": "#ec4dd8",
+    "color_txt": "#000000",
+    "tutor": "PSE",
+    "supp_tutors" : [],
+    "group": "4B",
+    "promo": 0,
+    "from_transversal": null
+  },
+  {
+    "id_course": 137457,
+    "department": 'INFO',
+    "mod": "ExplBD",
+    "c_type": "Projet",
+    "day": "m",
+    "start": 585,
+    "duration": 85,
+    "room": "B103",
+    "room_type": "M",
+    "display": true,
+    "id_visio": -1,
+    "graded": false,
+    "color_bg": "#ec4dd8",
+    "color_txt": "#000000",
+    "tutor": "PSE",
+    "supp_tutors" : [],
+    "group": "4B",
+    "promo": 0,
+    "from_transversal": null
+  }]
 
 
 
@@ -110,6 +163,7 @@ function echelle_each_time_quaranteCinq_h(){
 function echelle_each_time_soixante(){
     var y = each_hour_y;
     each_hour_y += 60;
+    //console.log(y)
     return y;
 }
 
@@ -123,8 +177,46 @@ function echelle_each_time_soixante_h(){
 function echelle_each_time_text(){
     var yyy = each_time_text;
     each_time_text += 1;
-    console.log(yyy);
+    ///console.log(yyy);
     return yyy;
+}
+
+/*
+function reserv_dispo(){
+    //console.log("reserv_dispo")
+    for (i=0;i<courses.length;i++) {
+        console.log("--------------")
+        if (current_room == courses[i].room) {
+            //console.log("if")
+
+            console.log("id_course")
+            //console.log(courses[i].id_course)
+            res_id_course = courses[i].id_course
+            //console.log(res_id_course)
+
+            console.log("day")
+            //console.log(courses[i].day)
+            res_day = courses[i].day
+            //console.log(res_day)
+
+            console.log("start")
+            //console.log(courses[i].start)
+            res_start = courses[i].start
+            //console.log(res_start)
+
+            console.log("duration")
+            //console.log(courses[i].duration)
+            res_duration = courses[i].duration
+            //console.log(res_duration)
+            }
+        else {
+            //console.log("else")
+            console.log(courses[i].id_course+" is not in the right room")
+            }
+    }
+}*/
+
+function reserv_dispo() {
 }
 
  /***************
@@ -181,7 +273,7 @@ c_echelle = d3.select(".echelles")
   .attr("class","rect_echelle")
   .attr("fill","none")
   .attr("stroke","blue")
-  .attr("stroke-width",5)
+  .attr("stroke-width",2)
   .attr("x",echelle_x)
   .attr("y",echelle_y)
   .attr("width",echelle_width)
@@ -333,12 +425,21 @@ c_echelle = d3.select(".echelles")
 
 }
 
+/*function display_reservation(){
+    c_reservations = d3.select(".reservations")
+    .selectAll("rect")
+    .data(reservations)
+    .enter();
+}*/
+
 /*******
 *display*
  ******/
 display_date();
 display_grid();
 display_echelle();
+//display_reservation();
+reserv_dispo();
 
 d3.select("svg")
         .attr("height", 1600)
