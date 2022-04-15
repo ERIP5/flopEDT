@@ -89,7 +89,7 @@ let rooms = [
     "display": true,
     "id_visio": -1,
     "graded": false,
-    "color_bg": "#ec4dd8",
+    "color_bg": "#ec4dd7",
     "color_txt": "#000000",
     "tutor": "PSE",
     "supp_tutors" : [],
@@ -217,7 +217,7 @@ d3.select(".dates")
   .attr("class","rect_date")
   .attr("fill","none")
   .attr("stroke","black")
-  .attr("stroke-width",5)
+  .attr("stroke-width",2)
   .attr("x",room_width)
   .attr("y",date_margtop)
   .attr("width",date_width)
@@ -234,7 +234,7 @@ d3.select("svg")
   .attr("class","rect_room")
   .attr("fill","none")
   .attr("stroke","black")
-  .attr("stroke-width",5)
+  .attr("stroke-width",2)
   .attr("x",0)
   .attr("y",days_y)
   .attr("width",room_width)
@@ -263,7 +263,7 @@ c_room
   .attr("class","block_title_frame")
   .attr("fill","none")
   .attr("stroke","black")
-  .attr("stroke-width",5)
+  .attr("stroke-width",2)
   .attr("x",0)
   .attr("y", cac_room_y)
   .attr("width",room_width)
@@ -322,13 +322,13 @@ for(room of rooms)
                 .attr("class",getcourses)
                 .append("rect")
                 .attr("class","display_res_frame")
-                .attr("fill","none")
                 .attr("stroke","black")
-                .attr("stroke-width",5)
+                .attr("stroke-width",2)
                 .attr("x",res_x)
                 .attr("y",res_y)
                 .attr("width",days_width)
                 .attr("height",res_height)
+                .attr("fill","lightblue")
         }
 }
 }
@@ -350,7 +350,7 @@ for (room of rooms){
                 .attr("class","display_res_frame")
                 .attr("fill","none")
                 .attr("stroke","black")
-                .attr("stroke-width",5)
+                .attr("stroke-width",2)
                 .attr("x",plus_x(day))
                 .attr("y",couple_room_y.get(room.name))
                 .attr("width",days_width)
