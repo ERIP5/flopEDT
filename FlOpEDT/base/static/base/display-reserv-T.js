@@ -26,12 +26,12 @@ var all_room_height = []
 var add_button_height = 50
 
 var res_posy = days_y()
-var res_height = 100
+var res_height = 150
 
 var course = []
 
 var couple_room_y = new Map();
-var couple_room_maxy = new Map();
+var couple_textroom_y = new Map();
 
 var room =[{}]
 let rooms = [
@@ -63,14 +63,14 @@ let rooms = [
     "mod": "ExploJAVA",
     "c_type": "Projet",
     "day": "w",
-    "start": 585,
+    "start": 480,
     "duration": 85,
     "room": "414",
     "room_type": "M",
     "display": true,
     "id_visio": -1,
     "graded": false,
-    "color_bg": "#ec4dd8",
+    "color_bg": "#CCFF99",
     "color_txt": "#000000",
     "tutor": "PSE",
     "supp_tutors" : [],
@@ -168,12 +168,42 @@ function res_y(course){
     return y;
 }
 
-function res_text_y(course){
-    return couple_room_y.get(course.room+ course.day)/2
+function res_text_roomy(course){
+    var y = couple_textroom_y.get(course.room+ course.day+"room")
+    couple_textroom_y.set(course.room+ course.day+"room", (y+res_height))
+    return y+(res_height/4)
+}
+
+function res_text_daty(course){
+    var y = couple_textroom_y.get(course.room+ course.day+"time")
+    couple_textroom_y.set(course.room+ course.day+"time", (y+res_height))
+    return y+(res_height/2)
+}
+
+function res_text_profy(course){
+    var y = couple_textroom_y.get(course.room+ course.day+"prof")
+    couple_textroom_y.set(course.room+ course.day+"prof", (y+res_height))
+    return y+(res_height*0.75)
+}
+
+function res_text_x(course){
+    for (day of days)
+    {
+        if (day.ref == course.day){
+        return day.num*days_width+room_width+(days_width/2)
+        }
+    }
+    return room_width+(days_width/2)
 }
 
 function text_heure_res(res){
-    return (res["start"] + " - " + res["end"]);
+    return (get_time(res.start)+" - "+get_time(res.start+res.duration))
+}
+
+function get_time(val){
+    var tostring = ""+Math.floor(val/60)+"h"+(val%60)
+    console.log(tostring)
+    return tostring
 }
 
 function getday(day){
@@ -199,7 +229,7 @@ for (room of rooms){
      }
     room_max_courses.push(taller)
 
-}
+    }
 }
 
 function cac_room_height(){
@@ -214,6 +244,9 @@ function cac_room_y(room){
         compt_room_posy +=1
         for (day of days){
             couple_room_y.set(room.name+ day.ref, y)
+            couple_textroom_y.set(room.name + day.ref + "room", y)
+            couple_textroom_y.set(room.name + day.ref + "time", y)
+            couple_textroom_y.set(room.name + day.ref + "prof", y)
         }
         return y
 }
@@ -229,6 +262,18 @@ cpt = 0
 function plus_x(day)
 {
     return (day.num*days_width+room_width)
+}
+
+function color_reservation(course){
+    return course.color_bg
+}
+
+function get_course_name(course){
+    return (course.department+" : "+course.mod)
+}
+
+function get_course_profg(course){
+    return "Tutor : "+course.tutor
 }
 
 /**********
@@ -366,12 +411,31 @@ for(room of rooms)
                 .attr("y",res_y)
                 .attr("width",days_width)
                 .attr("height",res_height)
-                .attr("fill","lightblue")
+                .attr("fill",color_reservation)
 
             c_course_res
                 .append("text")
-                .attr("class","display_res_text")
+                .attr("class", "display_res_text_mod")
+                .text(get_course_name)
+                .attr("x", res_text_x)
+                .attr("y", res_text_roomy)
+                .attr("text-anchor", "middle")
 
+            c_course_res
+                .append("text")
+                .attr("class", "display_res_text_date")
+                .text(text_heure_res)
+                .attr("x", res_text_x)
+                .attr("y", res_text_daty)
+                .attr("text-anchor", "middle")
+
+            c_course_res
+                .append("text")
+                .attr("class", "display_res_text_prof")
+                .text(get_course_profg)
+                .attr("x", res_text_x)
+                .attr("y", res_text_profy)
+                .attr("text-anchor", "middle")
         }
 }
 }
@@ -405,9 +469,6 @@ for (room of rooms){
 /***********
 *gestion svg
 ***********/
-function create_days(){
-}
-
 display_date();
 max();
 cac_room_height();
