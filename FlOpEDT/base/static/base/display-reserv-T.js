@@ -1,4 +1,4 @@
-var days_width = 150
+var days_width = 200
 var days = [{num: 0, ref: "m", name: "Lundi"},
             {num: 1, ref: "tu", name: "Mardi"},
             {num: 2, ref: "w", name: "Mercredi"},
@@ -12,18 +12,18 @@ var date_width = days_width*5
 var date_height = 50
 var date_margtop = 20
 
-var each_room_y = days_y()
 var compt_room_height = 0
 var compt_room_posy = 0
 var compt_text_posy = 0
+
+var each_room_y = days_y()
 var y_room_act = days_y()
 var y_text_act = days_y()
+
 var room_max_courses = []
 var all_room_height = []
 
 var add_button_height = 50
-
-var each_text_y = days_y() + 60
 
 var res_posy = days_y()
 var res_height = 100
@@ -31,6 +31,7 @@ var res_height = 100
 var course = []
 
 var couple_room_y = new Map();
+var couple_room_maxy = new Map();
 
 var room =[{}]
 let rooms = [
@@ -96,7 +97,27 @@ let rooms = [
     "group": "4B",
     "promo": 0,
     "from_transversal": null
-  },], 'th':[],'f':[]}},
+  },], 'th':[{
+    "id_course": 137455,
+    "department": 'INFO',
+    "mod": "ExplBD",
+    "c_type": "Projet",
+    "day": "th",
+    "start": 585,
+    "duration": 85,
+    "room": "414",
+    "room_type": "M",
+    "display": true,
+    "id_visio": -1,
+    "graded": false,
+    "color_bg": "#ec4dd7",
+    "color_txt": "#000000",
+    "tutor": "PSE",
+    "supp_tutors" : [],
+    "group": "4B",
+    "promo": 0,
+    "from_transversal": null
+  }],'f':[]}},
   {"name": "G21", "display":false, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
   {"name": "G26", "display":false, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
   {"name": "E209", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
@@ -142,9 +163,13 @@ function res_x(res){
 }
 
 function res_y(course){
-    var y = couple_room_y.get(course.room)
-    couple_room_y.set(course.room, (y+res_height))
+    var y = couple_room_y.get(course.room+course.day)
+    couple_room_y.set(course.room+course.day, (y+res_height))
     return y;
+}
+
+function res_text_y(course){
+    return couple_room_y.get(course.room+ course.day)/2
 }
 
 function text_heure_res(res){
@@ -187,7 +212,9 @@ function cac_room_y(room){
         var y = y_room_act
         y_room_act += all_room_height[compt_room_posy]
         compt_room_posy +=1
-        couple_room_y.set(room.name, y)
+        for (day of days){
+            couple_room_y.set(room.name+ day.ref, y)
+        }
         return y
 }
 
@@ -286,18 +313,26 @@ c_room_gr
 
 
 function display_grid(){
+
+var y = 0;
+for (val of all_room_height){
+    y = y + val
+}
+
 c_grid = d3.select(".grille")
   .selectAll(".rect_grid")
   .data(days)
+  .enter()
   .append("rect")
   .attr("class","rect_grid")
   .attr("fill","none")
   .attr("stroke","black")
-  .attr("stroke-width",5)
+  .attr("stroke-width",2)
   .attr("x",days_x)
   .attr("y",days_y)
   .attr("width",days_width)
-  .attr("height",res_y)
+  .attr("height",y)
+console.log("ok")
   }
 
 function display_res(){
@@ -310,16 +345,19 @@ for(room of rooms)
         .select("."+room_class(room))
 
             for(day of days){
-            c_course_res = c_all_courses_day
+            c_course_res_g = c_all_courses_day
                 .select("."+day.name)
                 .selectAll("test")
                 .data(room.courses[day.ref])
                 .enter();
 
 
-            c_course_res
+            c_course_res = c_course_res_g
                 .append("g")
                 .attr("class",getcourses)
+
+
+            c_course_res
                 .append("rect")
                 .attr("class","display_res_frame")
                 .attr("stroke","black")
@@ -329,6 +367,11 @@ for(room of rooms)
                 .attr("width",days_width)
                 .attr("height",res_height)
                 .attr("fill","lightblue")
+
+            c_course_res
+                .append("text")
+                .attr("class","display_res_text")
+
         }
 }
 }
@@ -352,7 +395,7 @@ for (room of rooms){
                 .attr("stroke","black")
                 .attr("stroke-width",2)
                 .attr("x",plus_x(day))
-                .attr("y",couple_room_y.get(room.name))
+                .attr("y",couple_room_y.get(room.name + day.ref))
                 .attr("width",days_width)
                 .attr("height",add_button_height)
         }
