@@ -8,16 +8,16 @@ let thedata = [
 { "day" : "th", "room" : "B112", "start": 8, "end" : 9, "name" : "LN" }
 ];
 
-let courses = [
-  {
+let rooms = [
+  {"name": "B112", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[{
     "id_course": 137455,
     "department": 'INFO',
     "mod": "ExplBD",
     "c_type": "Projet",
-    "day": "f",
+    "day": "m",
     "start": 585,
     "duration": 85,
-    "room": "B102",
+    "room": "B112",
     "room_type": "M",
     "display": true,
     "id_visio": -1,
@@ -29,40 +29,73 @@ let courses = [
     "group": "4B",
     "promo": 0,
     "from_transversal": null
-  },
-  {
-    "id_course": 137456,
+  }],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "E002", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "414", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[{
+    "id_course": 137455,
+    "department": 'INFO',
+    "mod": "ExploJAVA",
+    "c_type": "Projet",
+    "day": "w",
+    "start": 480,
+    "duration": 85,
+    "room": "414",
+    "room_type": "M",
+    "display": true,
+    "id_visio": -1,
+    "graded": false,
+    "color_bg": "#CCFF99",
+    "color_txt": "#000000",
+    "tutor": "PSE",
+    "supp_tutors" : [],
+    "group": "4B",
+    "promo": 0,
+    "from_transversal": null
+  },{
+    "id_course": 137455,
     "department": 'INFO',
     "mod": "ExplBD",
     "c_type": "Projet",
-    "day": "f",
+    "day": "w",
     "start": 585,
     "duration": 85,
-    "room": "B102",
+    "room": "414",
     "room_type": "M",
     "display": true,
     "id_visio": -1,
     "graded": false,
-    "color_bg": "#ec4dd8",
+    "color_bg": "#ec4dd7",
     "color_txt": "#000000",
     "tutor": "PSE",
     "supp_tutors" : [],
     "group": "4B",
     "promo": 0,
     "from_transversal": null
-  }
-]
-
-
-
-let rooms = [
-  {"name": "B112", "display":true, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[], 'th':[],'f':[]}]},
-  {"name": "E002", "display":true, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[], 'th':[],'f':[]}]},
-  {"name": "414", "display":true, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[], 'th':[],'f':[]}]},
-  {"name": "G21", "display":false, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[], 'th':[],'f':[]}]},
-  {"name": "G26", "display":false, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[], 'th':[],'f':[]}]},
-  {"name": "E209", "display":true, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[], 'th':[],'f':[]}]},
-  {"name": "B111", "display":true, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[], 'th':[],'f':[]}]},
-  {"name": "B002", "display":true, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[], 'th':[],'f':[]}]},
-  {"name": "B203", "display":true, "type":"A","y":0, "height":0, 'courses':[{'m':[],'tu':[],'w':[], 'th':[],'f':[]}]}
+  },], 'th':[{
+    "id_course": 137455,
+    "department": 'INFO',
+    "mod": "ExplBD",
+    "c_type": "Projet",
+    "day": "th",
+    "start": 585,
+    "duration": 85,
+    "room": "414",
+    "room_type": "M",
+    "display": true,
+    "id_visio": -1,
+    "graded": false,
+    "color_bg": "#ec4dd7",
+    "color_txt": "#000000",
+    "tutor": "PSE",
+    "supp_tutors" : [],
+    "group": "4B",
+    "promo": 0,
+    "from_transversal": null
+  }],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "G21", "display":false, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "G26", "display":false, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "E209", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "B111", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "B002", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "B203", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}}
 ]
