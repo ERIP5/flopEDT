@@ -3,20 +3,47 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>ReservationS</title>
+    <title>Reservation</title>
 </head>
 
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %} ReservationS {% endblock %}
+{% block title %} Reservation {% endblock %}
 {% load static %}
 
 <script src="{% static 'base/d3.v4.min.js' %}"></script>
 <script type='text/javascript' src="{% static 'base/jquery.min.js' %}"></script>
 <script src="{% static 'base/dataTest.js' %}"></script>
+<script type='text/javascript' src="{% static 'base/display-reserv-S.js' %}"></script>
 
 {% block content %}
+
+    <script language="javascript"> function liste(formReserv) {
+        if (formReserv.listReserv.value == "All") {
+            //main();
+            alert("all if "+formReserv.listReserv.value);
+            }
+    }
+    </SCRIPT>
+
+</HEAD>
+<BODY>
+Entrez votre choix : <FORM NAME="formReserv">
+<SELECT NAME="listReserv">
+<OPTION VALUE="All">All the room
+<OPTION VALUE="B004">B004
+<OPTION VALUE="B105">B105
+</SELECT>
+<INPUT TYPE="button" NAME="b" VALUE="Room " onClick=liste(formReserv);> </FORM>
+</BODY>
+
+<!--
+if (formReserv.listReserv.value == "All") {
+            alert("all if "+formReserv.listReserv.value);
+            }
+-->
+
 <svg height="440" width="400">
     <g class="dates">
   </g>
@@ -32,7 +59,7 @@
   </g>
 </svg>
 
-<script type='text/javascript' src="{% static 'base/display-reserv-S.js' %}"></script>
+
 
 {% endblock %}
 

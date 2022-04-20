@@ -1,3 +1,4 @@
+alert("please");
 var date_height = 50
 var date_margin_top = 20
 
@@ -51,7 +52,8 @@ var each_reserv = [
 { "day" : "w", "room" : "B007", "start": 480, "end" : 600, "name" : "MCV" },
 { "day" : "th", "room" : "B111", "start": 480, "end" : 540, "name" : "OT" },
 { "day" : "th", "room" : "B112", "start": 480, "end" : 540, "name" : "LN" }
-]*/
+]
+*/
 
 /*
 let courses = [
@@ -570,11 +572,15 @@ function display_another(){
 /*******
 *display*
  ******/
-display_date();
-display_grid();
-display_echelle();
-//display_reservation();
-display_another();
+
+ function main() {
+    display_date();
+    display_grid();
+    display_echelle();
+    //display_reservation();
+    display_another();
+ }
+
 
 d3.select("svg")
         .attr("height", 1600)

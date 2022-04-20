@@ -3,13 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>ListeReservation</title>
+    <title>listeReserv</title>
 </head>
 
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %} ReservationS {% endblock %}
+{% block title %} listeReserv {% endblock %}
 {% load static %}
 
 <script src="{% static 'base/d3.v4.min.js' %}"></script>
@@ -17,22 +17,12 @@
 <script src="{% static 'base/dataTest.js' %}"></script>
 
 {% block content %}
-<svg height="440" width="400">
-    <g class="dates">
-  </g>
-    <g class="salles">
-  </g>
-    <g class="reservations">
-  </g>
-    <g class="grille">
-  </g>
-    <g class="echelles">
-  </g>
-    <g class ="anothers">
-  </g>
-</svg>
-
-<script type='text/javascript' src="{% static 'base/display-reserv-S.js' %}"></script>
+    <select name="listReserv" id="listReserv-select">
+        <option value="">Select a room</option>
+        <option value="dog">All rooms</option>
+        <option value="dog">B004</option>
+        <option value="dog">B105</option>
+    </select>
 
 {% endblock %}
 
