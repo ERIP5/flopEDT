@@ -4,7 +4,7 @@ var date_margin_top = 20
 var echelle_width = 50
 var echelle_y = cac_echelle_y()
 var echelle_x = 100
-var echelle_start_time = 8*60+15 //495
+var echelle_start_time = 8*60+15//495
 var echelle_day_start_hour = Math.floor(echelle_start_time/60)+1
 var echelle_day_start_hour_concat = echelle_day_start_hour + "h"
 var echelle_end_time_day = 18*60+45 //1125
@@ -24,6 +24,9 @@ var date_width = days_width*5
 var each_hour_y = days_y()
 var each_hour_yy = days_y()
 
+var current_room = "414"
+var another_each_case_y = another_decal_y()
+
 
 var room =[{}]
 
@@ -31,7 +34,7 @@ var date =[{}]
 
 var echelle =[{}]
 
-var current_room = "414"
+var another = [{}]
 
 var days = [{num: 0, ref: "m", name: "Lundi"},
             {num: 1, ref: "tu", name: "Mardi"},
@@ -233,7 +236,7 @@ function display_echelle_end_time_day(){
 }
 
 function echelle_each_time_soixante(){
-console.log((echelle_start_time+60)-echelle_start_time-echelle_start_time%60)
+    //console.log((echelle_start_time+60)-echelle_start_time-echelle_start_time%60)
     var y = each_hour_y;
     if (y == 70) {
     //console.log("if "+each_hour_y)
@@ -296,6 +299,53 @@ function course_y_text_c_type(){
 
 function course_y_text_tutor(){
     return date_height+date_margin_top+rooms[i].start-echelle_start_time+40
+}
+
+function another_decal_x(){
+    return (days_width*(5)+horaire_width) + echelle_x
+}
+
+function another_decal_y(){
+    return date_height+date_margin_top
+}
+
+function another_decal_height(){
+    return (another_case_height()*rooms.length) + (another_case_height()*2)
+}
+
+function another_decal_width(){
+    return 500
+}
+
+
+function another_case_x(){
+    return another_decal_x()
+}
+
+function another_case_y(){
+    var ac = another_each_case_y;
+    another_each_case_y += another_case_height()
+    return ac
+}
+
+function another_case_height(){
+    return 70
+}
+
+function another_case_width(){
+    return another_decal_width()
+}
+
+function another_case_text_x(){
+
+}
+
+function another_case_text_y(){
+
+}
+
+function another_case_text(){
+
 }
 
 
@@ -395,17 +445,39 @@ function display_reservation(){
     .data(rooms)
     .enter();
 
+    //console.log(rooms.length)
+    //for (i=0; i<rooms.length;i++){
+    //    if (rooms[i].display == true) {
+    //        //console.log(rooms[i].name)
+    //        if (current_room == rooms[i].name) {
+    //           for day in days:
+    //                x = course_x(day)
+    //                days_courses = room_object.courses[day.ref]
+    //                for course in days_courses:
+    //                   y =
 
     //console.log(rooms.length)
-    for (i=0; i<rooms.length;i++){
-        if (rooms[i].display == true) {
-            //console.log(rooms[i].name)
-            if (current_room == rooms[i].name) {
-                for day in days:
-                    x = course_x(day)
-                    days_courses = room_object.courses[day.ref]
-                    for course in days_courses:
-                        y =
+    for (i=0; i<rooms.length;i++) {
+        if (current_room == room[i].name) {
+            if (rooms[i].display == true){
+                for (day of days) {
+                    console.log(rooms[i].name)
+                    c_reservations
+                        .append("rect")
+                        .attr("class", "rect_grid")
+                        .attr("fill","none") //rooms[i].color_bg
+                        .attr("stroke", "black")
+                        .attr("x", course_x(day))
+                        days_courses = .courses[day.ref]
+                            for (course of days_courses) {
+                                .attr("y", course_y)
+                                .attr("width", days_width)
+                                .attr("height", rooms[i].duration)
+                            }
+                }
+            }
+        }
+    }
 
                 //console.log(rooms[i].name)
                 c_reservations
@@ -438,13 +510,62 @@ function display_reservation(){
                     .attr("x", course_x(rooms[i].day)+50)
                     .attr("y", course_y_text_tutor)
                     //.attr("text_color", rooms[i].color_txt)
-
-
             }
-        }
-    }
-}
 */
+
+function display_another(){
+  c_another = d3.select(".anothers")
+  .selectAll("rect")
+  .data(another)
+  .enter();
+
+  c_another
+  .append("rect")
+  .attr("class","rect_another")
+  .attr("fill","none")
+  .attr("stroke","red")
+  .attr("stroke-width",2)
+  .attr("x",another_decal_x)
+  .attr("y",another_decal_y)
+  .attr("width",another_decal_width)
+  .attr("height",another_decal_height)
+
+  c_another
+  .append("rect")
+  .attr("class","rect_another")
+  .attr("fill","none")
+  .attr("stroke","grey")
+  .attr("stroke-width",2)
+  .attr("x",another_case_x)
+  .attr("y",another_case_y)
+  .attr("width",another_case_width)
+  .attr("height",another_case_height)
+
+  c_another
+  .append("rect")
+  .attr("class","rect_another")
+  .attr("fill","none")
+  .attr("stroke","grey")
+  .attr("stroke-width",2)
+  .attr("x",another_case_x)
+  .attr("y",another_case_y)
+  .attr("width",another_case_width)
+  .attr("height",another_case_height)
+
+  for (ia = 0; ia < rooms.length; ia++){
+      c_another
+      .append("rect")
+      .attr("class","rect_another")
+      .attr("fill","none")
+      .attr("stroke","blue")
+      .attr("stroke-width",2)
+      .attr("x",another_case_x)
+      .attr("y",another_case_y)
+      .attr("width",another_case_width)
+      .attr("height",another_case_height)
+  }
+
+}
 
 /*******
 *display*
@@ -453,6 +574,7 @@ display_date();
 display_grid();
 display_echelle();
 //display_reservation();
+display_another();
 
 d3.select("svg")
         .attr("height", 1600)
