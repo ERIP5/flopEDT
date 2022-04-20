@@ -1,4 +1,5 @@
-var days_width = 200
+var largeurWindow = window.innerWidth -40;
+var days_width = (largeurWindow*0.9)/5
 var days = [{num: 0, ref: "m", name: "Lundi"},
             {num: 1, ref: "tu", name: "Mardi"},
             {num: 2, ref: "w", name: "Mercredi"},
@@ -6,7 +7,7 @@ var days = [{num: 0, ref: "m", name: "Lundi"},
             {num: 4, ref: "f", name: "Vendredi"}] ;
 
 
-var room_width = 100
+var room_width = largeurWindow - (days_width*5)
 
 var date_width = days_width*5
 var date_height = 50
@@ -15,6 +16,7 @@ var date_margtop = 20
 var compt_room_height = 0
 var compt_room_posy = 0
 var compt_text_posy = 0
+var compt_plusy = 0
 
 var each_room_y = days_y()
 var y_room_act = days_y()
@@ -23,7 +25,7 @@ var y_text_act = days_y()
 var room_max_courses = []
 var all_room_height = []
 
-var add_button_height = 50
+mini_add_button_height = 80
 
 var res_posy = days_y()
 var res_height = 150
@@ -32,8 +34,8 @@ var course = []
 
 var couple_room_y = new Map();
 var couple_textroom_y = new Map();
+var rooms_height = new Map();
 
-var room =[{}]
 let rooms = [
   {"name": "B112", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[{
     "id_course": 137455,
@@ -56,7 +58,7 @@ let rooms = [
     "promo": 0,
     "from_transversal": null
   }],'tu':[],'w':[], 'th':[],'f':[]}},
-  {"name": "E002", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "E002", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
   {"name": "414", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[{
     "id_course": 137455,
     "department": 'INFO',
@@ -117,13 +119,13 @@ let rooms = [
     "group": "4B",
     "promo": 0,
     "from_transversal": null
-  }],'f':[]}},
-  {"name": "G21", "display":false, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
-  {"name": "G26", "display":false, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
-  {"name": "E209", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
-  {"name": "B111", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
-  {"name": "B002", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
-  {"name": "B203", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}}
+  }],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "G21", "display":false, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "G26", "display":false, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "E209", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "B111", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "B002", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "B203", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}}
 ]
 var date =[{}]
 var plus =[{}]
@@ -202,7 +204,6 @@ function text_heure_res(res){
 
 function get_time(val){
     var tostring = ""+Math.floor(val/60)+"h"+(val%60)
-    console.log(tostring)
     return tostring
 }
 
@@ -244,6 +245,7 @@ function cac_room_y(room){
         compt_room_posy +=1
         for (day of days){
             couple_room_y.set(room.name+ day.ref, y)
+            couple_room_y.set(room.name+ day.ref+"base", y)
             couple_textroom_y.set(room.name + day.ref + "room", y)
             couple_textroom_y.set(room.name + day.ref + "time", y)
             couple_textroom_y.set(room.name + day.ref + "prof", y)
@@ -254,7 +256,8 @@ function cac_room_y(room){
 function cac_all_height(){
 cpt = 0
     for (h of room_max_courses){
-        all_room_height[cpt] = (res_height*h)+add_button_height
+        all_room_height[cpt] = (res_height*h)+mini_add_button_height
+        rooms_height.set(rooms[cpt].name,(res_height*h)+mini_add_button_height)
         cpt +=1
     }
 }
@@ -275,6 +278,23 @@ function get_course_name(course){
 function get_course_profg(course){
     return "Tutor : "+course.tutor
 }
+
+function add_button_height(room, day){
+
+var  height = (rooms_height.get(room.name)+ couple_room_y.get(room.name + day.ref+"base")) - couple_room_y.get(room.name + day.ref)
+
+return height
+
+}
+
+function circle_plus_posy(room, day){
+    return (couple_room_y.get(room.name + day.ref) + add_button_height(room,day)/2)
+}
+
+function circle_plus_posx(day){
+    return plus_x(day)+days_width/2
+}
+
 
 /**********
 *affichage*
@@ -345,8 +365,9 @@ c_room
   .append("text")
   .text(display_text)
   .attr("class","room_name")
-  .attr("x",30)
+  .attr("x",room_width/2)
   .attr("y", each_text_posy)
+  .attr("text-anchor", "middle")
 
 
 for(element of days){
@@ -377,10 +398,12 @@ c_grid = d3.select(".grille")
   .attr("y",days_y)
   .attr("width",days_width)
   .attr("height",y)
-console.log("ok")
   }
 
 function display_res(){
+compt_room_height = 0
+compt_room_posy = 0
+compt_text_posy = 0
 
 c_all_courses = d3.select(".room_lines");
 
@@ -441,31 +464,88 @@ for(room of rooms)
 }
 
 function display_plus(){
+var compt_plusy = 0
 c_all_rooms = d3.select(".room_lines")
 for (room of rooms){
     c_one_room = c_all_rooms
         .select(".Room"+room.name)
         for (day of days){
-            c_one_room
+            c_plus = c_one_room
                 .select("."+day.name)
                 .selectAll("plus")
                 .data(plus)
                 .enter()
                 .append("g")
                 .attr("class","plus")
+                .attr("id",room.name + day.ref)
+
+            //pour afficher le bouton
+
+
+            c_plus
+                .append("circle")
+                .attr("class","display_plus_circle")
+                .attr("fill","green")
+                .attr("stroke","black")
+                .attr("stroke-width",1)
+                .attr("cx",circle_plus_posx(day))
+                .attr("cy",circle_plus_posy(room, day))
+                .attr("r", mini_add_button_height/3)
+                .attr("width",days_width)
+                .attr("height",add_button_height(room,day))
+
+            c_plus
                 .append("rect")
-                .attr("class","display_res_frame")
+                .attr("class","display_plus_circle")
+                .attr("fill","white")
+                .attr("x",circle_plus_posx(day) - mini_add_button_height/4)
+                .attr("y",circle_plus_posy(room, day) - mini_add_button_height/12)
+                .attr("width",mini_add_button_height/2)
+                .attr("height",mini_add_button_height/6)
+
+            c_plus
+                .append("rect")
+                .attr("class","display_plus_circle")
+                .attr("fill","white")
+                .attr("x",circle_plus_posx(day) - mini_add_button_height/12)
+                .attr("y",circle_plus_posy(room, day) - mini_add_button_height/4)
+                .attr("width",mini_add_button_height/6)
+                .attr("height",mini_add_button_height/2)
+
+
+
+            //pour afficher le cadre du bouton
+            c_plus
+                .append("rect")
+                .attr("class","display_plus_circle")
                 .attr("fill","none")
                 .attr("stroke","black")
                 .attr("stroke-width",2)
                 .attr("x",plus_x(day))
                 .attr("y",couple_room_y.get(room.name + day.ref))
                 .attr("width",days_width)
-                .attr("height",add_button_height)
+                .attr("height",add_button_height(room,day))
         }
 
     }
 }
+function myFunction(el){
+console.log("test")
+}
+
+function add_listener(){
+var test = document.querySelectorAll(".plus")
+console.log(test)
+for (el of test){
+    el.addEventListener("click", function() {
+  myFunction(el);
+});
+    console.log(el)
+
+}
+}
+
+
 /***********
 *gestion svg
 ***********/
@@ -477,9 +557,10 @@ display_each_room();
 display_res();
 display_plus();
 display_grid();
-
+add_listener();
 d3.select("svg")
-        .attr("height", 10000)
-        .attr("width", 10000) ;
+    .attr("width", window.innerWidth -20)
+    .attr("height", 10000)
+
 
 
