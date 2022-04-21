@@ -1,4 +1,4 @@
-alert("please");
+alert("please1");
 var date_height = 50
 var date_margin_top = 20
 
@@ -143,6 +143,8 @@ let courses = [
   }]
   */
 
+var select = document.getElementById("selectRoom");
+
 let rooms = [
   {"name": "414", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[{
     "id_course": 137457,
@@ -192,6 +194,15 @@ let rooms = [
   {"name": "B002", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
   {"name": "B203", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}}
 ]
+
+for (var i = 0; i < rooms.length; i++) {
+  var textC = rooms[i].name;
+  var CreateElem = document.createElement("option");
+  CreateElem.textContent = textC;
+  CreateElem.value = textC;
+  select.appendChild(CreateElem);
+  console.log("create "+rooms[i].name)
+}
 
 
 /**********************
@@ -573,13 +584,16 @@ function display_another(){
 *display*
  ******/
 
+
+
  function main() {
+    alert("please2");
     display_date();
     display_grid();
     display_echelle();
     //display_reservation();
     display_another();
-    alert("please");
+    alert("please3");
  }
 
 

@@ -18,31 +18,15 @@
 <script type='text/javascript' src="{% static 'base/display-reserv-S.js' %}"></script>
 
 {% block content %}
-
-    <script type="text/javascript"> function liste(formReserv) {
-        if (formReserv.listReserv.value != "All") {
-            src="main.js";
-            alert("all if "+formReserv.listReserv.value);
-            }
-    }
-    </SCRIPT>
-
-</HEAD>
-<BODY>
-Entrez votre choix : <FORM NAME="formReserv">
-<SELECT NAME="listReserv">
-<OPTION VALUE="All">All the room
-<OPTION VALUE="B004">B004
-<OPTION VALUE="B105">B105
-</SELECT>
-<INPUT TYPE="button" NAME="b" VALUE="Room " onClick=liste(formReserv);> </FORM>
-</BODY>
-
 <!--
-if (formReserv.listReserv.value == "All") {
-            alert("all if "+formReserv.listReserv.value);
-            }
+javascript liste déroulante dynamique
 -->
+
+<body>
+<select id="selectRoom">
+    <option>Choose a room</option>
+</select>
+</body>
 
 <svg height="440" width="400">
     <g class="dates">
