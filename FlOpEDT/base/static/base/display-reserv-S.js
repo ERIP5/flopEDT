@@ -579,6 +579,7 @@ function display_another(){
     display_echelle();
     //display_reservation();
     display_another();
+    alert("please");
  }
 
 

@@ -19,9 +19,9 @@
 
 {% block content %}
 
-    <script language="javascript"> function liste(formReserv) {
-        if (formReserv.listReserv.value == "All") {
-            //main();
+    <script type="text/javascript"> function liste(formReserv) {
+        if (formReserv.listReserv.value != "All") {
+            src="main.js";
             alert("all if "+formReserv.listReserv.value);
             }
     }
