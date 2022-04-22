@@ -144,7 +144,6 @@ let courses = [
   */
 
 let select = document.getElementById("selectRoom");
-let select2 = d3.select('selectRoom');
 
 let rooms = [
   {"name": "414", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[{
@@ -205,13 +204,6 @@ for (var i = 0; i < rooms.length; i++) {
   //console.log("create "+rooms[i].name)
 }
 
-function call_reservS() {
-  console.log("call_reservS")
-}
-
-function call_reservT() {
-  console.log("call_reservT")
-}
 
 
 /**********************
@@ -321,53 +313,6 @@ function course_y_text_c_type(){
 
 function course_y_text_tutor(){
     return date_height+date_margin_top+rooms[i].start-echelle_start_time+40
-}
-
-function another_decal_x(){
-    return (days_width*(5)+horaire_width) + echelle_x
-}
-
-function another_decal_y(){
-    return date_height+date_margin_top
-}
-
-function another_decal_height(){
-    return (another_case_height()*rooms.length) + (another_case_height()*2)
-}
-
-function another_decal_width(){
-    return 500
-}
-
-
-function another_case_x(){
-    return another_decal_x()
-}
-
-function another_case_y(){
-    var ac = another_each_case_y;
-    another_each_case_y += another_case_height()
-    return ac
-}
-
-function another_case_height(){
-    return 70
-}
-
-function another_case_width(){
-    return another_decal_width()
-}
-
-function another_case_text_x(){
-
-}
-
-function another_case_text_y(){
-
-}
-
-function another_case_text(){
-
 }
 
 
@@ -535,60 +480,6 @@ function display_reservation(){
             }
 */
 
-function display_another(){
-  c_another = d3.select(".anothers")
-  .selectAll("rect")
-  .data(another)
-  .enter();
-
-  c_another
-  .append("rect")
-  .attr("class","rect_another")
-  .attr("fill","none")
-  .attr("stroke","red")
-  .attr("stroke-width",2)
-  .attr("x",another_decal_x)
-  .attr("y",another_decal_y)
-  .attr("width",another_decal_width)
-  .attr("height",another_decal_height)
-
-  c_another
-  .append("rect")
-  .attr("class","rect_another")
-  .attr("fill","none")
-  .attr("stroke","grey")
-  .attr("stroke-width",2)
-  .attr("x",another_case_x)
-  .attr("y",another_case_y)
-  .attr("width",another_case_width)
-  .attr("height",another_case_height)
-
-  c_another
-  .append("rect")
-  .attr("class","rect_another")
-  .attr("fill","none")
-  .attr("stroke","grey")
-  .attr("stroke-width",2)
-  .attr("x",another_case_x)
-  .attr("y",another_case_y)
-  .attr("width",another_case_width)
-  .attr("height",another_case_height)
-
-  for (ia = 0; ia < rooms.length; ia++){
-      c_another
-      .append("rect")
-      .attr("class","rect_another")
-      .attr("fill","none")
-      .attr("stroke","blue")
-      .attr("stroke-width",2)
-      .attr("x",another_case_x)
-      .attr("y",another_case_y)
-      .attr("width",another_case_width)
-      .attr("height",another_case_height)
-  }
-
-}
-
 /*******
 *display*
  ******/
@@ -601,10 +492,8 @@ function display_another(){
     display_grid();
     display_echelle();
     //display_reservation();
-    display_another();
     alert("please3");
  }
-
 
 d3.select("svg")
         .attr("height", 1600)

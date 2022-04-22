@@ -1,28 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>listeReserv</title>
-</head>
 
 {% extends "base.html" %}
-{% load i18n %}
 
-{% block title %} listeReserv {% endblock %}
-{% load static %}
-
-<script src="{% static 'base/d3.v4.min.js' %}"></script>
-<script type='text/javascript' src="{% static 'base/jquery.min.js' %}"></script>
-<script src="{% static 'base/dataTest.js' %}"></script>
+{% block title %} Reservation{% endblock %}
 
 {% block content %}
-    <select name="listReserv" id="listReserv-select">
-        <option value="">Select a room</option>
-        <option value="dog">All rooms</option>
-        <option value="dog">B004</option>
-        <option value="dog">B105</option>
-    </select>
+    {% load i18n %}
+    {% load static %}
+    <script src="{% static 'base/d3.v4.min.js' %}"></script>
+    <script type='text/javascript' src="{% static 'base/jquery.min.js' %}"></script>
+<!--
+javascript liste déroulante dynamique
+-->
+
+<body>
+    Choose a room : <FORM NAME="formReserv">
+        <select id="selectRoom">
+          <option>all</option>
+        </select>
+        <INPUT TYPE="button" NAME="b" VALUE="Room " onClick=liste(formReserv);>
+      </form>
+
+    <script type="text/javascript">
+      function liste(formReserv) {
+        if (formReserv.selectRoom.value == "all") {
+          console.log("all try " + formReserv.selectRoom.value)
+          mainT()
+        }
+
+        if (formReserv.selectRoom.value == "414") {
+          console.log("414 try " + formReserv.selectRoom.value)
+          call_reservS()
+        }
+
+        if (formReserv.selectRoom.value != "414" && formReserv.selectRoom.value != "all") {
+          console.log("other try " + formReserv.selectRoom.value)
+          call_reservS()
+        }
+      }
+    </script>
+</body>
+
+<!--
+let categories = ["dates", "room_lines", "grille"]
+
+<svg height="440" width="400">
+    for (ca = 0; ca < categories.length; ca++) {
+        <g class=categories[ca]></g>
+    }
+    -->
+
+<svg height="440" width="400">
+    <g class="dates">
+  </g>
+    <g class="room_lines">
+  </g>
+    <g class="grille">
+  </g>
+</svg>
+
+<script src="{% static 'base/display-reserv-T.js' %}"></script>
 
 
 {% endblock %}

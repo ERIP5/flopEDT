@@ -530,17 +530,17 @@ for (room of rooms){
     }
 }
 function myFunction(el){
-console.log("test")
+    //console.log("test")
 }
 
 function add_listener(){
 var test = document.querySelectorAll(".plus")
-console.log(test)
+    //console.log(test)
 for (el of test){
     el.addEventListener("click", function() {
   myFunction(el);
 });
-    console.log(el)
+    //console.log(el)
 
 }
 }
@@ -549,18 +549,20 @@ for (el of test){
 /***********
 *gestion svg
 ***********/
-display_date();
-max();
-cac_room_height();
-cac_all_height();
-display_each_room();
-display_res();
-display_plus();
-display_grid();
-add_listener();
-d3.select("svg")
-    .attr("width", window.innerWidth -20)
-    .attr("height", 10000)
 
-
+function mainT() {
+    console.log("mainT")
+    display_date();
+    max();
+    cac_room_height();
+    cac_all_height();
+    display_each_room();
+    display_res();
+    display_plus();
+    display_grid();
+    add_listener();
+    d3.select("svg")
+        .attr("width", window.innerWidth -20)
+        .attr("height", 10000)
+}
 
