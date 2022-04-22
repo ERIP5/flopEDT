@@ -1004,8 +1004,8 @@ class Regen(models.Model):
 # </editor-fold desc="MISC">
 
 class Reservation(models.Model):
-    responsible = models.ForeignKey('people.User')
-    reservation_type = models.ForeignKey('reservation_type')
+    responsible = models.ForeignKey('people.User',  on_delete=models.CASCADE)
+    reservation_type = models.ForeignKey('reservation_type', on_delete=models.CASCADE)
     title = models.CharField(max_length=30)
     description = models.TextField(null=True, blank=True)
     key = models.BooleanField()
@@ -1016,12 +1016,12 @@ class Reservation(models.Model):
     id_periodicite = models.ForeignKey('Reservation_periode', on_delete=models.CASCADE, null=True, blank=True)
 
 class Reservation_type(models.Model):
-    name = models.CharField()
+    name = models.CharField(max_length=30)
 
 class Reservation_periode(models.Model):
-    periode_type = m
+    start = models.DateField()
     start = models.DateField()
     ending = models.DateField()
 
 class Period_type(Enum):
-
+    start = models.DateField()
