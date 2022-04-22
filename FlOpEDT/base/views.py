@@ -1716,3 +1716,6 @@ def reservation_total(req, department):
 
 def reservation_salle(req, department):
     return TemplateResponse(req,"base/reservationS.html")
+
+def reservation(req, department):
+    return TemplateResponse(req,"base/listeReserv.html")

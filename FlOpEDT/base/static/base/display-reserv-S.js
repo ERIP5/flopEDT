@@ -1,4 +1,3 @@
-alert("please1");
 var date_height = 50
 var date_margin_top = 20
 
@@ -483,15 +482,15 @@ function display_reservation(){
 *display*
  ******/
 
+function call_reservS() {
+    console.log("call_reservS test")
+}
 
-
- function main() {
-    alert("please2");
+ function mainS() {
     display_date();
     display_grid();
     display_echelle();
     //display_reservation();
-    alert("please3");
  }
 
 d3.select("svg")

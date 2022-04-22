@@ -27,12 +27,7 @@ javascript liste déroulante dynamique
           call_reservT()
         }
 
-        if (formReserv.selectRoom.value == "414") {
-          console.log("414 try " + formReserv.selectRoom.value)
-          call_reservS()
-        }
-
-        if (formReserv.selectRoom.value != "414" && formReserv.selectRoom.value != "all") {
+        if (formReserv.selectRoom.value != "all") {
           console.log("other try " + formReserv.selectRoom.value)
           call_reservS()
         }
@@ -52,11 +47,10 @@ javascript liste déroulante dynamique
   </g>
     <g class="echelles">
   </g>
-    <g class ="anothers">
-  </g>
 </svg>
 
 <script src="{% static 'base/display-reserv-S.js' %}"></script>
+
 
 
 {% endblock %}
