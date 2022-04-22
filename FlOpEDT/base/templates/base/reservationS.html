@@ -1,22 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>ReservationS</title>
-</head>
 
 {% extends "base.html" %}
-{% load i18n %}
 
-{% block title %} ReservationS {% endblock %}
-{% load static %}
-
-<script src="{% static 'base/d3.v4.min.js' %}"></script>
-<script type='text/javascript' src="{% static 'base/jquery.min.js' %}"></script>
-<script src="{% static 'base/dataTest.js' %}"></script>
+{% block title %} <title>Reservation</title> {% endblock %}
 
 {% block content %}
+    {% load i18n %}
+    {% load static %}
+    <script src="{% static 'base/d3.v4.min.js' %}"></script>
+    <script type='text/javascript' src="{% static 'base/jquery.min.js' %}"></script>
+    <script src="{% static 'base/dataTest.js' %}"></script>
+<!--
+javascript liste déroulante dynamique
+-->
+
+<body>
+    Choose a room : <FORM NAME="formReserv">
+        <select id="selectRoom">
+          <option>all</option>
+        </select>
+        <INPUT TYPE="button" NAME="b" VALUE="Room " onClick=liste(formReserv);>
+      </form>
+
+    <script type="text/javascript">
+      function liste(formReserv) {
+        if (formReserv.selectRoom.value == "all") {
+          console.log("all try " + formReserv.selectRoom.value)
+          call_reservT()
+        }
+
+        if (formReserv.selectRoom.value == "414") {
+          console.log("414 try " + formReserv.selectRoom.value)
+          call_reservS()
+        }
+
+        if (formReserv.selectRoom.value != "414" && formReserv.selectRoom.value != "all") {
+          console.log("other try " + formReserv.selectRoom.value)
+          call_reservS()
+        }
+      }
+    </script>
+</body>
+
+
 <svg height="440" width="400">
     <g class="dates">
   </g>
@@ -32,7 +57,8 @@
   </g>
 </svg>
 
-<script type='text/javascript' src="{% static 'base/display-reserv-S.js' %}"></script>
+
+    <script type='text/javascript' src="{% static 'base/display-reserv-S.js' %}"></script>
 
 {% endblock %}
 

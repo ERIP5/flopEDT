@@ -1,3 +1,4 @@
+alert("please1");
 var date_height = 50
 var date_margin_top = 20
 
@@ -51,7 +52,8 @@ var each_reserv = [
 { "day" : "w", "room" : "B007", "start": 480, "end" : 600, "name" : "MCV" },
 { "day" : "th", "room" : "B111", "start": 480, "end" : 540, "name" : "OT" },
 { "day" : "th", "room" : "B112", "start": 480, "end" : 540, "name" : "LN" }
-]*/
+]
+*/
 
 /*
 let courses = [
@@ -141,6 +143,9 @@ let courses = [
   }]
   */
 
+let select = document.getElementById("selectRoom");
+let select2 = d3.select('selectRoom');
+
 let rooms = [
   {"name": "414", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[{
     "id_course": 137457,
@@ -190,6 +195,23 @@ let rooms = [
   {"name": "B002", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
   {"name": "B203", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}}
 ]
+
+for (var i = 0; i < rooms.length; i++) {
+  var textC = rooms[i].name;
+  var CreateElem = document.createElement("option");
+  CreateElem.textContent = textC;
+  CreateElem.value = textC;
+  select.appendChild(CreateElem);
+  //console.log("create "+rooms[i].name)
+}
+
+function call_reservS() {
+  console.log("call_reservS")
+}
+
+function call_reservT() {
+  console.log("call_reservT")
+}
 
 
 /**********************
@@ -570,11 +592,19 @@ function display_another(){
 /*******
 *display*
  ******/
-display_date();
-display_grid();
-display_echelle();
-//display_reservation();
-display_another();
+
+
+
+ function main() {
+    alert("please2");
+    display_date();
+    display_grid();
+    display_echelle();
+    //display_reservation();
+    display_another();
+    alert("please3");
+ }
+
 
 d3.select("svg")
         .attr("height", 1600)
