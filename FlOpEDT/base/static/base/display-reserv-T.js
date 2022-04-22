@@ -57,7 +57,7 @@ let rooms = [
     "group": "4B",
     "promo": 0,
     "from_transversal": null
-  }],'tu':[],'w':[], 'th':[],'f':[]}},
+  }],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
   {"name": "E002", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
   {"name": "414", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[{
     "id_course": 137455,
@@ -566,3 +566,5 @@ function mainT() {
         .attr("height", 10000)
 }
 
+function main(){
+}

@@ -1002,3 +1002,26 @@ class Regen(models.Model):
         return ret
 
 # </editor-fold desc="MISC">
+
+class Reservation(models.Model):
+    responsible = models.ForeignKey('people.User')
+    reservation_type = models.ForeignKey('reservation_type')
+    title = models.CharField(max_length=30)
+    description = models.TextField(null=True, blank=True)
+    key = models.BooleanField()
+    reservation_date = models.DateField()
+    start = models.PositiveSmallIntegerField()
+    duration = models.PositiveIntegerField()
+    room = models.ForeignKey('room', on_delete=models.CASCADE)
+    id_periodicite = models.ForeignKey('Reservation_periode', on_delete=models.CASCADE, null=True, blank=True)
+
+class Reservation_type(models.Model):
+    name = models.CharField()
+
+class Reservation_periode(models.Model):
+    periode_type = m
+    start = models.DateField()
+    ending = models.DateField()
+
+class Period_type(Enum):
+
