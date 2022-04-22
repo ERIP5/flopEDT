@@ -550,21 +550,21 @@ for (el of test){
 *gestion svg
 ***********/
 
-function mainT() {
-    console.log("mainT")
-    display_date();
-    max();
-    cac_room_height();
-    cac_all_height();
-    display_each_room();
-    display_res();
-    display_plus();
-    display_grid();
-    add_listener();
-    d3.select("svg")
-        .attr("width", window.innerWidth -20)
-        .attr("height", 10000)
-}
+
+console.log("mainT")
+display_date();
+max();
+cac_room_height();
+cac_all_height();
+display_each_room();
+display_res();
+display_plus();
+display_grid();
+add_listener();
+d3.select("svg")
+     .attr("width", window.innerWidth -20)
+     .attr("height", 10000)
+
 
 function main(){
 }
