@@ -23,9 +23,31 @@ javascript liste déroulante dynamique
 -->
 
 <body>
-<select id="selectRoom">
-    <option>Choose a room</option>
-</select>
+    Choose a room : <FORM NAME="formReserv">
+        <select id="selectRoom">
+          <option>all</option>
+        </select>
+        <INPUT TYPE="button" NAME="b" VALUE="Room " onClick=liste(formReserv);>
+      </form>
+
+    <script type="text/javascript">
+      function liste(formReserv) {
+        if (formReserv.selectRoom.value == "all") {
+          console.log("all try " + formReserv.selectRoom.value)
+          call_reservT()
+        }
+
+        if (formReserv.selectRoom.value == "414") {
+          console.log("414 try " + formReserv.selectRoom.value)
+          call_reservS()
+        }
+
+        if (formReserv.selectRoom.value != "414" && formReserv.selectRoom.value != "all") {
+          console.log("other try " + formReserv.selectRoom.value)
+          call_reservS()
+        }
+      }
+    </script>
 </body>
 
 <svg height="440" width="400">

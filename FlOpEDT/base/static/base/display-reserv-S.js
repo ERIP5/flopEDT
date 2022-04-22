@@ -201,7 +201,15 @@ for (var i = 0; i < rooms.length; i++) {
   CreateElem.textContent = textC;
   CreateElem.value = textC;
   select.appendChild(CreateElem);
-  console.log("create "+rooms[i].name)
+  //console.log("create "+rooms[i].name)
+}
+
+function call_reservS() {
+  console.log("call_reservS")
+}
+
+function call_reservT() {
+  console.log("call_reservT")
 }
 
 
