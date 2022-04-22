@@ -143,7 +143,8 @@ let courses = [
   }]
   */
 
-var select = document.getElementById("selectRoom");
+let select = document.getElementById("selectRoom");
+let select2 = d3.select('selectRoom');
 
 let rooms = [
   {"name": "414", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[{
