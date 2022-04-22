@@ -8,11 +8,8 @@
     {% load static %}
     <script src="{% static 'base/d3.v4.min.js' %}"></script>
     <script type='text/javascript' src="{% static 'base/jquery.min.js' %}"></script>
-<!--
-javascript liste déroulante dynamique
--->
 
-<body>
+
     Choose a room : <FORM NAME="formReserv">
         <select id="selectRoom">
           <option>all</option>
@@ -24,41 +21,33 @@ javascript liste déroulante dynamique
       function liste(formReserv) {
         if (formReserv.selectRoom.value == "all") {
           console.log("all try " + formReserv.selectRoom.value)
-          mainT()
+          call_reservT()
         }
 
-        if (formReserv.selectRoom.value == "414") {
-          console.log("414 try " + formReserv.selectRoom.value)
-          call_reservS()
-        }
-
-        if (formReserv.selectRoom.value != "414" && formReserv.selectRoom.value != "all") {
-          console.log("other try " + formReserv.selectRoom.value)
-          call_reservS()
+        if (formReserv.selectRoom.value != "all") {
+          //console.log("other try " + formReserv.selectRoom.value)
+          //call_reservS()
+          mainS()
         }
       }
     </script>
-</body>
 
-<!--
-let categories = ["dates", "room_lines", "grille"]
-
-<svg height="440" width="400">
-    for (ca = 0; ca < categories.length; ca++) {
-        <g class=categories[ca]></g>
-    }
-    -->
 
 <svg height="440" width="400">
     <g class="dates">
   </g>
-    <g class="room_lines">
+    <g class="salles">
+  </g>
+    <g class="reservations">
   </g>
     <g class="grille">
   </g>
+    <g class="echelles">
+  </g>
 </svg>
 
-<script src="{% static 'base/display-reserv-T.js' %}"></script>
+<script src="{% static 'base/display-reserv-S.js' %}"></script>
+
 
 
 {% endblock %}
