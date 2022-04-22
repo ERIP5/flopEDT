@@ -26,7 +26,6 @@ var each_hour_y = days_y()
 var each_hour_yy = days_y()
 
 var current_room = "414"
-var another_each_case_y = another_decal_y()
 
 
 var room =[{}]
