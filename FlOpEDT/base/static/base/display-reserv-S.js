@@ -1,39 +1,26 @@
+/**********************
+*Définition des variables*
+**********************/
+
 var date_height = 50
 var date_margin_top = 20
 
 var echelle_width = 50
-var echelle_y = cac_echelle_y()
 var echelle_x = 100
-var echelle_start_time = 8*60+15//495
-var echelle_day_start_hour = Math.floor(echelle_start_time/60)+1
-var echelle_day_start_hour_concat = echelle_day_start_hour + "h"
-var echelle_end_time_day = 18*60+45 //1125
-var echelle_end_time_day_hour = Math.floor(echelle_end_time_day/60)
-var echelle_end_time_day_hour_concat = echelle_end_time_day_hour+ "h"
-var echelle_current_hour = echelle_day_start_hour
 
-var echelle_height = days_duration()
+var echelle_start_time = 8*60+15//495
+var echelle_end_time_day = 18*60+45 //1125
 
 var days_width = 150
-var days_height = days_duration()
 
+/* set to 150 for no margin between the schedule and the days */
 var horaire_width = 150
-
-var date_width = days_width*5
-
-var each_hour_y = days_y()
-var each_hour_yy = days_y()
 
 var current_room = "414"
 
-
 var room =[{}]
-
 var date =[{}]
-
 var echelle =[{}]
-
-var another = [{}]
 
 var days = [{num: 0, ref: "m", name: "Lundi"},
             {num: 1, ref: "tu", name: "Mardi"},
@@ -41,177 +28,96 @@ var days = [{num: 0, ref: "m", name: "Lundi"},
             {num: 3, ref: "th", name: "Jeudi"},
             {num: 4, ref: "f", name: "Vendredi"}] ;
 
-/*
-var each_reserv = [
-{ "day" : "m", "room" : "Amphi1", "start": 480, "end" : 540, "name" : "PSE" },
-{ "day" : "m", "room" : "Amphi2", "start": 840, "end" : 960, "name" : "PSE" },
-{ "day" : "tu", "room" : "B115", "start": 480, "end" : 1080, "name" : "ALE" },
-{ "day" : "w", "room" : "B007", "start": 600, "end" : 840, "name" : "MCV" },
-{ "day" : "w", "room" : "B007", "start": 480, "end" : 600, "name" : "MCV" },
-{ "day" : "th", "room" : "B111", "start": 480, "end" : 540, "name" : "OT" },
-{ "day" : "th", "room" : "B112", "start": 480, "end" : 540, "name" : "LN" }
-]
-*/
-
-/*
-let courses = [
-  {
-    "id_course": 137455,
-    "department": 'INFO',
-    "mod": "ExplBD",
-    "c_type": "Projet",
-    "day": "m",
-    "start": 495,
-    "duration": 85,
-    "room": "B102",
-    "room_type": "M",
-    "display": true,
-    "id_visio": -1,
-    "graded": false,
-    "color_bg": "#ec4dd8",
-    "color_txt": "#000000",
-    "tutor": "PSE",
-    "supp_tutors" : [],
-    "group": "4B",
-    "promo": 0,
-    "from_transversal": null
-  },
-  {
-    "id_course": 137456,
-    "department": 'INFO',
-    "mod": "IE",
-    "c_type": "Projet",
-    "day": "tu",
-    "start": 800,
-    "duration": 100,
-    "room": "B102",
-    "room_type": "M",
-    "display": true,
-    "id_visio": -1,
-    "graded": false,
-    "color_bg": "#ec4dd8",
-    "color_txt": "#FFFFFF",
-    "tutor": "PSE",
-    "supp_tutors" : [],
-    "group": "4B",
-    "promo": 0,
-    "from_transversal": null
-  },
-  {
-    "id_course": 137456,
-    "department": 'INFO',
-    "mod": "ExplBD",
-    "c_type": "Projet",
-    "day": "w",
-    "start": 800,
-    "duration": 100,
-    "room": "B102",
-    "room_type": "M",
-    "display": false,
-    "id_visio": -1,
-    "graded": false,
-    "color_bg": "#ec4dd8",
-    "color_txt": "#000000",
-    "tutor": "PSE",
-    "supp_tutors" : [],
-    "group": "4B",
-    "promo": 0,
-    "from_transversal": null
-  },
-  {
-    "id_course": 137457,
-    "department": 'INFO',
-    "mod": "ExplBD",
-    "c_type": "Projet",
-    "day": "th",
-    "start": 585,
-    "duration": 85,
-    "room": "B103",
-    "room_type": "M",
-    "display": true,
-    "id_visio": -1,
-    "graded": false,
-    "color_bg": "#ec4dd8",
-    "color_txt": "#000000",
-    "tutor": "PSE",
-    "supp_tutors" : [],
-    "group": "4B",
-    "promo": 0,
-    "from_transversal": null
-  }]
-  */
-
-let select = document.getElementById("selectRoom");
-
-
-for (var i = 0; i < rooms.length; i++) {
-  var textC = rooms[i].name;
-  var CreateElem = document.createElement("option");
-  CreateElem.textContent = textC;
-  CreateElem.value = textC;
-  select.appendChild(CreateElem);
-  //console.log("create "+rooms[i].name)
-}
-
-
-
 /**********************
 *gestion des variables*
 **********************/
 
+/*-- date --*/
+function date_width() {
+    return days_width*5
+}
 
-function days_duration(){
+/*-- days --*/
+function days_duration() {
     return (echelle_end_time_day-echelle_start_time)}
 
-function days_x(day){
+function days_x(day) {
     return days_width*(day.num)+horaire_width}
 
-function days_y(){
+function days_y() {
     return date_height+date_margin_top
 }
 
-function getday(day){
+function days_height() {
+    return days_duration()
+}
+
+function getday(day) {
     return day["name"]
 }
 
-function cac_echelle_y(){
+/*-- echelle --*/
+function cac_echelle_y() {
     return date_height+date_margin_top
 }
 
+function echelle_y() {
+    return cac_echelle_y()
+}
+
+function echelle_height() {
+    return days_duration()
+}
+
+function echelle_day_start_hour() {
+	return Math.floor(echelle_start_time/60)+1
+}
+
+var echelle_current_hour = echelle_day_start_hour()
 function echelle_current_hour_incr() {
     var h = echelle_current_hour+1
     echelle_current_hour += 1
     return h
 }
 
-function echelle_current_hour_concat(){
+function echelle_current_hour_concat() {
     var hhh = echelle_current_hour_incr()+ "h"
     return hhh
 }
 
+function echelle_day_start_hour_concat() {
+	return echelle_day_start_hour() + "h"
+}
 
-function display_echelle_start_time(){
+function echelle_end_time_day_hour() {
+	return Math.floor(echelle_end_time_day/60)
+}
+
+function echelle_end_time_day_hour_concat() {
+	return echelle_end_time_day_hour + "h"
+}
+
+function display_echelle_start_time() {
     return echelle_start_time_hour_concat
 }
 
-function display_echelle_end_time_day(){
-    return echelle_end_time_day_hour_concat
+function display_echelle_end_time_day() {
+    return echelle_end_time_day_hour_concat()
 }
 
-function echelle_each_time_soixante(){
-    //console.log((echelle_start_time+60)-echelle_start_time-echelle_start_time%60)
+var each_hour_y = days_y()
+function echelle_each_time_soixante() {
     var y = each_hour_y;
     if (y == 70) {
-    //console.log("if "+each_hour_y)
     each_hour_y += ((echelle_start_time+60)-echelle_start_time-echelle_start_time%60);
-    //console.log("if "+each_hour_y)
-    return y    }
+    return y
+    }
     each_hour_y += 60;
-    //console.log(each_hour_y+" else")
     return y;
 }
 
-function course_x(day){
+/*-- course --*/
+function course_x(day) {
     for (day of days){
     console.log(day.day)
     if (day[day.ref] == "w") {
@@ -246,111 +152,122 @@ function course_x(day){
     }
 }
 
-function course_y(){
-//console.log("course_y")
-//console.log(/*date_height+date_margin_top-echelle_start_time+*/rooms[0].courses)
+function course_y() {
     return date_height+date_margin_top+rooms[i].start-echelle_start_time
 }
 
-function course_y_text_module(){
+function course_y_text_module() {
     return date_height+date_margin_top+rooms[i].start-echelle_start_time+10
 }
 
-function course_y_text_c_type(){
+function course_y_text_c_type() {
     return date_height+date_margin_top+rooms[i].start-echelle_start_time+25
 }
 
-function course_y_text_tutor(){
+function course_y_text_tutor() {
     return date_height+date_margin_top+rooms[i].start-echelle_start_time+40
 }
 
+/***************
+*Select*
+ ***************/
+
+/* Select of the template listeReserv.html, add dynamically the rooms stored in dataTest.js */
+let select = document.getElementById("selectRoom");
+for (var i = 0; i < rooms.length; i++) {
+  var textC = rooms[i].name;
+  var CreateElem = document.createElement("option");
+  CreateElem.textContent = textC;
+  CreateElem.value = textC;
+  select.appendChild(CreateElem);
+}
 
  /***************
 *function display*
  ***************/
 
+/* display the days */
 function display_dateS(){
-d3.select(".dateS")
-  .selectAll("rect")
-  .data(date)
-  .enter()
-  .append("rect")
-  .attr("class","rect_date")
-  .attr("fill","none")
-  .attr("stroke","black")
-  .attr("stroke-width",5)
-  .attr("x",horaire_width)
-  .attr("y",date_margin_top)
-  .attr("width",date_width)
-  .attr("height",date_height)
+    d3.select(".dateS")
+        .selectAll("rect")
+        .data(date)
+        .enter()
+        .append("rect")
+        .attr("class","rect_date")
+        .attr("fill","none")
+        .attr("stroke","black")
+        .attr("stroke-width",5)
+        .attr("x",horaire_width)
+        .attr("y",date_margin_top)
+        .attr("width",date_width())
+        .attr("height",date_height)
 }
 
-
+/* display the grid */
 function display_gridS(){
-c_gridall = d3.select(".grilleS")
-  .selectAll("rect_grid")
-  .data(days)
+    c_gridall = d3.select(".grilleS")
+        .selectAll("rect_grid")
+        .data(days)
 
-c_grid = c_gridall
-    .enter()
-    .append("g")
-    .attr("class",getday)
+    c_grid = c_gridall
+        .enter()
+        .append("g")
+        .attr("class",getday)
 
-  .append("rect")
-  .attr("class","rect_grid")
-  .attr("fill","none")
-  .attr("stroke","green")
-  .attr("stroke-width",5)
-  .attr("x",days_x)
-  .attr("y",days_y)
-  .attr("width",days_width)
-  .attr("height",days_height)
+    /* display the column for the five days */
+    c_grid
+        .append("rect")
+        .attr("class","rect_grid")
+        .attr("fill","none")
+        .attr("stroke","green")
+        .attr("stroke-width",5)
+        .attr("x",days_x)
+        .attr("y",days_y)
+        .attr("width",days_width)
+        .attr("height",days_height())
   }
 
-
+/* display the schedule with the hours */
 function display_echelleS(){
-c_echelle = d3.select(".echelleS")
-  .selectAll("rect")
-  .data(echelle)
-  .enter();
+    c_echelle = d3.select(".echelleS")
+        .selectAll("rect")
+        .data(echelle)
+        .enter();
 
-  c_echelle
-  .append("rect")
-  .attr("class","rect_echelle")
-  .attr("fill","none")
-  .attr("stroke","blue")
-  .attr("stroke-width",2)
-  .attr("x",echelle_x)
-  .attr("y",echelle_y)
-  .attr("width",echelle_width)
-  .attr("height",echelle_height)
+    /* display the bar which contain the hour */
+    c_echelle
+        .append("rect")
+        .attr("class","rect_echelle")
+        .attr("fill","none")
+        .attr("stroke","blue")
+        .attr("stroke-width",2)
+        .attr("x",echelle_x)
+        .attr("y",echelle_y())
+        .attr("width",echelle_width)
+        .attr("height",echelle_height())
 
-  c_echelle
-  .append("text")
-  .text("")
-  .attr("x",110)
-  .attr("y", echelle_each_time_soixante)
+    /* location of the start hour */
+    c_echelle
+        .append("text")
+        .text("")
+        .attr("x",110)
+        .attr("y", echelle_each_time_soixante)
 
-  c_echelle
-  .append("text")
-  .text(echelle_day_start_hour_concat)
-  .attr("x",110)
-  .attr("y", echelle_each_time_soixante)
+    /* display the first whole hour after the start hour */
+    c_echelle
+        .append("text")
+        .text(echelle_day_start_hour_concat())
+        .attr("x",110)
+        .attr("y", echelle_each_time_soixante)
 
-
-  for (hh = echelle_current_hour+1; hh<echelle_end_time_day_hour; hh++){
-  c_echelle
-  .append("text")
-  .text(echelle_current_hour_concat)
-  .attr("x",110)
-  .attr("y", echelle_each_time_soixante)
-}
-
-  c_echelle
-  .append("text")
-  .text(echelle_end_time_day_hour_concat)
-  .attr("x",110)
-  .attr("y", echelle_each_time_soixante)
+    /* add each hour until the end of the day */
+    for (hh = echelle_current_hour+1; hh<echelle_end_time_day_hour()+1; hh++){
+        c_echelle
+            .append("text")
+            .text(echelle_current_hour_concat)
+            .attr("x",110)
+            .attr("y", echelle_each_time_soixante)
+    }
 
 }
 
@@ -437,14 +354,14 @@ function hideS() {
     console.log("hideS")
 }
 
- function mainS() {
-    console.log("mainS")
+/* main for displaying all of what is need at once in other file */
+function mainS() {
     display_dateS();
     display_gridS();
     display_echelleS();
     //display_reservationS();
- }
+}
 
 d3.select("svg")
-        .attr("height", 1600)
-        .attr("width", 1600) ;
+    .attr("height", 1600)
+    .attr("width", 1600)

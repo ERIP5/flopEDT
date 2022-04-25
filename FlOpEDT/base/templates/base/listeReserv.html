@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 
 {% block title %} Reservation{% endblock %}
@@ -9,8 +8,6 @@
     <script src="{% static 'base/d3.v4.min.js' %}"></script>
     <script type='text/javascript' src="{% static 'base/jquery.min.js' %}"></script>
 
-
-
     Choose a room : <FORM NAME="formReserv">
         <select id="selectRoom">
             <option>hideS</option>
@@ -19,8 +16,7 @@
         <INPUT TYPE="button" NAME="b" VALUE="Room " onClick=liste(formReserv);>
       </form>
 
-
-<svg height="440" width="400">
+    <svg height="440" width="400">
     <g class="dateS">
   </g>
     <g class="salleS">
@@ -39,28 +35,21 @@
   </g>
 </svg>
 
-<script src="{% static 'base/dataTest.js' %}"></script>
-<script src="{% static 'base/display-reserv-T.js' %}"></script>
-<script src="{% static 'base/display-reserv-S.js' %}"></script>
-<!--
-
-
--->
+    <script src="{% static 'base/dataTest.js' %}"></script>
+    <script src="{% static 'base/display-reserv-T.js' %}"></script>
+    <script src="{% static 'base/display-reserv-S.js' %}"></script>
 
     <script type="text/javascript">
         function liste(formReserv) {
            if (formReserv.selectRoom.value == "all") {
-           //console.log("if 2")
                 mainT()
             }
 
             if (formReserv.selectRoom.value != "all" && formReserv.selectRoom.value != "hideS") {
-            //console.log("if 3")
                 mainS()
             }
 
             if (formReserv.selectRoom.value == "hideS") {
-            //console.log("if 1")
                   hideS()
                 }
       }

@@ -439,12 +439,9 @@ for (el of test){
 *gestion svg
 ***********/
 
-function pl() {
-    console.log("please")
-}
 
 function mainT() {
-    console.log("mainT")
+    //console.log("mainT")
     //filling in the table room_max_courses which calculates, for each room, the day with the most lessons
     max();
     //function that populates the all_room_height using room_max_courses and adding the size of the plus button
