@@ -145,7 +145,7 @@ for (room of rooms){
     }
 }
 
-function cac_room_height(){
+function get_room_height(){
         var h = all_room_height[compt_room_height]
         compt_room_height +=1
         return h
@@ -271,7 +271,7 @@ c_room
   .attr("x",0)
   .attr("y", cac_room_y)
   .attr("width",room_width)
-  .attr("height",cac_room_height);
+  .attr("height",get_room_height);
 
 c_room
   .append("text")
@@ -287,29 +287,6 @@ c_room_gr
     .append("g")
     .attr("class", element["name"])
 }
-  }
-
-
-function display_grid(){
-
-var y = 0;
-for (val of all_room_height){
-    y = y + val
-}
-
-c_grid = d3.select(".grille")
-  .selectAll(".rect_grid")
-  .data(days)
-  .enter()
-  .append("rect")
-  .attr("class","rect_grid")
-  .attr("fill","none")
-  .attr("stroke","black")
-  .attr("stroke-width",2)
-  .attr("x",days_x)
-  .attr("y",days_y)
-  .attr("width",days_width)
-  .attr("height",y)
   }
 
 function display_res(){
@@ -468,14 +445,19 @@ function pl() {
 
 function mainT() {
     console.log("mainT")
-    display_date();
+    //filling in the table room_max_courses which calculates, for each room, the day with the most lessons
     max();
-    cac_room_height();
+    //function that populates the all_room_height using room_max_courses and adding the size of the plus button
     cac_all_height();
+    //draw the first rect with dates
+    display_date();
+    //display left panel with all room numbers
     display_each_room();
+    //for each days and each room, add a group for each reservation and display each reservation information's
     display_res();
+    //for each days and each room, add all plus buttons
     display_plus();
-    //display_grid();
+    //add action listener for each button
     add_listener();
 }
 
