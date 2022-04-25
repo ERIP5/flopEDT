@@ -12,21 +12,24 @@
 
     Choose a room : <FORM NAME="formReserv">
         <select id="selectRoom">
-          <option>all</option>
+            <option>hide</option>
+            <option>all</option>
         </select>
         <INPUT TYPE="button" NAME="b" VALUE="Room " onClick=liste(formReserv);>
       </form>
 
     <script type="text/javascript">
       function liste(formReserv) {
-        if (formReserv.selectRoom.value == "all") {
-          console.log("all try " + formReserv.selectRoom.value)
-          call_reservT()
+        if (formReserv.selectRoom.value == "hide") {
+          hideS()
         }
 
-        if (formReserv.selectRoom.value != "all") {
-          //console.log("other try " + formReserv.selectRoom.value)
-          //call_reservS()
+        if (formReserv.selectRoom.value == "all") {
+          mainT()
+        }
+
+        if (formReserv.selectRoom.value != "all" && formReserv.selectRoom.value != "hide") {
+
           mainS()
         }
       }
