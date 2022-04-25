@@ -18,9 +18,9 @@ var horaire_width = 150
 
 var current_room = "414"
 
-var room =[{}]
-var date =[{}]
-var echelle =[{}]
+var roomS =[{}]
+var dateS =[{}]
+var echelleS =[{}]
 
 /**********************
 *gestion des variables*
@@ -176,15 +176,51 @@ for (var i = 0; i < rooms.length; i++) {
   select.appendChild(CreateElem);
 }
 
+/***************
+*function remove display*
+ ***************/
+
+function rmv_echelleS() {
+    c_echelle
+        .selectAll("rect")
+        .data(echelleS)
+        .remove()
+}
+
+function rmv_grileS() {
+    c_gridall
+        .selectAll("rect_grid")
+        .data(days)
+        .remove()
+
+    c_grid
+        .remove()
+}
+
+function rmv_dateS() {
+    c_date
+        .data(dateS)
+        .remove()
+}
+
+
+function rmv_reservS() {
+    rmv_echelleS()
+    rmv_dateS()
+    rmv_grileS()
+}
+
  /***************
 *function display*
  ***************/
 
+
+
 /* display the days */
 function display_dateS(){
-    d3.select(".dateS")
+    c_date = d3.select(".dateS")
         .selectAll("rect")
-        .data(date)
+        .data(dateS)
         .enter()
         .append("rect")
         .attr("class","rect_date")
@@ -225,8 +261,8 @@ function display_gridS(){
 function display_echelleS(){
     c_echelle = d3.select(".echelleS")
         .selectAll("rect")
-        .data(echelle)
-        .enter();
+        .data(echelleS)
+        .enter()
 
     /* display the bar which contain the hour */
     c_echelle
@@ -262,6 +298,8 @@ function display_echelleS(){
             .attr("x",110)
             .attr("y", echelle_each_time_soixante)
     }
+
+
 
 }
 
@@ -344,9 +382,6 @@ function display_reservationS(){
 *display*
  ******/
 
-function hideS() {
-    console.log("hideS")
-}
 
 /* main for displaying all of what is need at once in other file */
 function mainS() {
@@ -359,3 +394,11 @@ function mainS() {
 d3.select("svg")
     .attr("height", 1600)
     .attr("width", 1600)
+
+/*
+c_echelle = d3.select(".echelleS")
+        .selectAll("rect")
+        .data(echelle)
+        .remove()
+        //exit()
+        */
