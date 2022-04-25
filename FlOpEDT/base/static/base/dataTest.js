@@ -8,6 +8,12 @@ let thedata = [
 { "day" : "th", "room" : "B112", "start": 8, "end" : 9, "name" : "LN" }
 ];
 
+let days = [{num: 0, ref: "m", name: "Lundi"},
+            {num: 1, ref: "tu", name: "Mardi"},
+            {num: 2, ref: "w", name: "Mercredi"},
+            {num: 3, ref: "th", name: "Jeudi"},
+            {num: 4, ref: "f", name: "Vendredi"}] ;
+
 
 let rooms = [
   {"name": "B112", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[{

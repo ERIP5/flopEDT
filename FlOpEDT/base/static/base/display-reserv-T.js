@@ -1,10 +1,5 @@
 var largeurWindow = window.innerWidth -40;
 var days_width = (largeurWindow*0.9)/5
-var days = [{num: 0, ref: "m", name: "Lundi"},
-            {num: 1, ref: "tu", name: "Mardi"},
-            {num: 2, ref: "w", name: "Mercredi"},
-            {num: 3, ref: "th", name: "Jeudi"},
-            {num: 4, ref: "f", name: "Vendredi"}] ;
 
 
 var room_width = largeurWindow - (days_width*5)

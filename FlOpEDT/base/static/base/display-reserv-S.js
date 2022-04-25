@@ -22,12 +22,6 @@ var room =[{}]
 var date =[{}]
 var echelle =[{}]
 
-var days = [{num: 0, ref: "m", name: "Lundi"},
-            {num: 1, ref: "tu", name: "Mardi"},
-            {num: 2, ref: "w", name: "Mercredi"},
-            {num: 3, ref: "th", name: "Jeudi"},
-            {num: 4, ref: "f", name: "Vendredi"}] ;
-
 /**********************
 *gestion des variables*
 **********************/
