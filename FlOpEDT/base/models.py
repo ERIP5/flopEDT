@@ -1025,9 +1025,13 @@ class Reservation_periode(models.Model):
 
 class Period_type(models.Model):
     class PeriodType(models.TextChoices):
-        EachDay = 'FR', _('Freshman')
-        EachWeek = 'JR', _('Junior')
-        EachMonth = 'SO', _('Sophomore')
-        FirstDayWeek = 'SR', _('Senior')
+        EachDay = 'ED', _('Each day')
+        EachWeek = 'EW', _('Each week')
+        EachMonth = 'EM', _('Each month')
+        FirstDayWeek = 'FDW', _('First day of the week  ')
 
-
+    period_type = models.CharField(
+        max_length=3,
+        choices=PeriodType.choices,
+        default=PeriodType.EachWeek,
+    )
