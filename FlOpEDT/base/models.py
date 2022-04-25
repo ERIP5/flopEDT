@@ -1019,9 +1019,19 @@ class Reservation_type(models.Model):
     name = models.CharField(max_length=30)
 
 class Reservation_periode(models.Model):
-    start = models.DateField()
+    period_type = models.ForeignKey('Period_type', on_delete=models.CASCADE)
     start = models.DateField()
     ending = models.DateField()
 
-class Period_type(Enum):
-    start = models.DateField()
+class Period_type(models.Model):
+    class PeriodType(models.TextChoices):
+        EachDay = 'ED', _('Each day')
+        EachWeek = 'EW', _('Each week')
+        EachMonth = 'EM', _('Each month')
+        FirstDayWeek = 'FDW', _('First day of the week  ')
+
+    period_type = models.CharField(
+        max_length=3,
+        choices=PeriodType.choices,
+        default=PeriodType.EachWeek,
+    )
