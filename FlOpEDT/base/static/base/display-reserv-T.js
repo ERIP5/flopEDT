@@ -475,7 +475,7 @@ function mainT() {
     display_each_room();
     display_res();
     display_plus();
-    display_grid();
+    //display_grid();
     add_listener();
 }
 
