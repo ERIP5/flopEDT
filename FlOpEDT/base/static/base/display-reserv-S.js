@@ -319,7 +319,7 @@ function course_y_text_tutor(){
  ***************/
 
 function display_date(){
-d3.select(".dates")
+d3.select(".dateS")
   .selectAll("rect")
   .data(date)
   .enter()
@@ -336,7 +336,7 @@ d3.select(".dates")
 
 
 function display_grid(){
-c_gridall = d3.select(".grille")
+c_gridall = d3.select(".grilleS")
   .selectAll("rect_grid")
   .data(days)
 
@@ -358,7 +358,7 @@ c_grid = c_gridall
 
 
 function display_echelle(){
-c_echelle = d3.select(".echelles")
+c_echelle = d3.select(".echelleS")
   .selectAll("rect")
   .data(echelle)
   .enter();
@@ -482,8 +482,8 @@ function display_reservation(){
 *display*
  ******/
 
-function call_reservS() {
-    console.log("call_reservS test")
+function hideS() {
+    console.log("hideS")
 }
 
  function mainS() {

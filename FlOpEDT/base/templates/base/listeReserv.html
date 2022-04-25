@@ -10,47 +10,62 @@
     <script type='text/javascript' src="{% static 'base/jquery.min.js' %}"></script>
 
 
+
     Choose a room : <FORM NAME="formReserv">
         <select id="selectRoom">
-            <option>hide</option>
+            <option>hideS</option>
             <option>all</option>
         </select>
         <INPUT TYPE="button" NAME="b" VALUE="Room " onClick=liste(formReserv);>
       </form>
 
-    <script type="text/javascript">
-      function liste(formReserv) {
-        if (formReserv.selectRoom.value == "hide") {
-          hideS()
-        }
-
-        if (formReserv.selectRoom.value == "all") {
-          mainT()
-        }
-
-        if (formReserv.selectRoom.value != "all" && formReserv.selectRoom.value != "hide") {
-
-          mainS()
-        }
-      }
-    </script>
-
 
 <svg height="440" width="400">
+    <g class="dateS">
+  </g>
+    <g class="salleS">
+  </g>
+    <g class="reservationS">
+  </g>
+    <g class="grilleS">
+  </g>
+    <g class="echelleS">
+  </g>
     <g class="dates">
   </g>
-    <g class="salles">
-  </g>
-    <g class="reservations">
+    <g class="room_lines">
   </g>
     <g class="grille">
   </g>
-    <g class="echelles">
-  </g>
 </svg>
 
+<script src="{% static 'base/display-reserv-T.js' %}"></script>
+<!--
+<script src="{% static 'base/dataTest.js' %}"></script>
 <script src="{% static 'base/display-reserv-S.js' %}"></script>
+-->
 
+    <script type="text/javascript">
+        function liste(formReserv) {
+            if(formReserv.selectRoom.value != null) {
+                console.log(formReserv.selectRoom.value)
+            }
+
+            if (formReserv.selectRoom.value == "all") {
+                console.log("all button")
+                mainT()
+            }
+
+
+            if (formReserv.selectRoom.value == "hideS") {
+              hideS()
+            }
+
+            if (formReserv.selectRoom.value != "all" && formReserv.selectRoom.value != "hideS") {
+              mainS()
+            }
+      }
+    </script>
 
 
 {% endblock %}

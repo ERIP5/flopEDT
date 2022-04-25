@@ -36,6 +36,10 @@ var couple_room_y = new Map();
 var couple_textroom_y = new Map();
 var rooms_height = new Map();
 
+
+var date =[{}]
+var plus =[{}]
+
 let rooms = [
   {"name": "B112", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[{
     "id_course": 137455,
@@ -127,8 +131,7 @@ let rooms = [
   {"name": "B002", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
   {"name": "B203", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}}
 ]
-var date =[{}]
-var plus =[{}]
+
 /**********************
 *gestion des variables*
 **********************/
@@ -550,31 +553,23 @@ for (el of test){
 *gestion svg
 ***********/
 
+function pl() {
+    console.log("please")
+}
 
-console.log("mainT")
-display_date();
-max();
-cac_room_height();
-cac_all_height();
-display_each_room();
-display_res();
-display_plus();
-display_grid();
-add_listener();
+function mainT() {
+    console.log("mainT")
+    display_date();
+    max();
+    cac_room_height();
+    cac_all_height();
+    display_each_room();
+    display_res();
+    display_plus();
+    display_grid();
+    add_listener();
+}
+
 d3.select("svg")
      .attr("width", window.innerWidth -20)
-     .attr("height", 10000)
-
-
-function mainT(){
-console.log("mainT")
-display_date();
-max();
-cac_room_height();
-cac_all_height();
-display_each_room();
-display_res();
-display_plus();
-display_grid();
-add_listener();
-}
+     .attr("height", 2000)

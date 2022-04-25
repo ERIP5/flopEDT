@@ -100,6 +100,7 @@ let rooms = [
   {"name": "B203", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}}
 ]
 
+/*
 let booking = {
 "id_booking" : 123456,
 "day" : "tu",
@@ -110,4 +111,4 @@ let booking = {
 "object" : "réunion",
 ""
 
-}
+}*/
