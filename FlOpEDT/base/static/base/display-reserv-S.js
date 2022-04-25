@@ -143,55 +143,6 @@ let courses = [
 
 let select = document.getElementById("selectRoom");
 
-let rooms = [
-  {"name": "414", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[{
-    "id_course": 137457,
-    "department": 'INFO',
-    "mod": "ExploJAVA",
-    "c_type": "Projet",
-    "day": "w",
-    "start": 585,
-    "duration": 85,
-    "room": "414",
-    "room_type": "M",
-    "display": true,
-    "id_visio": -1,
-    "graded": false,
-    "color_bg": "#ec4dd8",
-    "color_txt": "#000000",
-    "tutor": "PSE",
-    "supp_tutors" : [],
-    "group": "4B",
-    "promo": 0,
-    "from_transversal": null
-  },{
-    "id_course": 137458,
-    "department": 'INFO',
-    "mod": "ExplBD",
-    "c_type": "Projet",
-    "day": "w",
-    "start": 700,
-    "duration": 85,
-    "room": "414",
-    "room_type": "M",
-    "display": true,
-    "id_visio": -1,
-    "graded": false,
-    "color_bg": "#ec4dd7",
-    "color_txt": "#000000",
-    "tutor": "PSE",
-    "supp_tutors" : [],
-    "group": "4B",
-    "promo": 0,
-    "from_transversal": null
-  },], 'th':[],'f':[]}},
-  {"name": "G21", "display":false, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
-  {"name": "G26", "display":false, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
-  {"name": "E209", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
-  {"name": "B111", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
-  {"name": "B002", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
-  {"name": "B203", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]}}
-]
 
 for (var i = 0; i < rooms.length; i++) {
   var textC = rooms[i].name;
@@ -318,7 +269,7 @@ function course_y_text_tutor(){
 *function display*
  ***************/
 
-function display_date(){
+function display_dateS(){
 d3.select(".dateS")
   .selectAll("rect")
   .data(date)
@@ -335,7 +286,7 @@ d3.select(".dateS")
 }
 
 
-function display_grid(){
+function display_gridS(){
 c_gridall = d3.select(".grilleS")
   .selectAll("rect_grid")
   .data(days)
@@ -357,7 +308,7 @@ c_grid = c_gridall
   }
 
 
-function display_echelle(){
+function display_echelleS(){
 c_echelle = d3.select(".echelleS")
   .selectAll("rect")
   .data(echelle)
@@ -404,7 +355,7 @@ c_echelle = d3.select(".echelleS")
 }
 
 /*
-function display_reservation(){
+function display_reservationS(){
     c_reservations = d3.select(".reservations")
     .selectAll("rect")
     .data(rooms)
@@ -488,10 +439,10 @@ function hideS() {
 
  function mainS() {
     console.log("mainS")
-    display_date();
-    display_grid();
-    display_echelle();
-    //display_reservation();
+    display_dateS();
+    display_gridS();
+    display_echelleS();
+    //display_reservationS();
  }
 
 d3.select("svg")

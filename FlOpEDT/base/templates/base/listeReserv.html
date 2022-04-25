@@ -39,31 +39,30 @@
   </g>
 </svg>
 
-<script src="{% static 'base/display-reserv-T.js' %}"></script>
-<!--
 <script src="{% static 'base/dataTest.js' %}"></script>
+<script src="{% static 'base/display-reserv-T.js' %}"></script>
 <script src="{% static 'base/display-reserv-S.js' %}"></script>
+<!--
+
+
 -->
 
     <script type="text/javascript">
         function liste(formReserv) {
-            if(formReserv.selectRoom.value != null) {
-                console.log(formReserv.selectRoom.value)
-            }
-
-            if (formReserv.selectRoom.value == "all") {
-                console.log("all button")
+           if (formReserv.selectRoom.value == "all") {
+           console.log("if 1")
                 mainT()
             }
 
+            if (formReserv.selectRoom.value != "all" && formReserv.selectRoom.value != "hideS") {
+            console.log("if 2")
+                mainS()
+            }
 
             if (formReserv.selectRoom.value == "hideS") {
-              hideS()
-            }
-
-            if (formReserv.selectRoom.value != "all" && formReserv.selectRoom.value != "hideS") {
-              mainS()
-            }
+            console.log("if 3")
+                  hideS()
+                }
       }
     </script>
 

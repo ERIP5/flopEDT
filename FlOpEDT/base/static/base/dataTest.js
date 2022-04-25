@@ -8,6 +8,7 @@ let thedata = [
 { "day" : "th", "room" : "B112", "start": 8, "end" : 9, "name" : "LN" }
 ];
 
+
 let rooms = [
   {"name": "B112", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[{
     "id_course": 137455,
