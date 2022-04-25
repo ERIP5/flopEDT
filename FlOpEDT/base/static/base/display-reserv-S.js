@@ -487,6 +487,7 @@ function call_reservS() {
 }
 
  function mainS() {
+    console.log("mainS")
     display_date();
     display_grid();
     display_echelle();
