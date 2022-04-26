@@ -10,7 +10,7 @@
 
     Choose a room : <FORM NAME="formReserv">
         <select id="selectRoom">
-            <option>rmv_reservS</option>
+            <option>rmv_reserv</option>
             <option>all</option>
         </select>
         <INPUT TYPE="button" NAME="b" VALUE="Room " onClick=liste(formReserv);>
@@ -40,18 +40,40 @@
     <script src="{% static 'base/display-reserv-S.js' %}"></script>
 
     <script type="text/javascript">
+        rmvStatut = 0
+
+        function rmv_total() {
+            if (rmvStatut == 1) {
+                console.log("rmv T")
+                rmv_reservT()
+        }
+
+            if (rmvStatut == 2) {
+                console.log("rmv S")
+                rmv_reservS()
+            }
+        }
+
         function liste(formReserv) {
+            console.log("start " + rmvStatut)
+            if (formReserv.selectRoom.value == "rmv_reserv") {
+                rmv_total()
+            }
+
             if (formReserv.selectRoom.value == "all") {
+                rmv_total()
+                rmvStatut = 1
+                console.log(rmvStatut)
                 mainT()
             }
 
-            if (formReserv.selectRoom.value != "all" && formReserv.selectRoom.value != "rmv_reservS") {
+            if (formReserv.selectRoom.value != "all" && formReserv.selectRoom.value != "rmv_reserv") {
+                rmv_total()
+                rmvStatut = 2
+                console.log(rmvStatut)
                 mainS()
             }
 
-            if (formReserv.selectRoom.value == "rmv_reservS") {
-                rmv_reservS()
-            }
         }
     </script>
 

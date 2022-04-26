@@ -202,6 +202,25 @@ function circle_plus_posx(day){
     return plus_x(day)+days_width/2
 }
 
+/***************
+*function remove*
+ ***************/
+
+function rmv_dateT() {
+    d3.select(".dates")
+        .selectAll("rect")
+        .data(date)
+        .remove()
+}
+
+
+function rmv_reservT() {
+    rmv_dateT()
+}
+
+ /***************
+*function display*
+ ***************/
 
 /**********
 *affichage*

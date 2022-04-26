@@ -33,7 +33,8 @@ function date_width() {
 
 /*-- days --*/
 function days_duration() {
-    return (echelle_end_time_day-echelle_start_time)}
+    return (echelle_end_time_day-echelle_start_time)
+}
 
 function days_x(day) {
     return days_width*(day.num)+horaire_width}
@@ -103,8 +104,8 @@ var each_hour_y = days_y()
 function echelle_each_time_soixante() {
     var y = each_hour_y;
     if (y == 70) {
-    each_hour_y += ((echelle_start_time+60)-echelle_start_time-echelle_start_time%60);
-    return y
+        each_hour_y += ((echelle_start_time+60)-echelle_start_time-echelle_start_time%60);
+        return y
     }
     each_hour_y += 60;
     return y;
@@ -113,10 +114,10 @@ function echelle_each_time_soixante() {
 /*-- course --*/
 function course_x(day) {
     for (day of days){
-    console.log(day.day)
-    if (day[day.ref] == "w") {
-    console.log("if w")
-    return days_width*(2)+horaire_width
+        console.log(day.day)
+        if (day[day.ref] == "w") {
+            console.log("if w")
+            return days_width*(2)+horaire_width
     }
 
     //console.log(rooms[i].courses["w"])
@@ -177,7 +178,7 @@ for (var i = 0; i < rooms.length; i++) {
 }
 
 /***************
-*function remove display*
+*function remove*
  ***************/
 
 function rmv_echelleS() {
@@ -385,8 +386,11 @@ function display_reservationS(){
 
 /* main for displaying all of what is need at once in other file */
 function mainS() {
+    /* display the days */
     display_dateS();
+    /* display the grid */
     display_gridS();
+    /* display the schedule with the hours */
     display_echelleS();
     //display_reservationS();
 }
