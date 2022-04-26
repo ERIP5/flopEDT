@@ -285,7 +285,7 @@ function display_scaleS(){
     /* location of the start hour */
     c_scale
         .append("text")
-        .text("test")
+        .text("")
         .attr("x",110)
         .attr("y", scale_each_time_soixante())
 
