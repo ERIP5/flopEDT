@@ -100,7 +100,7 @@ function display_scale_end_time_day() {
     return scale_end_time_day_hour_concat()
 }
 
-var each_hour_y = days_y()
+each_hour_y = days_y()
 function scale_each_time_soixante() {
     var y = each_hour_y;
     if (y == 70) {
@@ -281,12 +281,13 @@ function display_scaleS(){
         .attr("width",scale_width)
         .attr("height",scale_height())
 
+    each_hour_y_safe = each_hour_y
     /* location of the start hour */
-    //c_scale
+    c_scale
         .append("text")
-        .text("")
+        .text("test")
         .attr("x",110)
-        .attr("y", scale_each_time_soixante)
+        .attr("y", scale_each_time_soixante())
 
     /* display the first whole hour after the start hour */
     c_scale
@@ -294,7 +295,7 @@ function display_scaleS(){
         .text(scale_day_start_hour_concat())
         .attr("class","display_hour_first")
         .attr("x",110)
-        .attr("y", scale_each_time_soixante)
+        .attr("y", scale_each_time_soixante())
 
     /* add each hour until the end of the day */
     for (hh = scale_current_hour+1; hh<scale_end_time_day_hour()+1; hh++){
@@ -303,8 +304,9 @@ function display_scaleS(){
             .text(scale_current_hour_concat)
             .attr("class","display_hour")
             .attr("x",110)
-            .attr("y", scale_each_time_soixante)
+            .attr("y", scale_each_time_soixante())
     }
+    each_hour_y = each_hour_y_safe
 }
 
 /*
@@ -390,11 +392,11 @@ function display_reservationS(){
 /* main for displaying all of what is need at once in other file */
 function mainS() {
     /* display the days */
-    display_dateS();
+    display_dateS()
     /* display the grid */
-    display_gridS();
+    display_gridS()
     /* display the schedule with the hours */
-    display_scaleS();
+    display_scaleS()
     //display_reservationS();
 }
 
