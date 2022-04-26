@@ -282,6 +282,7 @@ function display_scaleS(){
         .attr("height",scale_height())
 
     each_hour_y_safe = each_hour_y
+    scale_current_hour_safe = scale_current_hour
     /* location of the start hour */
     c_scale
         .append("text")
@@ -307,6 +308,7 @@ function display_scaleS(){
             .attr("y", scale_each_time_soixante())
     }
     each_hour_y = each_hour_y_safe
+    scale_current_hour = scale_current_hour_safe
 }
 
 /*
