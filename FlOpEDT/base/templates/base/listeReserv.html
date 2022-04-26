@@ -9,12 +9,16 @@
     <script type='text/javascript' src="{% static 'base/jquery.min.js' %}"></script>
 
     Choose a room : <FORM NAME="formReserv">
-        <select id="selectRoom">
+        <select id="selectRoom" onchange="changee()">
             <option>rmv_reserv</option>
             <option>all</option>
         </select>
+
         <INPUT TYPE="button" NAME="b" VALUE="Room " onClick=liste(formReserv);>
-      </form>
+
+    </form>
+
+    <p id="demo"></p>
 
     <svg height="440" width="400">
     <g class="dateS">
@@ -73,6 +77,11 @@
                 //console.log(rmvStatut)
                 mainS()
             }
+
+
+        function changee() {
+
+        }
 
         }
     </script>
