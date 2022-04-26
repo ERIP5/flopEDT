@@ -5,22 +5,22 @@
 var date_height = 50
 var date_margin_top = 20
 
-var echelle_width = 50
-var echelle_x = 100
+var scale_width = 50
+var scale_x = 100
 
-var echelle_start_time = 8*60+15//495
-var echelle_end_time_day = 18*60+45 //1125
+var scale_start_time = 8*60+15//495
+var scale_end_time_day = 18*60+45 //1125
 
 var days_width = 150
 
 /* set to 150 for no margin between the schedule and the days */
-var horaire_width = 150
+var scale_Margin_width = 150
 
 var current_room = "414"
 
 var roomS =[{}]
 var dateS =[{}]
-var echelleS =[{}]
+var scaleS =[{}]
 
 /**********************
 *gestion des variables*
@@ -33,11 +33,11 @@ function date_width() {
 
 /*-- days --*/
 function days_duration() {
-    return (echelle_end_time_day-echelle_start_time)
+    return (scale_end_time_day-scale_start_time)
 }
 
 function days_x(day) {
-    return days_width*(day.num)+horaire_width}
+    return days_width*(day.num)+scale_Margin_width}
 
 function days_y() {
     return date_height+date_margin_top
@@ -51,60 +51,60 @@ function getday(day) {
     return day["name"]
 }
 
-/*-- echelle --*/
-function cac_echelle_y() {
+/*-- scale --*/
+function cac_scale_y() {
     return date_height+date_margin_top
 }
 
-function echelle_y() {
-    return cac_echelle_y()
+function scale_y() {
+    return cac_scale_y()
 }
 
-function echelle_height() {
+function scale_height() {
     return days_duration()
 }
 
-function echelle_day_start_hour() {
-	return Math.floor(echelle_start_time/60)+1
+function scale_day_start_hour() {
+	return Math.floor(scale_start_time/60)+1
 }
 
-var echelle_current_hour = echelle_day_start_hour()
-function echelle_current_hour_incr() {
-    var h = echelle_current_hour+1
-    echelle_current_hour += 1
+var scale_current_hour = scale_day_start_hour()
+function scale_current_hour_incr() {
+    var h = scale_current_hour+1
+    scale_current_hour += 1
     return h
 }
 
-function echelle_current_hour_concat() {
-    var hhh = echelle_current_hour_incr()+ "h"
+function scale_current_hour_concat() {
+    var hhh = scale_current_hour_incr()+ "h"
     return hhh
 }
 
-function echelle_day_start_hour_concat() {
-	return echelle_day_start_hour() + "h"
+function scale_day_start_hour_concat() {
+	return scale_day_start_hour() + "h"
 }
 
-function echelle_end_time_day_hour() {
-	return Math.floor(echelle_end_time_day/60)
+function scale_end_time_day_hour() {
+	return Math.floor(scale_end_time_day/60)
 }
 
-function echelle_end_time_day_hour_concat() {
-	return echelle_end_time_day_hour + "h"
+function scale_end_time_day_hour_concat() {
+	return scale_end_time_day_hour + "h"
 }
 
-function display_echelle_start_time() {
-    return echelle_start_time_hour_concat
+function display_scale_start_time() {
+    return scale_start_time_hour_concat
 }
 
-function display_echelle_end_time_day() {
-    return echelle_end_time_day_hour_concat()
+function display_scale_end_time_day() {
+    return scale_end_time_day_hour_concat()
 }
 
 var each_hour_y = days_y()
-function echelle_each_time_soixante() {
+function scale_each_time_soixante() {
     var y = each_hour_y;
     if (y == 70) {
-        each_hour_y += ((echelle_start_time+60)-echelle_start_time-echelle_start_time%60);
+        each_hour_y += ((scale_start_time+60)-scale_start_time-scale_start_time%60);
         return y
     }
     each_hour_y += 60;
@@ -117,24 +117,24 @@ function course_x(day) {
         console.log(day.day)
         if (day[day.ref] == "w") {
             console.log("if w")
-            return days_width*(2)+horaire_width
+            return days_width*(2)+scale_Margin_width
     }
 
     //console.log(rooms[i].courses["w"])
     /*if (rooms[i].courses["m"] == "m"){
-        return days_width*(0)+horaire_width
+        return days_width*(0)+scale_Margin_width
         }
     if (rooms[i].courses["tu"] == "tu"){
-        return days_width*(1)+horaire_width
+        return days_width*(1)+scale_Margin_width
         }
     if (rooms[i].courses["w"] == "w"){
-        return days_width*(2)+horaire_width
+        return days_width*(2)+scale_Margin_width
         }
     if (rooms[i].courses["th"] == "th"){
-        return days_width*(3)+horaire_width
+        return days_width*(3)+scale_Margin_width
         }
     if (rooms[i].courses["f"] == "f"){
-        return days_width*(4)+horaire_width
+        return days_width*(4)+scale_Margin_width
         }*/
 
     /*
@@ -148,19 +148,19 @@ function course_x(day) {
 }
 
 function course_y() {
-    return date_height+date_margin_top+rooms[i].start-echelle_start_time
+    return date_height+date_margin_top+rooms[i].start-scale_start_time
 }
 
 function course_y_text_module() {
-    return date_height+date_margin_top+rooms[i].start-echelle_start_time+10
+    return date_height+date_margin_top+rooms[i].start-scale_start_time+10
 }
 
 function course_y_text_c_type() {
-    return date_height+date_margin_top+rooms[i].start-echelle_start_time+25
+    return date_height+date_margin_top+rooms[i].start-scale_start_time+25
 }
 
 function course_y_text_tutor() {
-    return date_height+date_margin_top+rooms[i].start-echelle_start_time+40
+    return date_height+date_margin_top+rooms[i].start-scale_start_time+40
 }
 
 /***************
@@ -181,10 +181,14 @@ for (var i = 0; i < rooms.length; i++) {
 *function remove*
  ***************/
 
-function rmv_echelleS() {
-    c_echelle
+function rmv_scaleS() {
+    c_scale
         .selectAll("rect")
-        .data(echelleS)
+        .data(scaleS)
+        .remove()
+
+    c_scale
+        .selectAll("text")
         .remove()
 }
 
@@ -206,7 +210,7 @@ function rmv_dateS() {
 
 
 function rmv_reservS() {
-    rmv_echelleS()
+    rmv_scaleS()
     rmv_dateS()
     rmv_grileS()
 }
@@ -228,7 +232,7 @@ function display_dateS(){
         .attr("fill","none")
         .attr("stroke","black")
         .attr("stroke-width",5)
-        .attr("x",horaire_width)
+        .attr("x",scale_Margin_width)
         .attr("y",date_margin_top)
         .attr("width",date_width())
         .attr("height",date_height)
@@ -259,49 +263,48 @@ function display_gridS(){
   }
 
 /* display the schedule with the hours */
-function display_echelleS(){
-    c_echelle = d3.select(".echelleS")
+function display_scaleS(){
+    c_scale = d3.select(".scaleS")
         .selectAll("rect")
-        .data(echelleS)
+        .data(scaleS)
         .enter()
 
     /* display the bar which contain the hour */
-    c_echelle
+    c_scale
         .append("rect")
-        .attr("class","rect_echelle")
+        .attr("class","rect_scale")
         .attr("fill","none")
         .attr("stroke","blue")
         .attr("stroke-width",2)
-        .attr("x",echelle_x)
-        .attr("y",echelle_y())
-        .attr("width",echelle_width)
-        .attr("height",echelle_height())
+        .attr("x",scale_x)
+        .attr("y",scale_y())
+        .attr("width",scale_width)
+        .attr("height",scale_height())
 
     /* location of the start hour */
-    c_echelle
+    //c_scale
         .append("text")
         .text("")
         .attr("x",110)
-        .attr("y", echelle_each_time_soixante)
+        .attr("y", scale_each_time_soixante)
 
     /* display the first whole hour after the start hour */
-    c_echelle
+    c_scale
         .append("text")
-        .text(echelle_day_start_hour_concat())
+        .text(scale_day_start_hour_concat())
+        .attr("class","display_hour_first")
         .attr("x",110)
-        .attr("y", echelle_each_time_soixante)
+        .attr("y", scale_each_time_soixante)
 
     /* add each hour until the end of the day */
-    for (hh = echelle_current_hour+1; hh<echelle_end_time_day_hour()+1; hh++){
-        c_echelle
+    for (hh = scale_current_hour+1; hh<scale_end_time_day_hour()+1; hh++){
+        c_scale
             .append("text")
-            .text(echelle_current_hour_concat)
+            .text(scale_current_hour_concat)
+            .attr("class","display_hour")
             .attr("x",110)
-            .attr("y", echelle_each_time_soixante)
+            .attr("y", scale_each_time_soixante)
     }
-
-
-
 }
 
 /*
@@ -391,7 +394,7 @@ function mainS() {
     /* display the grid */
     display_gridS();
     /* display the schedule with the hours */
-    display_echelleS();
+    display_scaleS();
     //display_reservationS();
 }
 
@@ -400,9 +403,9 @@ d3.select("svg")
     .attr("width", 1600)
 
 /*
-c_echelle = d3.select(".echelleS")
+c_scale = d3.select(".scaleS")
         .selectAll("rect")
-        .data(echelle)
+        .data(scale)
         .remove()
         //exit()
         */

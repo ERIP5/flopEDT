@@ -213,9 +213,32 @@ function rmv_dateT() {
         .remove()
 }
 
+/* doesn't work ? */
+function rmv_roomT() {
+    d3.select("svg")
+        .select(".salles")
+        .selectAll("rect_room")
+        .data(room)
+        .remove()
+}
+
+/* remove nearly everything */
+function rmv_each_roomT() {
+    c_room_all
+        .selectAll("rect_each_room")
+        .data(rooms)
+        .remove()
+    c_room_gr
+        .remove()
+
+    c_room
+        .remove()
+}
 
 function rmv_reservT() {
     rmv_dateT()
+    rmv_roomT()
+    rmv_each_roomT()
 }
 
  /***************

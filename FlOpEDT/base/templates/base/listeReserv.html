@@ -25,7 +25,7 @@
   </g>
     <g class="grilleS">
   </g>
-    <g class="echelleS">
+    <g class="scaleS">
   </g>
     <g class="dates">
   </g>
@@ -44,18 +44,18 @@
 
         function rmv_total() {
             if (rmvStatut == 1) {
-                console.log("rmv T")
+                //console.log("rmv T")
                 rmv_reservT()
         }
 
             if (rmvStatut == 2) {
-                console.log("rmv S")
+                //console.log("rmv S")
                 rmv_reservS()
             }
         }
 
         function liste(formReserv) {
-            console.log("start " + rmvStatut)
+            //console.log("start " + rmvStatut)
             if (formReserv.selectRoom.value == "rmv_reserv") {
                 rmv_total()
             }
@@ -63,14 +63,14 @@
             if (formReserv.selectRoom.value == "all") {
                 rmv_total()
                 rmvStatut = 1
-                console.log(rmvStatut)
+                //console.log(rmvStatut)
                 mainT()
             }
 
             if (formReserv.selectRoom.value != "all" && formReserv.selectRoom.value != "rmv_reserv") {
                 rmv_total()
                 rmvStatut = 2
-                console.log(rmvStatut)
+                //console.log(rmvStatut)
                 mainS()
             }
 
