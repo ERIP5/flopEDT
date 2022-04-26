@@ -433,7 +433,7 @@ for (room of rooms){
     }
 }
 function myFunction(el){
-    //console.log("test")
+    console.log("test")
 }
 
 function add_listener(){
