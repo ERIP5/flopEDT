@@ -11,7 +11,7 @@
 
 Choose a room : <FORM NAME="formReserv">
         <select id="selectRoom">
-            <option>hideS</option>
+            <option>rmv_reservS</option>
             <option>all</option>
         </select>
         <INPUT TYPE="button" NAME="b" VALUE="Room " onClick=liste(formReserv);>
@@ -37,8 +37,11 @@ Choose a room : <FORM NAME="formReserv">
 
  <script type="text/javascript">
         function liste(formReserv) {
-            if (formReserv.selectRoom.value != "all" && formReserv.selectRoom.value != "hideS") {
+            if (formReserv.selectRoom.value != "all" && formReserv.selectRoom.value != "rmv_reservS") {
               mainS()
+            }
+        if (formReserv.selectRoom.value == "rmv_reservS") {
+                rmv_reservS()
             }
       }
 
