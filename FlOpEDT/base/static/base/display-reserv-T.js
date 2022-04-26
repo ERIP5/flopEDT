@@ -161,7 +161,7 @@ function cac_room_y(room){
 }
 
 function cac_all_height(){
-cpt = 0
+var cpt = 0
     for (h of room_max_courses){
         all_room_height[cpt] = (res_height*h)+mini_add_button_height
         rooms_height.set(rooms[cpt].name,(res_height*h)+mini_add_button_height)
@@ -327,10 +327,6 @@ c_room_gr
   }
 
 function display_res(){
-compt_room_height = 0
-compt_room_posy = 0
-compt_text_posy = 0
-
 c_all_courses = d3.select(".room_lines");
 
 for(room of rooms)
@@ -390,7 +386,6 @@ for(room of rooms)
 }
 
 function display_plus(){
-var compt_plusy = 0
 c_all_rooms = d3.select(".room_lines")
 for (room of rooms){
     c_one_room = c_all_rooms
@@ -471,6 +466,19 @@ for (el of test){
 }
 }
 
+function clean() {
+    room_max_courses = []
+    all_room_height = []
+    compt_room_height = 0
+    compt_room_posy = 0
+    compt_text_posy = 0
+    compt_plusy = 0
+    course = []
+    couple_room_y = new Map();
+    couple_textroom_y = new Map();
+    rooms_height = new Map();
+}
+
 
 /***********
 *gestion svg
@@ -478,6 +486,7 @@ for (el of test){
 
 
 function mainT() {
+    clean();
     //console.log("mainT")
     //filling in the table room_max_courses which calculates, for each room, the day with the most lessons
     max();
