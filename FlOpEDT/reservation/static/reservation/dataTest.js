@@ -44,7 +44,7 @@ let rooms = [
     "mod": "ExploJAVA",
     "c_type": "Projet",
     "day": "w",
-    "start": 480,
+    "start": 495,
     "duration": 85,
     "room": "414",
     "room_type": "M",

@@ -429,7 +429,7 @@ for(room of rooms)
                 .attr("y",res_y_T)
                 .attr("width",days_width_T)
                 .attr("height",res_height_T)
-                .attr("fill","none")
+                .attr("fill","grey")
 
         }
     }
