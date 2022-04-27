@@ -480,6 +480,7 @@ function clean() {
     couple_room_y = new Map();
     couple_textroom_y = new Map();
     rooms_height = new Map();
+    current_room = "all"
 }
 
 

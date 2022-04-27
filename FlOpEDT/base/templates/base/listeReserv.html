@@ -10,7 +10,6 @@
 
     Choose a room : <FORM NAME="formReserv">
         <select id="selectRoom" onchange="getRoom(this)">
-            <option>rmv_reserv</option>
             <option>all</option>
         </select>
     </form>
@@ -42,7 +41,9 @@
 
     <script type="text/javascript">
 
-        rmvStatut = 0
+        rmvStatut = 1
+        mainT()
+
         function rmv_total() {
             if (rmvStatut == 1) {
                 rmv_reservT()
