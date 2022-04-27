@@ -88,6 +88,7 @@ urlpatterns += i18n_patterns(
     re_path(r'^flopeditor/', include('flopeditor.urls')),
     re_path(r'^display/(?P<department>[a-zA-Z]\w{0,6})/', include('displayweb.urls')),
     path('api/', include('api.urls')),
+    path('reservation/',include('reservation.urls')),
 
 )
 
