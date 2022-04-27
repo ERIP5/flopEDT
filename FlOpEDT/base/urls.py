@@ -55,10 +55,6 @@ urlpatterns = [
     #Send Email to teacher when student want modify schedule
     url(r'^email-modif$', views.send_email_proposal, name='email-proposal'),
 
-    #Show all the reservation made for each rooms ( to discard at the end )
-    url(r'^reservationT', views.reservation_total, name="reservationT"),
-    #Show all the reservation made for one room ( to discard at the end )
-    url(r'^reservationS', views.reservation_salle, name="reservationS"),
     #Show the reservation
     url(r'^listeReserv', views.reservation, name="reservation"),
 

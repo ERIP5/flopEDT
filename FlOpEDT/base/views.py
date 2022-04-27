@@ -1711,11 +1711,5 @@ def get_key_all_tutors(department_abbrev):
 
 # </editor-fold desc="HELPERS">
 
-def reservation_total(req, department):
-    return TemplateResponse(req, "base/reservationT.html")
-
-def reservation_salle(req, department):
-    return TemplateResponse(req,"base/reservationS.html")
-
 def reservation(req, department):
     return TemplateResponse(req,"base/listeReserv.html")

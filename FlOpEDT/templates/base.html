@@ -110,8 +110,6 @@
       <li><a href="{% url "base:aide" department %}">{% trans 'Help' %}</a></li>
       <li><a href="{% url "base:contact" department %}">{% trans 'Messages' %}</a></li>
       <li><a href="{% url "base:modules" department %}">{% trans 'Modules' %}</a></li>
-      <li><a href="{% url "base:reservationT" department %}"> reservationT</a></li>
-      <li><a href="{% url "base:reservationS" department %}"> reservationS</a></li>
       <li><a href="{% url "base:reservation" department %}"> reservation</a></li>
       {% if request.is_department_admin %}
           <li><a href="{% url "solve_board:main_board" department %}">{% trans 'Generate' %}</a></li>
