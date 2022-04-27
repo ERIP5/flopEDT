@@ -3,20 +3,18 @@
 **********************/
 var largeurWindowS = window.innerWidth -40;
 
+var days_widthS = (largeurWindow*0.9)/5
+
 var date_heightS = 50
 var date_margin_topS = 20
 
 var scale_width_Total = largeurWindowS - (days_width_T*5)
 var scale_width = (largeurWindowS - (days_width_T*5))*0.6
 var scale_margin = (largeurWindowS - (days_width_T*5))*0.4
-
 var scale_x = 100
 
 var scale_start_time = 8*60+15//480
 var scale_end_time_day = 18*60+45 //1125
-
-var days_widthS = (largeurWindow*0.9)/5
-
 
 
 var roomS =[{}]
