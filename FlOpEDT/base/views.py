@@ -1710,6 +1710,3 @@ def get_key_all_tutors(department_abbrev):
     return f'ALL-TUT-D{department_abbrev}'
 
 # </editor-fold desc="HELPERS">
-
-def reservation(req, department):
-    return TemplateResponse(req,"base/listeReserv.html")

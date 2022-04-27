@@ -3,6 +3,7 @@
 from django.forms import ModelForm
 from django import forms
 from django.shortcuts import render
+from django.template.response import TemplateResponse
 
 from reservation.models import Reservation, Reservation_periode
 
@@ -38,8 +39,10 @@ class ReservationPeriodForm(ModelForm):
 
 
 
-def Reservation(request):
+def addReservation(request, department):
     reservation_form = ReservationForm()
     reservationP_form = ReservationPeriodForm()
     return render(request, 'reservation/form.html', {'reservation_form': reservation_form,'reservationP_form': reservationP_form})
 
+def listReserv(req, department):
+    return TemplateResponse(req,"reservation/listeReserv.html")

@@ -55,9 +55,6 @@ urlpatterns = [
     #Send Email to teacher when student want modify schedule
     url(r'^email-modif$', views.send_email_proposal, name='email-proposal'),
 
-    #Show the reservation
-    url(r'^listeReserv', views.reservation, name="reservation"),
-
     # exchanges with the db via django
     # ---------------------------------
 
