@@ -63,7 +63,7 @@ function each_text_posy(){
         compt_text_posy +=1
         return y
 }
-function course_x(course){
+function courseT_x(course){
     for (element of days){
         if (element["ref"] ==  course["day"]){
             return days_width*element["num"]+room_width
@@ -79,7 +79,7 @@ function res_x(res){
     }
 }
 
-function course_y(course){
+function courseT_y(course){
     var y = couple_room_y.get(course.room+course.day)
     couple_room_y.set(course.room+course.day, (y+res_height))
     return y;
@@ -371,8 +371,8 @@ for(room of rooms)
                 .attr("class","display_courses_frame")
                 .attr("stroke","black")
                 .attr("stroke-width",2)
-                .attr("x",course_x)
-                .attr("y",course_y)
+                .attr("x",courseT_x)
+                .attr("y",courseT_y)
                 .attr("width",days_width)
                 .attr("height",res_height)
                 .attr("fill",color_courses)
