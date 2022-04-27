@@ -22,7 +22,7 @@ var all_room_height_T = []
 
 var mini_add_button_height_T = 80
 
-var res_height_T = 150
+var res_height_T = 130
 
 var course = []
 
