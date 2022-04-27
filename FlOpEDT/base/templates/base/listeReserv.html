@@ -9,13 +9,10 @@
     <script type='text/javascript' src="{% static 'base/jquery.min.js' %}"></script>
 
     Choose a room : <FORM NAME="formReserv">
-        <select id="selectRoom">
+        <select id="selectRoom" onchange="getRoom(this)">
             <option>rmv_reserv</option>
             <option>all</option>
         </select>
-
-        <INPUT TYPE="button" NAME="b" VALUE="Room " onClick=liste(formReserv);>
-
     </form>
 
     <p id="demo"></p>
@@ -44,37 +41,34 @@
     <script src="{% static 'base/display-reserv-S.js' %}"></script>
 
     <script type="text/javascript">
-        rmvStatut = 0
 
+        rmvStatut = 0
         function rmv_total() {
             if (rmvStatut == 1) {
-                //console.log("rmv T")
                 rmv_reservT()
         }
 
             if (rmvStatut == 2) {
-                //console.log("rmv S")
                 rmv_reservS()
             }
         }
 
-        function liste(formReserv) {
-            //console.log("start " + rmvStatut)
-            if (formReserv.selectRoom.value == "rmv_reserv") {
-                rmv_total()
-            }
+        function getRoom(selectObject) {
+            var valRoom = selectObject.value
+            liste(formReserv)
+        }
 
+        function liste(formReserv) {
             if (formReserv.selectRoom.value == "all") {
                 rmv_total()
                 rmvStatut = 1
-                //console.log(rmvStatut)
                 mainT()
             }
 
-            if (formReserv.selectRoom.value != "all" && formReserv.selectRoom.value != "rmv_reserv") {
+            if (formReserv.selectRoom.value != "all") {
                 rmv_total()
                 rmvStatut = 2
-                //console.log(rmvStatut)
+                current_room = formReserv.selectRoom.value
                 mainS()
             }
         }

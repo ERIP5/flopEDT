@@ -16,8 +16,6 @@ var days_width = 150
 /* set to 150 for no margin between the schedule and the days */
 var scale_Margin_width = 150
 
-var current_room = "414"
-
 var roomS =[{}]
 var dateS =[{}]
 var scaleS =[{}]
