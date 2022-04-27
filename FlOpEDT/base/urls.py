@@ -43,7 +43,6 @@ urlpatterns = [
     re_path(r'visio-preference/(?P<tutor>\w{1,8})?(/?P<id>\d{1,8})?',
             views.visio_preference,
             name='visio-pref'),
-
     url(r'^preferences$', views.preferences, name="preferences"),
     url(r'^semaine-type$', views.stype, name="stype"),
     url(r'^aide$', views.aide, name="aide"),
