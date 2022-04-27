@@ -98,18 +98,19 @@ let rooms = [
     "group": "4B",
     "promo": 0,
     "from_transversal": null
-  }],'f':[]},'booking' :{'m':[{
+  }],'f':[]},'booking' :{'m':[],'tu':[],'w':[{
     "id_booking" : 123456,
     "responsible" : "Jean",
-    "room" : "G21",
+    "room" : "414",
     "room_type" : "M",
-    "start" : 480,
+    "day": "w",
+    "start" : 700,
     "duration" : 190,
     "title" : "réunion",
     "description": "une reservation pour tester l'afficahge des réservations",
     "type": "type",
     "key":true
-}],'tu':[],'w':[], 'th':[],'f':[]}},
+}], 'th':[],'f':[]}},
   {"name": "G21", "display":false, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
   {"name": "G26", "display":false, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
   {"name": "E209", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
@@ -122,7 +123,7 @@ let rooms = [
 let restest = {
 "id_booking" : 123456,
 "responsible" : "Jean",
-"room" : "G21",
+"room" : "414",
 "room_type" : "M",
 "start" : 480,
 "duration" : 190,

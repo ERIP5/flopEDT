@@ -63,6 +63,14 @@ function each_text_posy(){
         compt_text_posy +=1
         return y
 }
+function course_x(course){
+    for (element of days){
+        if (element["ref"] ==  course["day"]){
+            return days_width*element["num"]+room_width
+        }
+    }
+}
+
 function res_x(res){
     for (element of days){
         if (element["ref"] ==  res["day"]){
@@ -71,9 +79,16 @@ function res_x(res){
     }
 }
 
-function res_y(course){
+function course_y(course){
     var y = couple_room_y.get(course.room+course.day)
     couple_room_y.set(course.room+course.day, (y+res_height))
+    return y;
+}
+
+function res_y(res)
+{
+    var y = couple_room_y.get(res.room+res.day)
+    couple_room_y.set(res.room+res.day, (y+res_height))
     return y;
 }
 
@@ -127,12 +142,16 @@ function getcourses(course){
     return course.mod
 }
 
+function getreservation(res){
+    return res.title
+}
+
 function max(){
 for (room of rooms){
      var taller = 0
      for (day of days){
-        if(room.courses[day.ref].length > taller){
-            taller = room.courses[day.ref].length
+        if(room.courses[day.ref].length + room.booking[day.ref].length> taller){
+            taller = room.courses[day.ref].length + room.booking[day.ref].length
             }
      }
     room_max_courses.push(taller)
@@ -174,7 +193,7 @@ function plus_x(day)
     return (day.num*days_width+room_width)
 }
 
-function color_reservation(course){
+function color_courses(course){
     return course.color_bg
 }
 
@@ -326,7 +345,7 @@ c_room_gr
 }
   }
 
-function display_res(){
+function display_courses(){
 c_all_courses = d3.select(".room_lines");
 
 for(room of rooms)
@@ -349,18 +368,18 @@ for(room of rooms)
 
             c_course_res
                 .append("rect")
-                .attr("class","display_res_frame")
+                .attr("class","display_courses_frame")
                 .attr("stroke","black")
                 .attr("stroke-width",2)
-                .attr("x",res_x)
-                .attr("y",res_y)
+                .attr("x",course_x)
+                .attr("y",course_y)
                 .attr("width",days_width)
                 .attr("height",res_height)
-                .attr("fill",color_reservation)
+                .attr("fill",color_courses)
 
             c_course_res
                 .append("text")
-                .attr("class", "display_res_text_mod")
+                .attr("class", "display_courses_text_mod")
                 .text(get_course_name)
                 .attr("x", res_text_x)
                 .attr("y", res_text_roomy)
@@ -368,7 +387,7 @@ for(room of rooms)
 
             c_course_res
                 .append("text")
-                .attr("class", "display_res_text_date")
+                .attr("class", "display_courses_text_date")
                 .text(text_heure_res)
                 .attr("x", res_text_x)
                 .attr("y", res_text_daty)
@@ -376,13 +395,49 @@ for(room of rooms)
 
             c_course_res
                 .append("text")
-                .attr("class", "display_res_text_prof")
+                .attr("class", "display_courses_text_prof")
                 .text(get_course_profg)
                 .attr("x", res_text_x)
                 .attr("y", res_text_profy)
                 .attr("text-anchor", "middle")
         }
 }
+}
+
+function display_reservation(){
+c_all_reservations = d3.select(".room_lines");
+
+for(room of rooms)
+{
+    c_all_reservations_day = c_all_reservations
+        .select("."+room_class(room))
+
+
+    for(day of days)
+    {
+        c_res_g = c_all_reservations_day
+                .select("."+day.name)
+                .selectAll("test")
+                .data(room.booking[day.ref])
+                .enter();
+
+        c_res = c_res_g
+                .append("g")
+                .attr("class",getreservation)
+
+        c_res
+            .append("rect")
+                .attr("class","display_courses_frame")
+                .attr("stroke","black")
+                .attr("stroke-width",2)
+                .attr("x",res_x)
+                .attr("y",res_y)
+                .attr("width",days_width)
+                .attr("height",res_height)
+                .attr("fill","none")
+
+        }
+    }
 }
 
 function display_plus(){
@@ -438,7 +493,7 @@ for (room of rooms){
             //pour afficher le cadre du bouton
             c_plus
                 .append("rect")
-                .attr("class","display_plus_circle")
+                .attr("class","display_plus_rect")
                 .attr("fill","none")
                 .attr("stroke","black")
                 .attr("stroke-width",2)
@@ -450,6 +505,13 @@ for (room of rooms){
 
     }
 }
+
+
+
+
+
+
+
 function myFunction(el){
     console.log("test")
 }
@@ -500,8 +562,10 @@ function mainT() {
     display_date();
     //display left panel with all room numbers
     display_each_room();
+    //for each days and each room, add a group for each course and display each course information's
+    display_courses();
     //for each days and each room, add a group for each reservation and display each reservation information's
-    display_res();
+    display_reservation();
     //for each days and each room, add all plus buttons
     display_plus();
     //add action listener for each button
