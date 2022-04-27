@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %} Reservation{% endblock %}
+
+{% block content %}
+    {% load i18n %}
+    {% load static %}
+    <script src="{% static 'base/d3.v4.min.js' %}"></script>
+    <script type='text/javascript' src="{% static 'base/jquery.min.js' %}"></script>
+
+    Choose a room : <FORM NAME="formReserv">
+        <select id="selectRoom" onchange="getRoom(this)">
+            <option>all</option>
+        </select>
+    </form>
+
+    <p id="demo"></p>
+
+    <svg height="440" width="400">
+    <g class="dateS">
+  </g>
+    <g class="salleS">
+  </g>
+    <g class="reservationS">
+  </g>
+    <g class="grilleS">
+  </g>
+    <g class="scaleS">
+  </g>
+    <g class="dates">
+  </g>
+    <g class="room_lines">
+  </g>
+    <g class="grille">
+  </g>
+</svg>
+
+    <script src="{% static 'reservation/dataTest.js' %}"></script>
+    <script src="{% static 'reservation/display-reserv-T.js' %}"></script>
+    <script src="{% static 'reservation/display-reserv-S.js' %}"></script>
+
+    <script type="text/javascript">
+
+        rmvStatut = 1
+        mainT()
+
+        function rmv_total() {
+            if (rmvStatut == 1) {
+                rmv_reservT()
+        }
+
+            if (rmvStatut == 2) {
+                rmv_reservS()
+            }
+        }
+
+        function getRoom(selectObject) {
+            var valRoom = selectObject.value
+            liste(formReserv)
+        }
+
+        function liste(formReserv) {
+            if (formReserv.selectRoom.value == "all") {
+                rmv_total()
+                rmvStatut = 1
+                mainT()
+            }
+
+            if (formReserv.selectRoom.value != "all") {
+                rmv_total()
+                rmvStatut = 2
+                current_room = formReserv.selectRoom.value
+                mainS()
+            }
+        }
+
+    </script>
+
+
+{% endblock %}

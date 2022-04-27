@@ -1,9 +1,11 @@
-from django.urls import path
-from . import  views
+from django.conf.urls import url, include
+from django.urls import path, re_path
+from . import views
 
+app_name="reservation"
 
 urlpatterns=[
 
-    path('',views.Reservation,name='reservation'),
+    url(r'^listeReserv$', views.listReserv ,name="reservation"),
 
 ]
