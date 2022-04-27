@@ -98,7 +98,18 @@ let rooms = [
     "group": "4B",
     "promo": 0,
     "from_transversal": null
-  }],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  }],'f':[]},'booking' :{'m':[{
+    "id_booking" : 123456,
+    "responsible" : "Jean",
+    "room" : "G21",
+    "room_type" : "M",
+    "start" : 480,
+    "duration" : 190,
+    "title" : "réunion",
+    "description": "une reservation pour tester l'afficahge des réservations",
+    "type": "type",
+    "key":true
+}],'tu':[],'w':[], 'th':[],'f':[]}},
   {"name": "G21", "display":false, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
   {"name": "G26", "display":false, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
   {"name": "E209", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
@@ -107,15 +118,18 @@ let rooms = [
   {"name": "B203", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}}
 ]
 
-/*
-let booking = {
+
+let restest = {
 "id_booking" : 123456,
-"day" : "tu",
+"responsible" : "Jean",
 "room" : "G21",
-"room_type" : "M"
+"room_type" : "M",
 "start" : 480,
 "duration" : 190,
-"object" : "réunion",
-""
+"title" : "réunion",
+"description": "une reservation pour tester l'afficahge des réservations",
+"type": "type",
+"key":true
+}
 
-}*/
+
