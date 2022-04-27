@@ -1,29 +1,28 @@
 var largeurWindow = window.innerWidth -40;
-var days_widthT = (largeurWindow*0.9)/5
+var days_width_T = (largeurWindow*0.9)/5
 
 
-var room_widthT = largeurWindow - (days_widthT*5)
+var room_width_T = largeurWindow - (days_width_T*5)
 
-var date_widthT = days_widthT*5
-var date_height = 50
-var date_margtop = 20
+var date_width_T = days_width_T*5
+var date_height_T = 50
+var date_margtop_T = 20
 
-var compt_room_height = 0
-var compt_room_posy = 0
-var compt_text_posy = 0
-var compt_plusy = 0
+var compt_room_height_T = 0
+var compt_room_posy_T = 0
+var compt_text_posy_T = 0
+var compt_plusy_T = 0
 
-var each_room_y = days_y()
-var y_room_act = days_y()
-var y_text_act = days_y()
+var each_room_y_T = days_y_T()
+var y_room_act_T = days_y_T()
+var y_text_act_T = days_y_T()
 
-var room_max_courses = []
-var all_room_height = []
+var room_max_courses_T = []
+var all_room_height_T = []
 
-mini_add_button_height = 80
+var mini_add_button_height_T = 80
 
-var res_posy = days_y()
-var res_height = 150
+var res_height_T = 150
 
 var course = []
 
@@ -40,84 +39,80 @@ var plus =[{}]
 *gestion des variables*
 **********************/
 
-function days_x(day){
-
-    return days_widthT*(day.num)+room_widthT}
-
-function days_y(){
-    return date_height+date_margtop
+function days_y_T(){
+    return date_height_T+date_margtop_T
 }
 
 
-function days_height(){
-    return (each_room_y - days_y())
+function days_height_T(){
+    return (each_room_y_T - days_y_T())
 }
 
-function display_text(res){
+function display_text_T(res){
     return res["name"]
 }
 
 function each_text_posy(){
-        var y = y_text_act + (all_room_height[compt_text_posy]/2)
-        y_text_act += all_room_height[compt_text_posy]
-        compt_text_posy +=1
+        var y = y_text_act_T + (all_room_height_T[compt_text_posy_T]/2)
+        y_text_act_T += all_room_height_T[compt_text_posy_T]
+        compt_text_posy_T +=1
         return y
 }
 function courseT_x(course){
     for (element of days){
         if (element["ref"] ==  course["day"]){
-            return days_widthT*element["num"]+room_widthT
+            return days_width_T*element["num"]+room_width_T
         }
     }
 }
 
-function res_x(res){
+function res_x_T(res){
     for (element of days){
         if (element["ref"] ==  res["day"]){
-            return days_widthT*element["num"]+room_widthT
+            return days_width_T*element["num"]+room_width_T
         }
     }
 }
 
 function courseT_y(course){
     var y = couple_room_y.get(course.room+course.day)
-    couple_room_y.set(course.room+course.day, (y+res_height))
+    couple_room_y.set(course.room+course.day, (y+res_height_T))
     return y;
 }
 
-function res_y(res)
+function res_y_T(res)
 {
     var y = couple_room_y.get(res.room+res.day)
-    couple_room_y.set(res.room+res.day, (y+res_height))
+    couple_room_y.set(res.room+res.day, (y+res_height_T))
     return y;
 }
 
 function res_text_roomy(course){
     var y = couple_textroom_y.get(course.room+ course.day+"room")
-    couple_textroom_y.set(course.room+ course.day+"room", (y+res_height))
-    return y+(res_height/4)
+    couple_textroom_y.set(course.room+ course.day+"room", (y+res_height_T))
+    return y+(res_height_T/4)
 }
 
 function res_text_daty(course){
     var y = couple_textroom_y.get(course.room+ course.day+"time")
-    couple_textroom_y.set(course.room+ course.day+"time", (y+res_height))
-    return y+(res_height/2)
+    couple_textroom_y.set(course.room+ course.day+"time", (y+res_height_T))
+    return y+(res_height_T/2)
 }
 
 function res_text_profy(course){
     var y = couple_textroom_y.get(course.room+ course.day+"prof")
-    couple_textroom_y.set(course.room+ course.day+"prof", (y+res_height))
-    return y+(res_height*0.75)
+    couple_textroom_y.set(course.room+ course.day+"prof", (y+res_height_T))
+    return y+(res_height_T*0.75)
 }
 
 function res_text_x(course){
     for (day of days)
     {
         if (day.ref == course.day){
-        return day.num*days_widthT+room_widthT+(days_widthT/2)
+        return day.num*days_width_T+room_width_T+(days_width_T/2)
         }
     }
-    return room_widthT+(days_widthT/2)
+    return room_width_T+(days_width_T/2)
 }
 
 function text_heure_res(res){
@@ -154,21 +149,21 @@ for (room of rooms){
             taller = room.courses[day.ref].length + room.booking[day.ref].length
             }
      }
-    room_max_courses.push(taller)
+    room_max_courses_T.push(taller)
 
     }
 }
 
 function get_room_height(){
-        var h = all_room_height[compt_room_height]
-        compt_room_height +=1
+        var h = all_room_height_T[compt_room_height_T]
+        compt_room_height_T +=1
         return h
 }
 
 function cac_room_y(room){
-        var y = y_room_act
-        y_room_act += all_room_height[compt_room_posy]
-        compt_room_posy +=1
+        var y = y_room_act_T
+        y_room_act_T += all_room_height_T[compt_room_posy_T]
+        compt_room_posy_T +=1
         for (day of days){
             couple_room_y.set(room.name+ day.ref, y)
             couple_room_y.set(room.name+ day.ref+"base", y)
@@ -181,16 +176,16 @@ function cac_room_y(room){
 
 function cac_all_height(){
 var cpt = 0
-    for (h of room_max_courses){
-        all_room_height[cpt] = (res_height*h)+mini_add_button_height
-        rooms_height.set(rooms[cpt].name,(res_height*h)+mini_add_button_height)
+    for (h of room_max_courses_T){
+        all_room_height_T[cpt] = (res_height_T*h)+mini_add_button_height_T
+        rooms_height.set(rooms[cpt].name,(res_height_T*h)+mini_add_button_height_T)
         cpt +=1
     }
 }
 
 function plus_x(day)
 {
-    return (day.num*days_widthT+room_widthT)
+    return (day.num*days_width_T+room_width_T)
 }
 
 function color_courses(course){
@@ -218,7 +213,7 @@ function circle_plus_posy(room, day){
 }
 
 function circle_plus_posx(day){
-    return plus_x(day)+days_widthT/2
+    return plus_x(day)+days_width_T/2
 }
 
 /***************
@@ -278,10 +273,10 @@ d3.select(".dates")
   .attr("fill","none")
   .attr("stroke","black")
   .attr("stroke-width",2)
-  .attr("x",room_widthT)
-  .attr("y",date_margtop)
-  .attr("width",date_widthT)
-  .attr("height",date_height)
+  .attr("x",room_width_T)
+  .attr("y",date_margtop_T)
+  .attr("width",date_width_T)
+  .attr("height",date_height_T)
 }
 
 function display_room(){
@@ -296,15 +291,15 @@ d3.select("svg")
   .attr("stroke","black")
   .attr("stroke-width",2)
   .attr("x",0)
-  .attr("y",days_y)
-  .attr("width",room_widthT)
-  .attr("height",days_height())
+  .attr("y",days_y_T)
+  .attr("width",room_width_T)
+  .attr("height",days_height_T())
   }
 
 function display_each_room(){
-compt_room_height = 0
-compt_room_posy = 0
-compt_text_posy = 0
+compt_room_height_T = 0
+compt_room_posy_T = 0
+compt_text_posy_T = 0
 c_room_all = d3.select(".room_lines")
   .selectAll("rect_each_room")
   .data(rooms);
@@ -326,14 +321,14 @@ c_room
   .attr("stroke-width",2)
   .attr("x",0)
   .attr("y", cac_room_y)
-  .attr("width",room_widthT)
+  .attr("width",room_width_T)
   .attr("height",get_room_height);
 
 c_room
   .append("text")
-  .text(display_text)
+  .text(display_text_T)
   .attr("class","room_name")
-  .attr("x",room_widthT/2)
+  .attr("x",room_width_T/2)
   .attr("y", each_text_posy)
   .attr("text-anchor", "middle")
 
@@ -373,8 +368,8 @@ for(room of rooms)
                 .attr("stroke-width",2)
                 .attr("x",courseT_x)
                 .attr("y",courseT_y)
-                .attr("width",days_widthT)
-                .attr("height",res_height)
+                .attr("width",days_width_T)
+                .attr("height",res_height_T)
                 .attr("fill",color_courses)
 
             c_course_res
@@ -430,10 +425,10 @@ for(room of rooms)
                 .attr("class","display_courses_frame")
                 .attr("stroke","black")
                 .attr("stroke-width",2)
-                .attr("x",res_x)
-                .attr("y",res_y)
-                .attr("width",days_widthT)
-                .attr("height",res_height)
+                .attr("x",res_x_T)
+                .attr("y",res_y_T)
+                .attr("width",days_width_T)
+                .attr("height",res_height_T)
                 .attr("fill","none")
 
         }
@@ -466,27 +461,27 @@ for (room of rooms){
                 .attr("stroke-width",1)
                 .attr("cx",circle_plus_posx(day))
                 .attr("cy",circle_plus_posy(room, day))
-                .attr("r", mini_add_button_height/3)
-                .attr("width",days_widthT)
+                .attr("r", mini_add_button_height_T/3)
+                .attr("width",days_width_T)
                 .attr("height",add_button_height(room,day))
 
             c_plus
                 .append("rect")
                 .attr("class","display_plus_circle")
                 .attr("fill","white")
-                .attr("x",circle_plus_posx(day) - mini_add_button_height/4)
-                .attr("y",circle_plus_posy(room, day) - mini_add_button_height/12)
-                .attr("width",mini_add_button_height/2)
-                .attr("height",mini_add_button_height/6)
+                .attr("x",circle_plus_posx(day) - mini_add_button_height_T/4)
+                .attr("y",circle_plus_posy(room, day) - mini_add_button_height_T/12)
+                .attr("width",mini_add_button_height_T/2)
+                .attr("height",mini_add_button_height_T/6)
 
             c_plus
                 .append("rect")
                 .attr("class","display_plus_circle")
                 .attr("fill","white")
-                .attr("x",circle_plus_posx(day) - mini_add_button_height/12)
-                .attr("y",circle_plus_posy(room, day) - mini_add_button_height/4)
-                .attr("width",mini_add_button_height/6)
-                .attr("height",mini_add_button_height/2)
+                .attr("x",circle_plus_posx(day) - mini_add_button_height_T/12)
+                .attr("y",circle_plus_posy(room, day) - mini_add_button_height_T/4)
+                .attr("width",mini_add_button_height_T/6)
+                .attr("height",mini_add_button_height_T/2)
 
 
 
@@ -499,7 +494,7 @@ for (room of rooms){
                 .attr("stroke-width",2)
                 .attr("x",plus_x(day))
                 .attr("y",couple_room_y.get(room.name + day.ref))
-                .attr("width",days_widthT)
+                .attr("width",days_width_T)
                 .attr("height",add_button_height(room,day))
         }
 
@@ -529,15 +524,15 @@ for (el of test){
 }
 
 function clean() {
-    each_room_y = days_y()
-    y_room_act = days_y()
-    y_text_act = days_y()
-    room_max_courses = []
-    all_room_height = []
-    compt_room_height = 0
-    compt_room_posy = 0
-    compt_text_posy = 0
-    compt_plusy = 0
+    each_room_y_T = days_y_T()
+    y_room_act_T = days_y_T()
+    y_text_act_T = days_y_T()
+    room_max_courses_T = []
+    all_room_height_T = []
+    compt_room_height_T = 0
+    compt_room_posy_T = 0
+    compt_text_posy_T = 0
+    compt_plusy_T = 0
     course = []
     couple_room_y = new Map();
     couple_textroom_y = new Map();
@@ -554,9 +549,9 @@ function clean() {
 function mainT() {
     clean();
     //console.log("mainT")
-    //filling in the table room_max_courses which calculates, for each room, the day with the most lessons
+    //filling in the table room_max_courses_T which calculates, for each room, the day with the most lessons
     max();
-    //function that populates the all_room_height using room_max_courses and adding the size of the plus button
+    //function that populates the all_room_height_T using room_max_courses_T and adding the size of the plus button
     cac_all_height();
     //draw the first rect with dates
     display_date();
