@@ -523,6 +523,24 @@ for (el of test){
 }
 }
 
+
+function ourFunction(ml) {
+    console.log("salsa")
+}
+
+
+function room_listener() {
+    var room_lis = document.querySelectorAll(".salles")
+    //console.log(room_lis)
+    for (ml of room_lis) {
+        ml.addEventListener("click", function() {
+            ourFunction(ml)
+        });
+        console.log("ml")
+    }
+}
+
+
 function clean() {
     each_room_y_T = days_y_T()
     y_room_act_T = days_y_T()
@@ -565,6 +583,7 @@ function mainT() {
     display_plus();
     //add action listener for each button
     add_listener();
+    room_listener()
     d3.select("svg")
      .attr("width", window.innerWidth -20)
      .attr("height", 2000)
