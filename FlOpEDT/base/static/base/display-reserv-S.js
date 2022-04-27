@@ -146,7 +146,7 @@ function course_x(day) {
     */
     }
 }
-
+/*
 function course_y() {
     return date_height+date_margin_top+rooms[i].start-scale_start_time
 }
@@ -162,7 +162,7 @@ function course_y_text_c_type() {
 function course_y_text_tutor() {
     return date_height+date_margin_top+rooms[i].start-scale_start_time+40
 }
-
+*/
 /***************
 *Select*
  ***************/
