@@ -1,10 +1,10 @@
 var largeurWindow = window.innerWidth -40;
-var days_width = (largeurWindow*0.9)/5
+var days_widthT = (largeurWindow*0.9)/5
 
 
-var room_width = largeurWindow - (days_width*5)
+var room_widthT = largeurWindow - (days_widthT*5)
 
-var date_width = days_width*5
+var date_widthT = days_widthT*5
 var date_height = 50
 var date_margtop = 20
 
@@ -42,7 +42,7 @@ var plus =[{}]
 
 function days_x(day){
 
-    return days_width*(day.num)+room_width}
+    return days_widthT*(day.num)+room_widthT}
 
 function days_y(){
     return date_height+date_margtop
@@ -66,7 +66,7 @@ function each_text_posy(){
 function courseT_x(course){
     for (element of days){
         if (element["ref"] ==  course["day"]){
-            return days_width*element["num"]+room_width
+            return days_widthT*element["num"]+room_widthT
         }
     }
 }
@@ -74,7 +74,7 @@ function courseT_x(course){
 function res_x(res){
     for (element of days){
         if (element["ref"] ==  res["day"]){
-            return days_width*element["num"]+room_width
+            return days_widthT*element["num"]+room_widthT
         }
     }
 }
@@ -114,10 +114,10 @@ function res_text_x(course){
     for (day of days)
     {
         if (day.ref == course.day){
-        return day.num*days_width+room_width+(days_width/2)
+        return day.num*days_widthT+room_widthT+(days_widthT/2)
         }
     }
-    return room_width+(days_width/2)
+    return room_widthT+(days_widthT/2)
 }
 
 function text_heure_res(res){
@@ -190,7 +190,7 @@ var cpt = 0
 
 function plus_x(day)
 {
-    return (day.num*days_width+room_width)
+    return (day.num*days_widthT+room_widthT)
 }
 
 function color_courses(course){
@@ -218,7 +218,7 @@ function circle_plus_posy(room, day){
 }
 
 function circle_plus_posx(day){
-    return plus_x(day)+days_width/2
+    return plus_x(day)+days_widthT/2
 }
 
 /***************
@@ -278,9 +278,9 @@ d3.select(".dates")
   .attr("fill","none")
   .attr("stroke","black")
   .attr("stroke-width",2)
-  .attr("x",room_width)
+  .attr("x",room_widthT)
   .attr("y",date_margtop)
-  .attr("width",date_width)
+  .attr("width",date_widthT)
   .attr("height",date_height)
 }
 
@@ -297,7 +297,7 @@ d3.select("svg")
   .attr("stroke-width",2)
   .attr("x",0)
   .attr("y",days_y)
-  .attr("width",room_width)
+  .attr("width",room_widthT)
   .attr("height",days_height())
   }
 
@@ -326,14 +326,14 @@ c_room
   .attr("stroke-width",2)
   .attr("x",0)
   .attr("y", cac_room_y)
-  .attr("width",room_width)
+  .attr("width",room_widthT)
   .attr("height",get_room_height);
 
 c_room
   .append("text")
   .text(display_text)
   .attr("class","room_name")
-  .attr("x",room_width/2)
+  .attr("x",room_widthT/2)
   .attr("y", each_text_posy)
   .attr("text-anchor", "middle")
 
@@ -373,7 +373,7 @@ for(room of rooms)
                 .attr("stroke-width",2)
                 .attr("x",courseT_x)
                 .attr("y",courseT_y)
-                .attr("width",days_width)
+                .attr("width",days_widthT)
                 .attr("height",res_height)
                 .attr("fill",color_courses)
 
@@ -432,7 +432,7 @@ for(room of rooms)
                 .attr("stroke-width",2)
                 .attr("x",res_x)
                 .attr("y",res_y)
-                .attr("width",days_width)
+                .attr("width",days_widthT)
                 .attr("height",res_height)
                 .attr("fill","none")
 
@@ -467,7 +467,7 @@ for (room of rooms){
                 .attr("cx",circle_plus_posx(day))
                 .attr("cy",circle_plus_posy(room, day))
                 .attr("r", mini_add_button_height/3)
-                .attr("width",days_width)
+                .attr("width",days_widthT)
                 .attr("height",add_button_height(room,day))
 
             c_plus
@@ -499,7 +499,7 @@ for (room of rooms){
                 .attr("stroke-width",2)
                 .attr("x",plus_x(day))
                 .attr("y",couple_room_y.get(room.name + day.ref))
-                .attr("width",days_width)
+                .attr("width",days_widthT)
                 .attr("height",add_button_height(room,day))
         }
 
@@ -570,8 +570,7 @@ function mainT() {
     display_plus();
     //add action listener for each button
     add_listener();
-}
-
-d3.select("svg")
+    d3.select("svg")
      .attr("width", window.innerWidth -20)
      .attr("height", 2000)
+}
