@@ -25,6 +25,7 @@ class ReservationForm(ModelForm):
         labels = {
             'responsible': "Choisir un responsable",
             'title': "description breve de la réservation",
+            'description' : "Description de",
         }
 
 class ReservationPeriodForm(ModelForm):
