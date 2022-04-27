@@ -467,6 +467,9 @@ for (el of test){
 }
 
 function clean() {
+    each_room_y = days_y()
+    y_room_act = days_y()
+    y_text_act = days_y()
     room_max_courses = []
     all_room_height = []
     compt_room_height = 0
