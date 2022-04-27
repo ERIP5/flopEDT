@@ -2,8 +2,8 @@
 *Définition des variables*
 **********************/
 
-var date_height = 50
-var date_margin_top = 20
+var date_heightS = 50
+var date_margin_topS = 20
 
 var scale_width = 50
 var scale_x = 100
@@ -11,7 +11,7 @@ var scale_x = 100
 var scale_start_time = 8*60+15//495
 var scale_end_time_day = 18*60+45 //1125
 
-var days_width = 150
+var days_widthS = 150
 
 /* set to 150 for no margin between the schedule and the days */
 var scale_Margin_width = 150
@@ -25,33 +25,33 @@ var scaleS =[{}]
 **********************/
 
 /*-- date --*/
-function date_width() {
-    return days_width*5
+function date_widthS() {
+    return days_widthS*5
 }
 
 /*-- days --*/
-function days_duration() {
+function days_durationS() {
     return (scale_end_time_day-scale_start_time)
 }
 
-function days_x(day) {
-    return days_width*(day.num)+scale_Margin_width}
+function days_xS(day) {
+    return days_widthS*(day.num)+scale_Margin_width}
 
-function days_y() {
-    return date_height+date_margin_top
+function days_yS() {
+    return date_heightS+date_margin_topS
 }
 
-function days_height() {
-    return days_duration()
+function days_heightS() {
+    return days_durationS()
 }
 
-function getday(day) {
+function getdayS(day) {
     return day["name"]
 }
 
 /*-- scale --*/
 function cac_scale_y() {
-    return date_height+date_margin_top
+    return date_heightS+date_margin_topS
 }
 
 function scale_y() {
@@ -59,7 +59,7 @@ function scale_y() {
 }
 
 function scale_height() {
-    return days_duration()
+    return days_durationS()
 }
 
 function scale_day_start_hour() {
@@ -98,67 +98,67 @@ function display_scale_end_time_day() {
     return scale_end_time_day_hour_concat()
 }
 
-each_hour_y = days_y()
+each_hour_yS = days_yS()
 function scale_each_time_soixante() {
-    var y = each_hour_y;
+    var y = each_hour_yS;
     if (y == 70) {
-        each_hour_y += ((scale_start_time+60)-scale_start_time-scale_start_time%60);
+        each_hour_yS += ((scale_start_time+60)-scale_start_time-scale_start_time%60);
         return y
     }
-    each_hour_y += 60;
+    each_hour_yS += 60;
     return y;
 }
 
 /*-- course --*/
-function course_x(day) {
+function course_xS(day) {
     for (day of days){
         console.log(day.day)
         if (day[day.ref] == "w") {
             console.log("if w")
-            return days_width*(2)+scale_Margin_width
+            return days_widthS*(2)+scale_Margin_width
     }
 
     //console.log(rooms[i].courses["w"])
     /*if (rooms[i].courses["m"] == "m"){
-        return days_width*(0)+scale_Margin_width
+        return days_widthS*(0)+scale_Margin_width
         }
     if (rooms[i].courses["tu"] == "tu"){
-        return days_width*(1)+scale_Margin_width
+        return days_widthS*(1)+scale_Margin_width
         }
     if (rooms[i].courses["w"] == "w"){
-        return days_width*(2)+scale_Margin_width
+        return days_widthS*(2)+scale_Margin_width
         }
     if (rooms[i].courses["th"] == "th"){
-        return days_width*(3)+scale_Margin_width
+        return days_widthS*(3)+scale_Margin_width
         }
     if (rooms[i].courses["f"] == "f"){
-        return days_width*(4)+scale_Margin_width
+        return days_widthS*(4)+scale_Margin_width
         }*/
 
     /*
         if (day.ref == course[day.ref]){
         console.log(2)
-        console.log(days_width*element["num"]+room_width)
-            return days_width*element["num"]+room_width
+        console.log(days_widthS*element["num"]+room_widthS)
+            return days_widthS*element["num"]+room_widthS
         }
     */
     }
 }
 /*
-function course_y() {
-    return date_height+date_margin_top+rooms[i].start-scale_start_time
+function course_yS() {
+    return date_heightS+date_margin_topS+rooms[i].start-scale_start_time
 }
 
-function course_y_text_module() {
-    return date_height+date_margin_top+rooms[i].start-scale_start_time+10
+function course_yS_text_module() {
+    return date_heightS+date_margin_topS+rooms[i].start-scale_start_time+10
 }
 
-function course_y_text_c_type() {
-    return date_height+date_margin_top+rooms[i].start-scale_start_time+25
+function course_yS_text_c_type() {
+    return date_heightS+date_margin_topS+rooms[i].start-scale_start_time+25
 }
 
-function course_y_text_tutor() {
-    return date_height+date_margin_top+rooms[i].start-scale_start_time+40
+function course_yS_text_tutor() {
+    return date_heightS+date_margin_topS+rooms[i].start-scale_start_time+40
 }
 */
 /***************
@@ -191,17 +191,17 @@ function rmv_scaleS() {
 }
 
 function rmv_grileS() {
-    c_gridall
+    c_gridallS
         .selectAll("rect_grid")
         .data(days)
         .remove()
 
-    c_grid
+    c_gridS
         .remove()
 }
 
 function rmv_dateS() {
-    c_date
+    c_dateS
         .data(dateS)
         .remove()
 }
@@ -221,7 +221,7 @@ function rmv_reservS() {
 
 /* display the days */
 function display_dateS(){
-    c_date = d3.select(".dateS")
+    c_dateS = d3.select(".dateS")
         .selectAll("rect")
         .data(dateS)
         .enter()
@@ -231,33 +231,33 @@ function display_dateS(){
         .attr("stroke","black")
         .attr("stroke-width",5)
         .attr("x",scale_Margin_width)
-        .attr("y",date_margin_top)
-        .attr("width",date_width())
-        .attr("height",date_height)
+        .attr("y",date_margin_topS)
+        .attr("width",date_widthS())
+        .attr("height",date_heightS)
 }
 
 /* display the grid */
 function display_gridS(){
-    c_gridall = d3.select(".grilleS")
+    c_gridallS = d3.select(".grilleS")
         .selectAll("rect_grid")
         .data(days)
 
-    c_grid = c_gridall
+    c_gridS = c_gridallS
         .enter()
         .append("g")
-        .attr("class",getday)
+        .attr("class",getdayS)
 
     /* display the column for the five days */
-    c_grid
+    c_gridS
         .append("rect")
         .attr("class","rect_grid")
         .attr("fill","none")
         .attr("stroke","green")
         .attr("stroke-width",5)
-        .attr("x",days_x)
-        .attr("y",days_y)
-        .attr("width",days_width)
-        .attr("height",days_height())
+        .attr("x",days_xS)
+        .attr("y",days_yS)
+        .attr("width",days_widthS)
+        .attr("height",days_heightS())
   }
 
 /* display the schedule with the hours */
@@ -279,7 +279,7 @@ function display_scaleS(){
         .attr("width",scale_width)
         .attr("height",scale_height())
 
-    each_hour_y_safe = each_hour_y
+    each_hour_yS_safe = each_hour_yS
     scale_current_hour_safe = scale_current_hour
     /* location of the start hour */
     c_scale
@@ -305,13 +305,13 @@ function display_scaleS(){
             .attr("x",110)
             .attr("y", scale_each_time_soixante())
     }
-    each_hour_y = each_hour_y_safe
+    each_hour_yS = each_hour_yS_safe
     scale_current_hour = scale_current_hour_safe
 }
 
 /*
 function display_reservationS(){
-    c_reservations = d3.select(".reservations")
+    c_reservationS = d3.select(".reservations")
     .selectAll("rect")
     .data(rooms)
     .enter();
@@ -322,7 +322,7 @@ function display_reservationS(){
     //        //console.log(rooms[i].name)
     //        if (current_room == rooms[i].name) {
     //           for day in days:
-    //                x = course_x(day)
+    //                x = course_xS(day)
     //                days_courses = room_object.courses[day.ref]
     //                for course in days_courses:
     //                   y =
@@ -333,16 +333,16 @@ function display_reservationS(){
             if (rooms[i].display == true){
                 for (day of days) {
                     console.log(rooms[i].name)
-                    c_reservations
+                    c_reservationS
                         .append("rect")
                         .attr("class", "rect_grid")
                         .attr("fill","none") //rooms[i].color_bg
                         .attr("stroke", "black")
-                        .attr("x", course_x(day))
+                        .attr("x", course_xS(day))
                         days_courses = .courses[day.ref]
                             for (course of days_courses) {
-                                .attr("y", course_y)
-                                .attr("width", days_width)
+                                .attr("y", course_yS)
+                                .attr("width", days_widthS)
                                 .attr("height", rooms[i].duration)
                             }
                 }
@@ -351,35 +351,35 @@ function display_reservationS(){
     }
 
                 //console.log(rooms[i].name)
-                c_reservations
+                c_reservationS
                     .append("rect")
                     .attr("class", "rect_grid")
                     .attr("fill",rooms[i].color_bg)
                     .attr("stroke", "black")
-                    .attr("x", course_x(rooms[i].courses))
-                    .attr("y", course_y)
-                    .attr("width", days_width)
+                    .attr("x", course_xS(rooms[i].courses))
+                    .attr("y", course_yS)
+                    .attr("width", days_widthS)
                     .attr("height", rooms[i].duration)
 
-                c_reservations
+                c_reservationS
                     .append("text")
                     .text(rooms[i].mod)
-                    .attr("x", course_x(rooms[i].day)+50)
-                    .attr("y", course_y_text_module)
+                    .attr("x", course_xS(rooms[i].day)+50)
+                    .attr("y", course_yS_text_module)
                     //.attr("style_color", rooms[i].color_txt)
 
-                c_reservations
+                c_reservationS
                     .append("text")
                     .text(rooms[i].c_type)
-                    .attr("x", course_x(rooms[i].day)+50)
-                    .attr("y", course_y_text_c_type)
+                    .attr("x", course_xS(rooms[i].day)+50)
+                    .attr("y", course_yS_text_c_type)
                     //.attr("style.color", rooms[i].color_txt)
 
-                c_reservations
+                c_reservationS
                     .append("text")
                     .text(rooms[i].tutor)
-                    .attr("x", course_x(rooms[i].day)+50)
-                    .attr("y", course_y_text_tutor)
+                    .attr("x", course_xS(rooms[i].day)+50)
+                    .attr("y", course_yS_text_tutor)
                     //.attr("text_color", rooms[i].color_txt)
             }
 */
@@ -403,11 +403,3 @@ function mainS() {
 d3.select("svg")
     .attr("height", 1600)
     .attr("width", 1600)
-
-/*
-c_scale = d3.select(".scaleS")
-        .selectAll("rect")
-        .data(scale)
-        .remove()
-        //exit()
-        */
