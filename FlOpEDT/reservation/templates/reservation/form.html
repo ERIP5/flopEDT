@@ -1,29 +1,31 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <style>.reservation_room {
+{% extends "base.html" %}
+
+{% block title %} formulaire{% endblock %}
+
+{% block content %}
+    {% load i18n %}
+    {% load static %}
+    <script src="{% static 'base/d3.v4.min.js' %}"></script>
+
+<style>
+.reservation_room {
 	width: 50%;
 	height: 100%;
 	float: left;
-	background-color: grey;
 }
 
 .reservation_period{
 	width: 50%;
 	height: 100%;
 	float: left;
-	background-color: green;
 }
 </style>
-</head>
-<body>
+
     <div class="reservation_room">
     {{ reservation_form.as_p }}
     </div>
     <div class="reservation_period">
     {{ reservationP_form.as_p }}
     </div>
-</body>
-</html>
+
+{% endblock %}
