@@ -112,6 +112,11 @@ function scale_each_time_soixante() {
     return y;
 }
 
+function scale_textx_S()
+{
+    return scale_margin+ (scale_width/2)
+}
+
 /*-- course --*/
 function course_xS(course){
     for (element of days){
@@ -284,16 +289,18 @@ function display_scaleS(){
     c_scale
         .append("text")
         .text("")
-        .attr("x",110)
+        .attr("x",scale_textx_S)
         .attr("y", scale_each_time_soixante())
+        .attr("text-anchor", "middle")
 
     /* display the first whole hour after the start hour */
     c_scale
         .append("text")
         .text(scale_day_start_hour_concat())
         .attr("class","display_hour_first")
-        .attr("x",110)
+        .attr("x",scale_textx_S)
         .attr("y", scale_each_time_soixante())
+        .attr("text-anchor", "middle")
 
     /* add each hour until the end of the day */
     for (hh = scale_current_hour+1; hh<scale_end_time_day_hour()+1; hh++){
@@ -301,8 +308,9 @@ function display_scaleS(){
             .append("text")
             .text(scale_current_hour_concat)
             .attr("class","display_hour")
-            .attr("x",110)
+            .attr("x",scale_textx_S)
             .attr("y", scale_each_time_soixante())
+            .attr("text-anchor", "middle")
     }
     each_hour_yS = each_hour_yS_safe
     scale_current_hour = scale_current_hour_safe
