@@ -110,7 +110,7 @@
       <li><a href="{% url "base:aide" department %}">{% trans 'Help' %}</a></li>
       <li><a href="{% url "base:contact" department %}">{% trans 'Messages' %}</a></li>
       <li><a href="{% url "base:modules" department %}">{% trans 'Modules' %}</a></li>
-      <li><a href="{% url "reservation:reservation" %}"> reservation</a></li>
+      <li><a href="{% url "reservation:reservationList" department %}"> reservation</a></li>
       {% if request.is_department_admin %}
           <li><a href="{% url "solve_board:main_board" department %}">{% trans 'Generate' %}</a></li>
           <li><a href="{% url "flopeditor:flopeditor-department-default" department %}">{% trans 'flop!EDITOR' %}</a></li>

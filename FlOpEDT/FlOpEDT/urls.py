@@ -78,6 +78,7 @@ urlpatterns += i18n_patterns(
     re_path(r'^accounts/', include('people.urls')),
     re_path(r'^citations/', include('quote.urls')),
     re_path(r'^edt/(?P<department>[a-zA-Z]\w{0,6})/', include('base.urls')),
+    re_path(r'^reservation/(?P<department>[a-zA-Z]\w{0,6})/', include('reservation.urls')),
     re_path(r'^solve-board/(?P<department>[a-zA-Z]\w{0,6})/', include('solve_board.urls')),
     re_path(r'^ics/(?P<department>[a-zA-Z]\w{0,6})/', include('ics.urls')),
     re_path(r'^configuration/', include('configuration.urls')),
@@ -86,7 +87,6 @@ urlpatterns += i18n_patterns(
     re_path(r'^flopeditor/', include('flopeditor.urls')),
     re_path(r'^display/(?P<department>[a-zA-Z]\w{0,6})/', include('displayweb.urls')),
     path('api/', include('api.urls')),
-    path('reservation/',include('reservation.urls')),
 
 )
 

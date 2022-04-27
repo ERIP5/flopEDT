@@ -38,10 +38,10 @@ class ReservationPeriodForm(ModelForm):
 
 
 
-def Reservation(request):
+def addReservation(request, department):
     reservation_form = ReservationForm()
     reservationP_form = ReservationPeriodForm()
     return render(request, 'reservation/form.html', {'reservation_form': reservation_form,'reservationP_form': reservationP_form})
 
-def listReserv(req):
+def listReserv(req, department):
     return TemplateResponse(req,"reservation/listeReserv.html")

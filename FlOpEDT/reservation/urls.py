@@ -6,6 +6,8 @@ app_name="reservation"
 
 urlpatterns=[
 
-    url(r'^listeReserv$', views.listReserv ,name="reservation"),
+    #Show the reservation
+    url(r'^listeReserv$', views.listReserv ,name="reservationList"),
+    url(r'^addRes$', views.addReservation ,name="addReservation"),
 
 ]
