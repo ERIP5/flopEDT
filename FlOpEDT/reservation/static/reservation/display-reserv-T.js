@@ -87,19 +87,37 @@ function res_y_T(res)
     return y;
 }
 
-function res_text_roomy(course){
+function course_text_roomy(course){
     var y = couple_textroom_y.get(course.room+ course.day+"room")
     couple_textroom_y.set(course.room+ course.day+"room", (y+res_height_T))
     return y+(res_height_T/4)
 }
 
-function res_text_daty(course){
+function res_text_titley(res){
+    var y = couple_textroom_y.get(res.room+ res.day+"room")
+    couple_textroom_y.set(res.room+ res.day+"room", (y+res_height_T))
+    return y+(res_height_T/4)
+}
+
+function res_text_daty(res){
+    var y = couple_textroom_y.get(res.room+ res.day+"time")
+    couple_textroom_y.set(res.room+ res.day+"time", (y+res_height_T))
+    return y+(res_height_T/2)
+}
+
+function res_text_responsibley(res){
+    var y = couple_textroom_y.get(res.room+ res.day+"prof")
+    couple_textroom_y.set(res.room+ res.day+"prof", (y+res_height_T))
+    return y+(res_height_T*0.75)
+}
+
+function course_text_daty(course){
     var y = couple_textroom_y.get(course.room+ course.day+"time")
     couple_textroom_y.set(course.room+ course.day+"time", (y+res_height_T))
     return y+(res_height_T/2)
 }
 
-function res_text_profy(course){
+function course_text_profy(course){
     var y = couple_textroom_y.get(course.room+ course.day+"prof")
     couple_textroom_y.set(course.room+ course.day+"prof", (y+res_height_T))
     return y+(res_height_T*0.75)
@@ -139,6 +157,11 @@ function getcourses(course){
 
 function getreservation(res){
     return res.title
+}
+
+
+function getresponsible(res){
+    return "responsible : "+res.responsible
 }
 
 function max(){
@@ -377,7 +400,7 @@ for(room of rooms)
                 .attr("class", "display_courses_text_mod")
                 .text(get_course_name)
                 .attr("x", res_text_x)
-                .attr("y", res_text_roomy)
+                .attr("y", course_text_roomy)
                 .attr("text-anchor", "middle")
 
             c_course_res
@@ -385,7 +408,7 @@ for(room of rooms)
                 .attr("class", "display_courses_text_date")
                 .text(text_heure_res)
                 .attr("x", res_text_x)
-                .attr("y", res_text_daty)
+                .attr("y", course_text_daty)
                 .attr("text-anchor", "middle")
 
             c_course_res
@@ -393,7 +416,7 @@ for(room of rooms)
                 .attr("class", "display_courses_text_prof")
                 .text(get_course_profg)
                 .attr("x", res_text_x)
-                .attr("y", res_text_profy)
+                .attr("y", course_text_profy)
                 .attr("text-anchor", "middle")
         }
 }
@@ -430,6 +453,30 @@ for(room of rooms)
                 .attr("width",days_width_T)
                 .attr("height",res_height_T)
                 .attr("fill","grey")
+
+        c_res
+            .append("text")
+            .attr("class","infos")
+            .text(getreservation)
+            .attr("x",res_text_x)
+            .attr("y",res_text_titley)
+            .attr("text-anchor", "middle")
+
+        c_res
+            .append("text")
+            .attr("class","infos")
+            .text(text_heure_res)
+            .attr("x",res_text_x)
+            .attr("y",res_text_daty)
+            .attr("text-anchor", "middle")
+
+        c_res
+            .append("text")
+            .attr("class","infos")
+            .text(getresponsible)
+            .attr("x",res_text_x)
+            .attr("y",res_text_responsibley)
+            .attr("text-anchor", "middle")
 
         }
     }
