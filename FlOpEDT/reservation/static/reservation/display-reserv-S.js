@@ -191,15 +191,15 @@ function res_textS_x(course){
 }
 
 function res_textS_y(course){
-    return course_yS(course)+20
+    return course_yS(course)+course.duration/4
 }
 
 function res_textS_hour_y(course){
-    return course_yS(course)+40
+    return course_yS(course)+course.duration/2
 }
 
 function res_textS_tutor_y(course){
-    return course_yS(course)+60
+    return course_yS(course)+course.duration*0.75
 }
 
 
