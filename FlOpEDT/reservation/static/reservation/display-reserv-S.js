@@ -124,31 +124,6 @@ function course_xS(course){
     }
 }
 
-    //console.log(rooms[i].courses["w"])
-    /*if (rooms[i].courses["m"] == "m"){
-        return days_widthS*(0)+scale_Margin_width
-        }
-    if (rooms[i].courses["tu"] == "tu"){
-        return days_widthS*(1)+scale_Margin_width
-        }
-    if (rooms[i].courses["w"] == "w"){
-        return days_widthS*(2)+scale_Margin_width
-        }
-    if (rooms[i].courses["th"] == "th"){
-        return days_widthS*(3)+scale_Margin_width
-        }
-    if (rooms[i].courses["f"] == "f"){
-        return days_widthS*(4)+scale_Margin_width
-        }*/
-
-    /*
-        if (day.ref == course[day.ref]){
-        console.log(2)
-        console.log(days_widthS*element["num"]+room_widthS)
-            return days_widthS*element["num"]+room_widthS
-        }
-    */
-
 
 function course_yS(course) {
    return course.start+date_margin_topS+date_heightS-scale_start_time
@@ -172,10 +147,59 @@ for (var i = 0; i < rooms.length; i++) {
   select.appendChild(CreateElem);
 }
 
-function getCourseName_S(course)
+/***************
+*Text*
+ ***************/
+
+function get_courseS_name(course)
 {
     return course.mod
 }
+
+function get_courseS_title(res){
+    return res.title
+}
+
+function get_courseS_tutor(course){
+    return "Tutor : "+course.tutor
+}
+
+function get_courseS_name(course){
+    return (course.department+ " : "+ course.mod)
+}
+
+function get_courseS_hour(course){
+    return (get_time(course.start)+" - "+get_time(course.start+course.duration))
+}
+
+function get_timeS(val){
+    var tostring = Math.floor(val/60)+"h"+(val%60)
+    return tostring
+}
+
+function res_textS_x(course){
+    for (day of days)
+    {
+        if (day.ref == course.day){
+        return day.num*days_width_T+room_width_T+(days_width_T/2)
+        }
+    }
+    return room_width_T+(days_width_T/2)
+}
+
+function res_textS_y(course){
+    return course_yS(course)+20
+}
+
+function res_textS_hour_y(course){
+    return course_yS(course)+40
+}
+
+function res_textS_tutor_y(course){
+    return course_yS(course)+60
+}
+
+
 
 /***************
 *function remove*
@@ -315,22 +339,73 @@ function display_scaleS(){
 }
 
 
-function display_reservationS(){
+function display_coursesS(){
 
     c_courses_day = d3.select(".grilleS");
     for(room of rooms){
-        if(room.name == current_room)
-            {
+        if(room.name == current_room){
+            for (day of days){
+                c_course = c_courses_day
+                    .select("."+day.name)
+                    .selectAll("course")
+                    .data(room.courses[day.ref])
+                    .enter()
+                    .append("g")
+                    .attr("class",get_courseS_name)
+
+                c_course
+                    .append("rect")
+                    .attr("class","course")
+                    .attr("stroke","black")
+                    .attr("stroke-width",2)
+                    .attr("x",course_xS)
+                    .attr("y",course_yS)
+                    .attr("width",days_widthS)
+                    .attr("height",course_heightS)
+                    .attr("fill",color_courses)
+
+                c_course
+                    .append("text")
+                    .text(get_courseS_name)
+                    .attr("class", "course_text")
+                    .attr("x", res_textS_x)
+                    .attr("y", res_textS_y)
+                    .attr("text-anchor", "middle")
+
+                c_course
+                    .append("text")
+                    .text(get_courseS_hour)
+                    .attr("class", "course_text")
+                    .attr("x", res_textS_x)
+                    .attr("y", res_textS_hour_y)
+                    .attr("text-anchor", "middle")
+
+                c_course
+                    .append("text")
+                    .text(get_courseS_tutor)
+                    .attr("class", "course_text")
+                    .attr("x", res_textS_x)
+                    .attr("y", res_textS_tutor_y)
+                    .attr("text-anchor", "middle")
+            }
+        }
+    }
+}
+
+function display_reservationS() {
+    c_reservation_day = d3.select(".grilleS");
+        for(room of rooms){
+            if(room.name == current_room){
                 for (day of days){
-                    c_course = c_courses_day
+                    c_reservation = c_reservation_day
                         .select("."+day.name)
-                        .selectAll("course")
-                        .data(room.courses[day.ref])
+                        .selectAll("booking")
+                        .data(room.booking[day.ref])
                         .enter()
                         .append("g")
-                        .attr("class",getCourseName_S)
+                        .attr("class",get_courseS_title)
 
-                    c_course
+                    c_reservation
                         .append("rect")
                         .attr("class","course")
                         .attr("stroke","black")
@@ -339,12 +414,10 @@ function display_reservationS(){
                         .attr("y",course_yS)
                         .attr("width",days_widthS)
                         .attr("height",course_heightS)
-                        .attr("fill",color_courses)
+                        .attr("fill", "grey")
                 }
             }
-
-    }
-
+        }
 }
 
 
@@ -361,7 +434,8 @@ function mainS() {
     display_gridS()
     /* display the schedule with the hours */
     display_scaleS()
-    display_reservationS();
+    display_coursesS()
+    display_reservationS()
 }
 
 d3.select("svg")
