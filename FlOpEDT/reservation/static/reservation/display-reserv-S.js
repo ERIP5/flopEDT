@@ -151,17 +151,12 @@ for (var i = 0; i < rooms.length; i++) {
 *Text*
  ***************/
 
-function get_courseS_name(course)
-{
+function get_courseS_name(course){
     return course.mod
 }
 
 function get_courseS_title(res){
     return res.title
-}
-
-function get_courseS_tutor(course){
-    return "Tutor : "+course.tutor
 }
 
 function get_courseS_name(course){
@@ -175,6 +170,14 @@ function get_courseS_hour(course){
 function get_timeS(val){
     var tostring = Math.floor(val/60)+"h"+(val%60)
     return tostring
+}
+
+function get_courseS_tutor(course){
+    return "Tutor : "+course.tutor
+}
+
+function get_courseS_responsible(course){
+    return "responsible : "+course.responsible
 }
 
 function res_textS_x(course){
@@ -415,6 +418,30 @@ function display_reservationS() {
                         .attr("width",days_widthS)
                         .attr("height",course_heightS)
                         .attr("fill", "grey")
+
+                    c_reservation
+                        .append("text")
+                        .text(get_courseS_title)
+                        .attr("class", "course_text")
+                        .attr("x", res_textS_x)
+                        .attr("y", res_textS_y)
+                        .attr("text-anchor", "middle")
+
+                    c_reservation
+                        .append("text")
+                        .text(get_courseS_hour)
+                        .attr("class", "course_text")
+                        .attr("x", res_textS_x)
+                        .attr("y", res_textS_hour_y)
+                        .attr("text-anchor", "middle")
+
+                    c_reservation
+                        .append("text")
+                        .text(get_courseS_responsible)
+                        .attr("class", "course_text")
+                        .attr("x", res_textS_x)
+                        .attr("y", res_textS_tutor_y)
+                        .attr("text-anchor", "middle")
                 }
             }
         }
