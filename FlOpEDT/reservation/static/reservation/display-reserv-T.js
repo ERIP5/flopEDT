@@ -582,7 +582,7 @@ function clean() {
 /*******************
 *gestion des filtres
 *******************/
-
+/*
 let selectFilter = document.getElementById("selectFilter");
 for (filter of filters)
 {
@@ -593,7 +593,7 @@ for (filter of filters)
   selectFilter.appendChild(CreateElem);
 }
 
-
+*/
 function sort(filter)
 {
 console.log(filter)
