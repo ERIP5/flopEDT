@@ -16,6 +16,8 @@ var scale_x = 100
 var scale_start_time = 8*60+15//480
 var scale_end_time_day = 18*60+45 //1125
 
+var addS_val = 80
+
 
 var roomS =[{}]
 var dateS =[{}]
@@ -36,7 +38,8 @@ function days_durationS() {
 }
 
 function days_xS(day) {
-    return days_widthS*(day.num)+scale_width_Total}
+    return days_widthS*(day.num)+scale_width_Total
+}
 
 function days_yS() {
     return date_heightS+date_margin_topS
@@ -131,6 +134,35 @@ function course_yS(course) {
 
 function course_heightS(course) {
    return course.duration
+}
+
+/*-- add --*/
+function addS_x(day) {
+    return days_widthS*(day.num)+scale_width_Total
+}
+
+function addS_y() {
+    return days_yS() + days_heightS()
+}
+
+function addS_width() {
+    return days_widthS
+}
+
+function addS_height() {
+    return 130
+}
+
+function addS_circle_cx(day) {
+    return addS_x(day) + (addS_width()/2)
+}
+
+function addS_circle_cy() {
+    return addS_y() + (addS_height()/2)
+}
+
+function popform() {
+    console.log("please")
 }
 
 /***************
@@ -341,7 +373,6 @@ function display_scaleS(){
     scale_current_hour = scale_current_hour_safe
 }
 
-
 function display_coursesS(){
 
     c_courses_day = d3.select(".grilleS");
@@ -447,6 +478,57 @@ function display_reservationS() {
         }
 }
 
+function display_addS() {
+    c_addall = d3.select(".grilleS")
+        .selectAll("rect_add")
+        .data(days)
+        .enter()
+        //.on("click", popform)
+
+    /* display the button */
+    c_add = c_addall
+        .append("circle")
+        .attr("class","circle_add")
+        .attr("fill","green")
+        .attr("stroke","black")
+        .attr("stroke-width",3)
+        .attr("cx",addS_circle_cx)
+        .attr("cy",addS_circle_cy)
+        .attr("r", addS_val*0.66)
+
+    /* display the horizontal rectangle */
+    c_add_rect_horizontal = c_addall
+        .append("rect")
+        .attr("class", "circle_add")
+        .attr("fill", "white")
+        //.attr("x",addS_circle_cx() - addS_val/4)
+        .attr("x",addS_circle_cx)
+        .attr("y",addS_circle_cy() - addS_val/2.5)
+        .attr("width",addS_val - addS_val/1.5)
+        .attr("height",addS_val - addS_val/6)
+
+    c_add_rect_vertical = c_addall
+        .append("rect")
+        .attr("class", "circle_add")
+        .attr("fill", "grey")
+        .attr("x",addS_circle_cx)
+        .attr("y",addS_circle_cy() - addS_val/6)
+        .attr("width",addS_val - addS_val/6)
+        .attr("height",addS_val - addS_val/1.5)
+
+
+    /* display the add frame for the five days */
+    c_add_frame = c_addall
+        .append("rect")
+        .attr("class","rect_add")
+        .attr("fill","none")
+        .attr("stroke","black")
+        .attr("stroke-width",2)
+        .attr("x",addS_x)
+        .attr("y",addS_y)
+        .attr("width",addS_width)
+        .attr("height",addS_height)
+}
 
 /*******
 *display*
@@ -461,8 +543,12 @@ function mainS() {
     display_gridS()
     /* display the schedule with the hours */
     display_scaleS()
+    /* display the courses */
     display_coursesS()
+    /* display the booking */
     display_reservationS()
+    /* display the add */
+    display_addS()
 }
 
 d3.select("svg")
