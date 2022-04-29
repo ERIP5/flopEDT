@@ -579,15 +579,42 @@ function clean() {
     current_room = "all"
 }
 
+/*******************
+*gestion des filtres
+*******************/
+
+let selectFilter = document.getElementById("selectFilter");
+for (filter of filters)
+{
+  var textC = filter;
+  var CreateElem = document.createElement("option");
+  CreateElem.textContent = textC;
+  CreateElem.value = textC;
+  selectFilter.appendChild(CreateElem);
+}
+
+
+function sort(filter)
+{
+console.log(filter)
+    switch (filter)
+    {
+        case "aucun":
+            console.log("gg")
+            break;
+        case "type":
+            console.log("tu filtres par type")
+            break;
+    }
+}
 
 /***********
 *gestion svg
 ***********/
 
-
 function mainT() {
     clean();
-    //console.log("mainT")
+    sort(valFilter);
     //filling in the table room_max_courses_T which calculates, for each room, the day with the most lessons
     max();
     //function that populates the all_room_height_T using room_max_courses_T and adding the size of the plus button

@@ -14,6 +14,11 @@
         </select>
     </form>
 
+    Choose a filter : <FORM NAME="formFilter">
+        <select id="selectFilter" onchange="getFilter(this)">
+        </select>
+    </form>
+
     <p id="demo"></p>
 
     <svg height="440" width="400">
@@ -42,7 +47,9 @@
     <script type="text/javascript">
 
         rmvStatut = 1
+        valFilter = "aucun"
         mainT()
+
 
         function rmv_total() {
             if (rmvStatut == 1) {
@@ -56,6 +63,11 @@
 
         function getRoom(selectObject) {
             var valRoom = selectObject.value
+            liste(formReserv)
+        }
+
+        function getFilter(selectObject) {
+            valFilter = selectObject.value
             liste(formReserv)
         }
 
