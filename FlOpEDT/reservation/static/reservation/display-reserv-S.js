@@ -267,11 +267,17 @@ function rmv_dateS() {
         .remove()
 }
 
+function rmv_addS() {
+    c_addall
+        .data("rect_add")
+        .remove()
+}
 
 function rmv_reservS() {
     rmv_scaleS()
     rmv_dateS()
     rmv_grileS()
+    rmv_addS()
 }
 
  /***************
@@ -483,7 +489,9 @@ function display_addS() {
         .selectAll("rect_add")
         .data(days)
         .enter()
-        //.on("click", popform)
+        .append("g")
+        .attr("class","add")
+        .on("click", popform)
 
     /* display the button */
     c_add = c_addall
