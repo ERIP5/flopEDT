@@ -345,7 +345,7 @@ c_room
   .attr("x",0)
   .attr("y", cac_room_y)
   .attr("width",room_width_T)
-  .attr("height",get_room_height);
+  .attr("height",get_room_height)
 
 c_room
   .append("text")
@@ -354,6 +354,7 @@ c_room
   .attr("x",room_width_T/2)
   .attr("y", each_text_posy)
   .attr("text-anchor", "middle")
+  .on("click",change_room)
 
 
 for(element of days){
@@ -552,7 +553,13 @@ for (room of rooms){
 
 
 
-
+function change_room(room){
+    rmv_total()
+    rmvStatut = 2
+    current_room = room.name
+    document.getElementById("selectRoom").value = current_room
+    mainS()
+}
 
 function myFunction(el){
     console.log("test")
