@@ -134,3 +134,4 @@ let restest = {
 }
 
 
+let filters = ["aucun","type"]
