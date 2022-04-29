@@ -32,7 +32,6 @@ var rooms_height = new Map();
 
 
 var date =[{}]
-var plus =[{}]
 
 
 /**********************
@@ -492,15 +491,14 @@ for (room of rooms){
             c_plus = c_one_room
                 .select("."+day.name)
                 .selectAll("plus")
-                .data(plus)
+                .data([{"room":room,"day":day}])
                 .enter()
                 .append("g")
                 .attr("class","plus")
                 .attr("id",room.name + day.ref)
+                .on("click", go_popup)
 
             //pour afficher le bouton
-
-
             c_plus
                 .append("circle")
                 .attr("class","display_plus_circle")
@@ -551,8 +549,6 @@ for (room of rooms){
 
 
 
-
-
 function change_room(room){
     rmv_total()
     rmvStatut = 2
@@ -561,39 +557,10 @@ function change_room(room){
     mainS()
 }
 
-function myFunction(el){
-    console.log("test")
+function go_popup(ele)
+{
+    console.log(ele.room.name + " " +ele.day.name)
 }
-
-function add_listener(){
-var test = document.querySelectorAll(".plus")
-    //console.log(test)
-for (el of test){
-    el.addEventListener("click", function() {
-  myFunction(el);
-});
-    //console.log(el)
-
-}
-}
-
-
-function ourFunction(ml) {
-    console.log("salsa")
-}
-
-
-function room_listener() {
-    var room_lis = document.querySelectorAll(".salles")
-    //console.log(room_lis)
-    for (ml of room_lis) {
-        ml.addEventListener("click", function() {
-            ourFunction(ml)
-        });
-        console.log("ml")
-    }
-}
-
 
 function clean() {
     each_room_y_T = days_y_T()
@@ -635,9 +602,6 @@ function mainT() {
     display_reservation();
     //for each days and each room, add all plus buttons
     display_plus();
-    //add action listener for each button
-    add_listener();
-    room_listener()
     d3.select("svg")
      .attr("width", window.innerWidth -20)
      .attr("height", 2000)
