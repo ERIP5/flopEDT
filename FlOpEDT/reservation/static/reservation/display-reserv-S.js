@@ -173,8 +173,8 @@ function addS_circle_cy() {
     return addS_y() + (addS_height()/2)
 }
 
-function popform() {
-    console.log("please")
+function popform(day) {
+    console.log(current_room + " " +day.name)
 }
 
 /***************
@@ -500,17 +500,31 @@ function display_reservationS() {
 
 /* display the add button */
 function display_addS() {
-    c_addall = d3.select(".grilleS")
+//.data([{"room":room,"day":day}])
+
+c_addall = d3.select(".grilleS")
+    for (day of days){
+        c_add_day = c_addall
+            .selectAll("rect_add")
+            .data([{"day":day}])
+            .enter()
+            .append("g")
+            .attr("class","add")
+            .on("click", popform)
+    }
+
+   /*c_addall = d3.select(".grilleS")
         .selectAll("rect_add")
         .data(days)
         .enter()
         .append("g")
         .attr("class","add")
-        .on("click", popform)
+        .on("click", popform)*/
 
     planB1 = 0
     planB1safe = planB1
-    /* display the button */
+
+/*
     c_add = c_addall
         .append("circle")
         .attr("class","circle_add")
@@ -521,18 +535,17 @@ function display_addS() {
         .attr("cy",addS_circle_cy)
         .attr("r", addS_val*0.66)
 
-    /* display the vertical rectangle */
+
     c_add_rect_horizontal = c_addall
         .append("rect")
         .attr("class", "circle_add")
         .attr("fill", "white")
-        //.attr("x",addS_circle_cx() - addS_val/4)
         .attr("x",addS_circle_cx)
         .attr("y",addS_circle_cy() - addS_val/2.5)
         .attr("width",addS_val - addS_val/1.5)
         .attr("height",addS_val - addS_val/6)
 
-    /* display the horizontal rectangle */
+
     c_add_rect_vertical = c_addall
         .append("rect")
         .attr("class", "circle_add")
@@ -544,7 +557,7 @@ function display_addS() {
     planB1 = planB1safe
 
 
-    /* display the add frame for the five days */
+*/
     c_add_frame = c_addall
         .append("rect")
         .attr("class","rect_add")
@@ -552,9 +565,11 @@ function display_addS() {
         .attr("stroke","black")
         .attr("stroke-width",2)
         .attr("x",addS_x)
+        //.attr("x",addS_x(day))
         .attr("y",addS_y)
         .attr("width",addS_width)
         .attr("height",addS_height)
+
 }
 
 /*******
