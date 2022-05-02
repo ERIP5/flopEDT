@@ -154,7 +154,19 @@ function addS_height() {
 }
 
 function addS_circle_cx(day) {
-    return addS_x(day) + (addS_width()/2)
+    if (planB1 < 5) {
+        planB1 += 1
+        return addS_x(day) + (addS_width()/2)
+    }
+    if (planB1 < 10) {
+        planB1 += 1
+        return addS_x(day) + (addS_width()/2) - 12
+    }
+
+    if (planB1 < 15) {
+        planB1 += 1
+        return addS_x(day) + (addS_width()/2) -31
+    }
 }
 
 function addS_circle_cy() {
@@ -379,6 +391,7 @@ function display_scaleS(){
     scale_current_hour = scale_current_hour_safe
 }
 
+/* display the courses */
 function display_coursesS(){
 
     c_courses_day = d3.select(".grilleS");
@@ -432,6 +445,7 @@ function display_coursesS(){
     }
 }
 
+/* display the reservation */
 function display_reservationS() {
     c_reservation_day = d3.select(".grilleS");
         for(room of rooms){
@@ -484,6 +498,7 @@ function display_reservationS() {
         }
 }
 
+/* display the add button */
 function display_addS() {
     c_addall = d3.select(".grilleS")
         .selectAll("rect_add")
@@ -493,6 +508,8 @@ function display_addS() {
         .attr("class","add")
         .on("click", popform)
 
+    planB1 = 0
+    planB1safe = planB1
     /* display the button */
     c_add = c_addall
         .append("circle")
@@ -504,7 +521,7 @@ function display_addS() {
         .attr("cy",addS_circle_cy)
         .attr("r", addS_val*0.66)
 
-    /* display the horizontal rectangle */
+    /* display the vertical rectangle */
     c_add_rect_horizontal = c_addall
         .append("rect")
         .attr("class", "circle_add")
@@ -515,14 +532,16 @@ function display_addS() {
         .attr("width",addS_val - addS_val/1.5)
         .attr("height",addS_val - addS_val/6)
 
+    /* display the horizontal rectangle */
     c_add_rect_vertical = c_addall
         .append("rect")
         .attr("class", "circle_add")
-        .attr("fill", "grey")
+        .attr("fill", "white")
         .attr("x",addS_circle_cx)
         .attr("y",addS_circle_cy() - addS_val/6)
         .attr("width",addS_val - addS_val/6)
         .attr("height",addS_val - addS_val/1.5)
+    planB1 = planB1safe
 
 
     /* display the add frame for the five days */
@@ -541,7 +560,6 @@ function display_addS() {
 /*******
 *display*
  ******/
-
 
 /* main for displaying all of what is need at once in other file */
 function mainS() {
