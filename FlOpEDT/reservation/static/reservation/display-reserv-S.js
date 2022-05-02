@@ -18,6 +18,10 @@ var scale_end_time_day = 18*60+45 //1125
 
 var addS_val = 80
 
+// cpt not defined reset in cleanS
+each_hour_yS = days_yS()
+var scale_current_hour = scale_day_start_hour()
+planB1 = 0
 
 var roomS =[{}]
 var dateS =[{}]
@@ -27,12 +31,12 @@ var scaleS =[{}]
 *gestion des variables*
 **********************/
 
-/*-- date --*/
+//-- date --//
 function date_widthS() {
     return days_widthS*5
 }
 
-/*-- days --*/
+//-- days --//
 function days_durationS() {
     return (scale_end_time_day-scale_start_time)
 }
@@ -53,7 +57,7 @@ function getdayS(day) {
     return day["name"]
 }
 
-/*-- scale --*/
+//-- scale --//
 function cac_scale_y() {
     return date_heightS+date_margin_topS
 }
@@ -70,7 +74,7 @@ function scale_day_start_hour() {
 	return Math.floor(scale_start_time/60)+1
 }
 
-var scale_current_hour = scale_day_start_hour()
+
 function scale_current_hour_incr() {
     var h = scale_current_hour+1
     scale_current_hour += 1
@@ -102,7 +106,6 @@ function display_scale_end_time_day() {
     return scale_end_time_day_hour_concat()
 }
 
-each_hour_yS = days_yS()
 function scale_each_time_soixante() {
     var y = each_hour_yS;
     if (y == 70) {
@@ -118,7 +121,7 @@ function scale_textx_S()
     return scale_margin+ (scale_width/2)
 }
 
-/*-- course --*/
+//-- course --//
 function course_xS(course){
     for (element of days){
         if (element["ref"] ==  course["day"]){
@@ -126,7 +129,6 @@ function course_xS(course){
         }
     }
 }
-
 
 function course_yS(course) {
    return course.start+date_margin_topS+date_heightS-scale_start_time
@@ -136,7 +138,7 @@ function course_heightS(course) {
    return course.duration
 }
 
-/*-- add --*/
+//-- add --//
 function addS_x(day) {
     return days_widthS*(day.num)+scale_width_Total
 }
@@ -178,10 +180,10 @@ function popform(day) {
 }
 
 /***************
-*Select*
+    *Select*
  ***************/
 
-/* Select of the template listeReserv.html, add dynamically the rooms stored in dataTest.js */
+// Select of the template listeReserv.html, add dynamically the rooms stored in dataTest.js
 let select = document.getElementById("selectRoom");
 for (var i = 0; i < rooms.length; i++) {
   var textC = rooms[i].name;
@@ -192,7 +194,7 @@ for (var i = 0; i < rooms.length; i++) {
 }
 
 /***************
-*Text*
+     *Text*
  ***************/
 
 function get_courseS_name(course){
@@ -285,20 +287,25 @@ function rmv_addS() {
         .remove()
 }
 
+function cleanS() {
+    each_hour_yS = days_yS()
+    scale_current_hour = scale_day_start_hour()
+    planB1 = 0
+}
+
 function rmv_reservS() {
+    cleanS()
     rmv_scaleS()
     rmv_dateS()
     rmv_grileS()
     rmv_addS()
-}
+    }
 
  /***************
 *function display*
  ***************/
 
-
-
-/* display the days */
+// display the days
 function display_dateS(){
     c_dateS = d3.select(".dateS")
         .selectAll("rect")
@@ -315,7 +322,7 @@ function display_dateS(){
         .attr("height",date_heightS)
 }
 
-/* display the grid */
+// display the grid
 function display_gridS(){
     c_gridallS = d3.select(".grilleS")
         .selectAll("rect_grid")
@@ -326,7 +333,7 @@ function display_gridS(){
         .append("g")
         .attr("class",getdayS)
 
-    /* display the column for the five days */
+    // display the column for the five days
     c_gridS
         .append("rect")
         .attr("class","rect_grid")
@@ -339,14 +346,14 @@ function display_gridS(){
         .attr("height",days_heightS())
   }
 
-/* display the schedule with the hours */
+// display the schedule with the hours
 function display_scaleS(){
     c_scale = d3.select(".scaleS")
         .selectAll("rect")
         .data(scaleS)
         .enter()
 
-    /* display the bar which contain the hour */
+    // display the bar which contain the hour
     c_scale
         .append("rect")
         .attr("class","rect_scale")
@@ -358,9 +365,7 @@ function display_scaleS(){
         .attr("width",scale_width)
         .attr("height",scale_height())
 
-    each_hour_yS_safe = each_hour_yS
-    scale_current_hour_safe = scale_current_hour
-    /* location of the start hour */
+    // location of the start hour
     c_scale
         .append("text")
         .text("")
@@ -368,7 +373,7 @@ function display_scaleS(){
         .attr("y", scale_each_time_soixante())
         .attr("text-anchor", "middle")
 
-    /* display the first whole hour after the start hour */
+    // display the first whole hour after the start hour
     c_scale
         .append("text")
         .text(scale_day_start_hour_concat())
@@ -377,7 +382,7 @@ function display_scaleS(){
         .attr("y", scale_each_time_soixante())
         .attr("text-anchor", "middle")
 
-    /* add each hour until the end of the day */
+    // add each hour until the end of the day
     for (hh = scale_current_hour+1; hh<scale_end_time_day_hour()+1; hh++){
         c_scale
             .append("text")
@@ -387,11 +392,9 @@ function display_scaleS(){
             .attr("y", scale_each_time_soixante())
             .attr("text-anchor", "middle")
     }
-    each_hour_yS = each_hour_yS_safe
-    scale_current_hour = scale_current_hour_safe
 }
 
-/* display the courses */
+// display the courses
 function display_coursesS(){
 
     c_courses_day = d3.select(".grilleS");
@@ -406,6 +409,7 @@ function display_coursesS(){
                     .append("g")
                     .attr("class",get_courseS_name)
 
+                // display the course rectangle
                 c_course
                     .append("rect")
                     .attr("class","course")
@@ -417,6 +421,7 @@ function display_coursesS(){
                     .attr("height",course_heightS)
                     .attr("fill",color_courses)
 
+                // display the department and the courses name
                 c_course
                     .append("text")
                     .text(get_courseS_name)
@@ -425,6 +430,7 @@ function display_coursesS(){
                     .attr("y", res_textS_y)
                     .attr("text-anchor", "middle")
 
+                // display the start and end hour
                 c_course
                     .append("text")
                     .text(get_courseS_hour)
@@ -433,6 +439,7 @@ function display_coursesS(){
                     .attr("y", res_textS_hour_y)
                     .attr("text-anchor", "middle")
 
+                // display the tutor's name
                 c_course
                     .append("text")
                     .text(get_courseS_tutor)
@@ -445,7 +452,7 @@ function display_coursesS(){
     }
 }
 
-/* display the reservation */
+// display the reservation
 function display_reservationS() {
     c_reservation_day = d3.select(".grilleS");
         for(room of rooms){
@@ -459,6 +466,7 @@ function display_reservationS() {
                         .append("g")
                         .attr("class",get_courseS_title)
 
+                    // display the reservation rectangle
                     c_reservation
                         .append("rect")
                         .attr("class","course")
@@ -470,6 +478,7 @@ function display_reservationS() {
                         .attr("height",course_heightS)
                         .attr("fill", "grey")
 
+                    // display the title of the reservation
                     c_reservation
                         .append("text")
                         .text(get_courseS_title)
@@ -478,6 +487,7 @@ function display_reservationS() {
                         .attr("y", res_textS_y)
                         .attr("text-anchor", "middle")
 
+                    // display the start and end hour
                     c_reservation
                         .append("text")
                         .text(get_courseS_hour)
@@ -486,6 +496,7 @@ function display_reservationS() {
                         .attr("y", res_textS_hour_y)
                         .attr("text-anchor", "middle")
 
+                    // display the reservation's responsible
                     c_reservation
                         .append("text")
                         .text(get_courseS_responsible)
@@ -498,34 +509,19 @@ function display_reservationS() {
         }
 }
 
-/* display the add button */
+// display the add button
 function display_addS() {
-//.data([{"room":room,"day":day}])
-
-c_addall = d3.select(".grilleS")
-    for (day of days){
-        c_add_day = c_addall
-            .selectAll("rect_add")
-            .data([{"day":day}])
-            .enter()
-            .append("g")
-            .attr("class","add")
-            .on("click", popform)
-    }
-
-   /*c_addall = d3.select(".grilleS")
+    c_addall = d3.select(".grilleS")
         .selectAll("rect_add")
         .data(days)
         .enter()
         .append("g")
         .attr("class","add")
-        .on("click", popform)*/
+        .on("click", popform)
 
-    planB1 = 0
-    planB1safe = planB1
-
-/*
+    // display the circle
     c_add = c_addall
+        .data(days)
         .append("circle")
         .attr("class","circle_add")
         .attr("fill","green")
@@ -535,7 +531,7 @@ c_addall = d3.select(".grilleS")
         .attr("cy",addS_circle_cy)
         .attr("r", addS_val*0.66)
 
-
+    // display the horizontal rectangle
     c_add_rect_horizontal = c_addall
         .append("rect")
         .attr("class", "circle_add")
@@ -545,7 +541,7 @@ c_addall = d3.select(".grilleS")
         .attr("width",addS_val - addS_val/1.5)
         .attr("height",addS_val - addS_val/6)
 
-
+    // display the vertical rectangle
     c_add_rect_vertical = c_addall
         .append("rect")
         .attr("class", "circle_add")
@@ -554,41 +550,37 @@ c_addall = d3.select(".grilleS")
         .attr("y",addS_circle_cy() - addS_val/6)
         .attr("width",addS_val - addS_val/6)
         .attr("height",addS_val - addS_val/1.5)
-    planB1 = planB1safe
 
-
-*/
+    // display the rectangle which contain the button
     c_add_frame = c_addall
         .append("rect")
-        .attr("class","rect_add")
+        .attr("class","circle_add")
         .attr("fill","none")
         .attr("stroke","black")
         .attr("stroke-width",2)
         .attr("x",addS_x)
-        //.attr("x",addS_x(day))
         .attr("y",addS_y)
         .attr("width",addS_width)
         .attr("height",addS_height)
-
 }
 
 /*******
 *display*
  ******/
 
-/* main for displaying all of what is need at once in other file */
+// main for displaying all of what is need at once in other file
 function mainS() {
-    /* display the days */
+    // display the days
     display_dateS()
-    /* display the grid */
+    // display the grid
     display_gridS()
-    /* display the schedule with the hours */
+    // display the schedule with the hours
     display_scaleS()
-    /* display the courses */
+    // display the courses
     display_coursesS()
-    /* display the booking */
+    // display the booking
     display_reservationS()
-    /* display the add */
+    // display the add
     display_addS()
 }
 
