@@ -179,6 +179,14 @@ function popform(day) {
     console.log(current_room + " " +day.name)
 }
 
+function double_popform_course(cours) {
+    console.log("double "+ current_room + " " + cours.day)
+}
+
+function double_popform_res(res) {
+    console.log("double "+ current_room + " " + res.day)
+}
+
 /***************
     *Select*
  ***************/
@@ -408,6 +416,7 @@ function display_coursesS(){
                     .enter()
                     .append("g")
                     .attr("class",get_courseS_name)
+                    .on("dblclick", double_popform_course)
 
                 // display the course rectangle
                 c_course
@@ -465,6 +474,7 @@ function display_reservationS() {
                         .enter()
                         .append("g")
                         .attr("class",get_courseS_title)
+                        .on("dblclick", double_popform_res)
 
                     // display the reservation rectangle
                     c_reservation
