@@ -376,7 +376,11 @@ for(room of rooms)
                 .select("."+day.name)
                 .selectAll("test")
                 .data(room.courses[day.ref])
-                .enter();
+                .enter()
+                .append("g")
+                .attr("class","plus")
+                .attr("id",room.name + day.ref)
+                .on("dblclick", go_popup_course)
 
 
             c_course_res = c_course_res_g
@@ -437,7 +441,12 @@ for(room of rooms)
                 .select("."+day.name)
                 .selectAll("test")
                 .data(room.booking[day.ref])
-                .enter();
+                .enter()
+                .append("g")
+                .attr("class","plus")
+                .attr("id",room.name + day.ref)
+                .on("dblclick", go_popup_res)
+
 
         c_res = c_res_g
                 .append("g")
@@ -560,6 +569,16 @@ function change_room(room){
 function go_popup(ele)
 {
     console.log(ele.room.name + " " +ele.day.name)
+}
+
+function go_popup_course(courT)
+{
+    console.log(courT.room + " " + courT.day)
+}
+
+function go_popup_res(resT)
+{
+    console.log(resT.room + " " + resT.day)
 }
 
 function clean() {

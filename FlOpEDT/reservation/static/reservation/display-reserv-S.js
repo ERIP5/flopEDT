@@ -180,11 +180,11 @@ function popform(day) {
 }
 
 function double_popform_course(cours) {
-    console.log("double "+ current_room + " " + cours.day)
+    console.log(current_room + " " + cours.day)
 }
 
 function double_popform_res(res) {
-    console.log("double "+ current_room + " " + res.day)
+    console.log(current_room + " " + res.day)
 }
 
 /***************
@@ -205,7 +205,7 @@ for (var i = 0; i < rooms.length; i++) {
      *Text*
  ***************/
 
-function get_courseS_name(course){
+function get_courseS_name2(course){
     return course.mod
 }
 

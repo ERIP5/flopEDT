@@ -9,7 +9,7 @@ function hideMenu() {
 function rightClick(e) {
     e.preventDefault()
 
-    if (document.getElementById("contextMenu").style.display == "block") {
+    if (document.getElementById("contextMenu").style.display == 'block') {
         console.log("if")
         hideMenu();
         }
