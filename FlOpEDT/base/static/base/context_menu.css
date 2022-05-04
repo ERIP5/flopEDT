@@ -1,0 +1,16 @@
+#contextMenu {
+    position: absolute;
+    text-align: center;
+    background: lightgray;
+    border: 1px solid black;
+}
+
+#contextMenu > p {
+  padding: 0;
+  margin: 0;
+  min-width: 150px;
+}
+
+#contextMenu > p:hover {
+  background: darkgrey;
+}
