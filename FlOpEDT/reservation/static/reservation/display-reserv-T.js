@@ -35,7 +35,9 @@ var date =[{}]
 
 var rooms_sort = []
 
-var f_room_type = null;
+var f_room_type = "all";
+
+var room_projo = "all"
 
 
 /**********************
@@ -605,35 +607,52 @@ function clean() {
 /*******************
 *gestion des filtres
 *******************/
-/*
-let selectFilter = document.getElementById("selectFilter");
-for (filter of filters)
-{
-  var textC = filter;
-  var CreateElem = document.createElement("option");
-  CreateElem.textContent = textC;
-  CreateElem.value = textC;
-  selectFilter.appendChild(CreateElem);
-}
-
-*/
 function sortRoom()
 {
-rooms_sort = []
-for (room of rooms)
+rooms_sort = rooms
+
+    rooms_sort = sortType(rooms_sort)
+    rooms_sort = sortProjector(rooms_sort)
+
+
+}
+
+function sortType(oldList)
 {
-    if(f_room_type != null){
+newL = []
+for (room of oldList)
+{
+    if(f_room_type != "all"){
         if(room.type == f_room_type)
         {
-            rooms_sort.push(room)
+            newL.push(room)
         }
     }
     else
     {
-    rooms_sort = rooms
+    newL = oldList
     }
 }
+ return newL
+}
 
+function sortProjector(oldList)
+{
+newL = []
+for (room of oldList)
+{
+    if(room_projo != "all"){
+        if((""+room.projector+"") == room_projo)
+            {
+                newL.push(room)
+            }
+    }
+    else
+    {
+    newL = oldList
+    }
+}
+ return newL
 }
 
 

@@ -92,6 +92,11 @@ function generateSelect(parent, dataName)
             elemS.onchange = changeRoomType
             parent.appendChild(elemS)
 
+            elemO = document.createElement("option")
+                elemO.value = "all"
+                elemO.textContent = "all"
+                elemS.appendChild(elemO)
+
             for (el of typeRoom){
                 elemO = document.createElement("option")
                 elemO.value = el
@@ -99,10 +104,40 @@ function generateSelect(parent, dataName)
                 elemS.appendChild(elemO)
             }
             break;
-        case "ordinateur" :
-            console.log("ordinateur")
+        case "projector" :
+            elemp = document.createElement("p")
+            elemp.innerText = "Salle avec projecteur ? "
+            parent.appendChild(elemp)
+
+            elemS = document.createElement("select")
+            elemS.id = "selectProjo"
+            elemS.onchange = changeRoomProjo
+            parent.appendChild(elemS)
+
+            elemO = document.createElement("option")
+                elemO.value = "all"
+                elemO.textContent = "all"
+                elemS.appendChild(elemO)
+
+            for (el of truefalse){
+                elemO = document.createElement("option")
+                elemO.ngValue = el
+                elemO.textContent = el
+                elemS.appendChild(elemO)
+            }
             break;
     }
+
+    buttonSuppr(parent)
+}
+
+function buttonSuppr(parent)
+{
+    elemp = document.createElement("input")
+    elemp.type = "button"
+    elemp.value = "supprimer filtre"
+    elemp.onchange = console.log("test")
+    parent.appendChild(elemp)
 }
 
 /************
@@ -146,6 +181,13 @@ function changeRoomType(){
     f_room_type = document.getElementById("selectType").value;
     rmv_total();
     console.log(f_room_type)
+    mainT();
+}
+
+function changeRoomProjo(){
+    room_projo = document.getElementById("selectProjo").value;
+    rmv_total();
+    console.log(room_projo)
     mainT();
 }
 
