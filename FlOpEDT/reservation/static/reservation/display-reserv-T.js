@@ -33,6 +33,10 @@ var rooms_height = new Map();
 
 var date =[{}]
 
+var rooms_sort = []
+
+var f_room_type = null;
+
 
 /**********************
 *gestion des variables*
@@ -164,7 +168,7 @@ function getresponsible(res){
 }
 
 function max(){
-for (room of rooms){
+for (room of rooms_sort){
      var taller = 0
      for (day of days){
         if(room.courses[day.ref].length + room.booking[day.ref].length> taller){
@@ -200,7 +204,7 @@ function cac_all_height(){
 var cpt = 0
     for (h of room_max_courses_T){
         all_room_height_T[cpt] = (res_height_T*h)+mini_add_button_height_T
-        rooms_height.set(rooms[cpt].name,(res_height_T*h)+mini_add_button_height_T)
+        rooms_height.set(rooms_sort[cpt].name,(res_height_T*h)+mini_add_button_height_T)
         cpt +=1
     }
 }
@@ -262,7 +266,7 @@ function rmv_roomT() {
 function rmv_each_roomT() {
     c_room_all
         .selectAll("rect_each_room")
-        .data(rooms)
+        .data(rooms_sort)
         .remove()
     c_room_gr
         .remove()
@@ -324,7 +328,7 @@ compt_room_posy_T = 0
 compt_text_posy_T = 0
 c_room_all = d3.select(".room_lines")
   .selectAll("rect_each_room")
-  .data(rooms);
+  .data(rooms_sort);
 
 c_room_gr = c_room_all
     .enter()
@@ -366,7 +370,7 @@ c_room_gr
 function display_courses(){
 c_all_courses = d3.select(".room_lines");
 
-for(room of rooms)
+for(room of rooms_sort)
 {
     c_all_courses_day = c_all_courses
         .select("."+room_class(room))
@@ -429,7 +433,7 @@ for(room of rooms)
 function display_reservation(){
 c_all_reservations = d3.select(".room_lines");
 
-for(room of rooms)
+for(room of rooms_sort)
 {
     c_all_reservations_day = c_all_reservations
         .select("."+room_class(room))
@@ -493,7 +497,7 @@ for(room of rooms)
 
 function display_plus(){
 c_all_rooms = d3.select(".room_lines")
-for (room of rooms){
+for (room of rooms_sort){
     c_one_room = c_all_rooms
         .select(".Room"+room.name)
         for (day of days){
@@ -613,19 +617,25 @@ for (filter of filters)
 }
 
 */
-function sort(filter)
+function sortRoom()
 {
-console.log(filter)
-    switch (filter)
+rooms_sort = []
+for (room of rooms)
+{
+    if(f_room_type != null){
+        if(room.type == f_room_type)
+        {
+            rooms_sort.push(room)
+        }
+    }
+    else
     {
-        case "aucun":
-            console.log("gg")
-            break;
-        case "type":
-            console.log("tu filtres par type")
-            break;
+    rooms_sort = rooms
     }
 }
+
+}
+
 
 /***********
 *gestion svg
@@ -633,7 +643,9 @@ console.log(filter)
 
 function mainT() {
     clean();
-    sort(valFilter);
+
+    sortRoom()
+
     //filling in the table room_max_courses_T which calculates, for each room, the day with the most lessons
     max();
     //function that populates the all_room_height_T using room_max_courses_T and adding the size of the plus button

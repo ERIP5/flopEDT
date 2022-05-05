@@ -1,0 +1,25 @@
+.menu{
+    display : grid;
+    grid-template-columns: max-content max-content;
+    gap : 10%;
+}
+
+.selectRoom {
+  grid-column-start: 1;
+  grid-column-end: 2;
+
+}
+.filters{
+  grid-column-start: 2;
+  grid-column-end: 3;
+}
+
+.filterADD div{
+    float:left;
+}
+
+.filterAct{
+    display : grid;
+    grid-template-columns: max-content max-content;
+    gap : 10%;
+}

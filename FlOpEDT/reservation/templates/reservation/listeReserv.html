@@ -5,15 +5,29 @@
 {% block content %}
     {% load i18n %}
     {% load static %}
+    <link rel="stylesheet" href="{% static 'reservation/display-menu-filter.css' %}"/>
     <script src="{% static 'base/d3.v4.min.js' %}"></script>
     <script type='text/javascript' src="{% static 'base/jquery.min.js' %}"></script>
 
-    Choose a room : <FORM NAME="formReserv">
-        <select id="selectRoom" onchange="getRoom(this)">
-            <option>all</option>
-        </select>
-    </form>
-    <p id="demo"></p>
+    <!-- div use for menu generation -->
+<div id="menu" class="menu">
+         <div class="selectRoom">
+         <p>Choose a room : </p>
+            <select id="selectRoom" onchange="getRoom(this)"><option>all</option></select>
+         </div>
+        <div id="filters">
+            <div class="filterADD">
+                <p>ici c'est la liste des filtres : <select id="selectfilter" onchange="addFilter(this)"><option>---</option></select></p>
+            </div>
+            <div class="filterAct" id="filterAct">
+
+            </div>
+
+        </div>
+
+
+</div>
+
 
     <svg height="440" width="400">
     <g class="dateS">
@@ -37,50 +51,7 @@
     <script src="{% static 'reservation/dataTest.js' %}"></script>
     <script src="{% static 'reservation/display-reserv-T.js' %}"></script>
     <script src="{% static 'reservation/display-reserv-S.js' %}"></script>
-
-    <script type="text/javascript">
-
-        rmvStatut = 1
-        valFilter = "aucun"
-        mainT()
-
-
-        function rmv_total() {
-            if (rmvStatut == 1) {
-                rmv_reservT()
-        }
-
-            if (rmvStatut == 2) {
-                rmv_reservS()
-            }
-        }
-
-        function getRoom(selectObject) {
-            var valRoom = selectObject.value
-            liste(formReserv)
-        }
-
-        function getFilter(selectObject) {
-            valFilter = selectObject.value
-            liste(formReserv)
-        }
-
-        function liste(formReserv) {
-            if (formReserv.selectRoom.value == "all") {
-                rmv_total()
-                rmvStatut = 1
-                mainT()
-            }
-
-            if (formReserv.selectRoom.value != "all") {
-                rmv_total()
-                rmvStatut = 2
-                current_room = formReserv.selectRoom.value
-                mainS()
-            }
-        }
-
-    </script>
+    <script src="{% static 'reservation/display-menu-filter.js' %}"></script>
 
 <div id="contextMenu" class="context-menu" style="display:none"></div>
 

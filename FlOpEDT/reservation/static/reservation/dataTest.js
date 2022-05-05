@@ -114,9 +114,10 @@ let rooms = [
   {"name": "G21", "display":false, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
   {"name": "G26", "display":false, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
   {"name": "E209", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
-  {"name": "B111", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
-  {"name": "B002", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
-  {"name": "B203", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}}
+  {"name": "B111", "display":true, "type":"B","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "B002", "display":true, "type":"B","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "B203", "display":true, "type":"B","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "Amphi1", "display":true, "type":"amphi","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}}
 ]
 
 
@@ -134,4 +135,6 @@ let restest = {
 }
 
 
-let filters = ["aucun","type"]
+let filtersList = ["type","projecteur","ordinateur"]
+
+let typeRoom = ["amphi","A","B"]
