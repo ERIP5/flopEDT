@@ -2,14 +2,14 @@ document.onclick = hideMenu;
 document.oncontextmenu = rightClick;
 
 function hideMenu() {
-			document.getElementById("contextMenu").style.display = "none"
+			document.getElementById("contextMenu").style.visibility = "hidden"
 			//console.log("hide")
 		}
 
 function rightClick(e) {
     e.preventDefault()
 
-    if (document.getElementById("contextMenu").style.display == 'block') {
+    if (document.getElementById("contextMenu").style.visibility == 'visible') {
         console.log("if")
         hideMenu();
         }
@@ -18,7 +18,7 @@ function rightClick(e) {
         var menu = document.createElement("contextMenu")
         menu.id = "contextMenu"
 
-        menu.style.display = 'block';
+        menu.style.visibility = 'visible';
         menu.style.left = e.pageX + "px";
         menu.style.top = e.pageY + "px";
 
