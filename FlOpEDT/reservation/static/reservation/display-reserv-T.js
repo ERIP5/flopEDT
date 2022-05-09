@@ -293,18 +293,18 @@ function rmv_reservT() {
 *function color per courses/booking*
  *********************************/
 function colorT() {
-    nbCm = rooms[nbId].courses["m"].length
-    nbCtu = rooms[nbId].courses["tu"].length
-    nbCw = rooms[nbId].courses["w"].length
-    nbCth = rooms[nbId].courses["th"].length
-    nbCf = rooms[nbId].courses["f"].length
+    nbCm = rooms_sort[nbId].courses["m"].length
+    nbCtu = rooms_sort[nbId].courses["tu"].length
+    nbCw = rooms_sort[nbId].courses["w"].length
+    nbCth = rooms_sort[nbId].courses["th"].length
+    nbCf = rooms_sort[nbId].courses["f"].length
     nbCtotal = nbCm + nbCtu + nbCw + nbCth + nbCf
 
-    nbBm = rooms[nbId].booking["m"].length
-    nbBtu = rooms[nbId].booking["tu"].length
-    nbBw = rooms[nbId].booking["w"].length
-    nbBth = rooms[nbId].booking["th"].length
-    nbBf = rooms[nbId].booking["f"].length
+    nbBm = rooms_sort[nbId].booking["m"].length
+    nbBtu = rooms_sort[nbId].booking["tu"].length
+    nbBw = rooms_sort[nbId].booking["w"].length
+    nbBth = rooms_sort[nbId].booking["th"].length
+    nbBf = rooms_sort[nbId].booking["f"].length
     nbBtotal = nbBm + nbBtu + nbBw + nbBth + nbBf
 
     nbCBtotal = nbCtotal + nbBtotal

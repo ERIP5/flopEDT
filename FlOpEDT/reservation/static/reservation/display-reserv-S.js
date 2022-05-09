@@ -18,10 +18,14 @@ var scale_end_time_day = 18*60+45 //1125
 
 var addS_val = 80
 
+var nbCBcoldS = 1
+var nbCBhotS = 2
+
 // cpt not defined reset in cleanS
 each_hour_yS = days_yS()
 var scale_current_hour = scale_day_start_hour()
 planB1 = 0
+var nbIdS_test = 0
 
 var roomS =[{}]
 var dateS =[{}]
@@ -242,7 +246,33 @@ function res_textS_tutor_y(course){
     return course_yS(course)+course.duration*0.75
 }
 
+/*********************************
+*function color per courses/booking*
+ *********************************/
+function colorS_choiceRoom() {
+    for (nbIdS_test; nbIdS_test < rooms.length; nbIdS_test++){
+        if (rooms[nbIdS_test].name == current_room) {
+            nbIdS = nbIdS_test
+            return nbIdS
+        }
+    }
+}
 
+function colorS() {
+for(daysNB)
+    nbCS = rooms[colorS_choiceRoom()].courses["m"].length
+    nbBS = rooms[colorS_choiceRoom()].booking["m"].length
+
+    nbCBtotalS = nbCS + nbBS
+
+    if (nbCBtotalS >= nbCBhot) {
+        return "red"
+    }
+    if (nbCBtotalS >= nbCBcold) {
+        return "yellow"
+    }
+    return "green"
+}
 
 /***************
 *function remove*
@@ -285,6 +315,7 @@ function cleanS() {
     each_hour_yS = days_yS()
     scale_current_hour = scale_day_start_hour()
     planB1 = 0
+    var nbIdS_test = 0
 }
 
 function rmv_reservS() {
@@ -520,7 +551,7 @@ function display_addS() {
         .data(days)
         .append("circle")
         .attr("class","circle_add")
-        .attr("fill","green")
+        .attr("fill",colorS)
         .attr("stroke","black")
         .attr("stroke-width",3)
         .attr("cx",addS_circle_cx)
