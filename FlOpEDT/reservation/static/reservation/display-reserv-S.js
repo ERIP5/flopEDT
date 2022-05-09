@@ -188,20 +188,6 @@ function double_popform_res(res) {
 }
 
 /***************
-    *Select*
- ***************/
-
-// Select of the template listeReserv.html, add dynamically the rooms stored in dataTest.js
-let select = document.getElementById("selectRoom");
-for (var i = 0; i < rooms.length; i++) {
-  var textC = rooms[i].name;
-  var CreateElem = document.createElement("option");
-  CreateElem.textContent = textC;
-  CreateElem.value = textC;
-  select.appendChild(CreateElem);
-}
-
-/***************
      *Text*
  ***************/
 
