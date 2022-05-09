@@ -606,6 +606,7 @@ for (room of rooms_sort){
 
 
 function change_room(room){
+    hidefilters()
     rmv_total()
     rmvStatut = 2
     current_room = room.name
