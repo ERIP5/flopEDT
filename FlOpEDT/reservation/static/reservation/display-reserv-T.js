@@ -43,7 +43,7 @@ var f_room_type = "all";
 
 var room_projo = "all";
 
-var room_ordi = "all";
+var room_computer = "all";
 
 
 /**********************
@@ -655,6 +655,7 @@ rooms_sort = rooms
 
     rooms_sort = sortType(rooms_sort)
     rooms_sort = sortProjector(rooms_sort)
+    rooms_sort = sortComputer(rooms_sort)
 
 
 }
@@ -697,17 +698,32 @@ for (room of oldList)
  return newL
 }
 
-
+function sortComputer(oldList)
+{
+newL = []
+for (room of oldList)
+{
+    if(room_computer != "all"){
+        if((""+room.computer+"") == room_computer)
+            {
+                newL.push(room)
+            }
+    }
+    else
+    {
+    newL = oldList
+    }
+}
+ return newL
+}
 /***********
 *gestion svg
 ***********/
 
 function mainT() {
-
-    console.log(f_room_type)
     clean();
 
-    sortRoom()
+    sortRoom();
 
     //filling in the table room_max_courses_T which calculates, for each room, the day with the most lessons
     max();

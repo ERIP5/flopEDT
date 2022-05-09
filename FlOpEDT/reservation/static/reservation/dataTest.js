@@ -16,7 +16,7 @@ let days = [{num: 0, ref: "m", name: "Lundi"},
 
 
 let rooms = [
-  {"name": "B112", "display":true, "type":"A","y":0, "height":0, "projector":true, 'courses':{'m':[{
+  {"name": "B112", "display":true, "type":"A","y":0, "height":0, "projector":true,"computer":true, 'courses':{'m':[{
     "id_course": 137455,
     "department": 'INFO',
     "mod": "ExplBD",
@@ -37,8 +37,8 @@ let rooms = [
     "promo": 0,
     "from_transversal": null
   }],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
-  {"name": "E002", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
-  {"name": "414", "display":true, "type":"A","y":0, "height":0, 'courses':{'m':[],'tu':[],'w':[{
+  {"name": "E002", "display":true, "type":"A","y":0, "height":0, "projector":true,"computer":false,'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "414", "display":true, "type":"A","y":0, "height":0, "projector":false,"computer":true,'courses':{'m':[],'tu':[],'w':[{
     "id_course": 137455,
     "department": 'INFO',
     "mod": "ExploJAVA",
@@ -111,13 +111,13 @@ let rooms = [
     "type": "type",
     "key":true
 }], 'th':[],'f':[]}},
-  {"name": "G21", "display":false, "type":"A","y":0, "height":0, "projector":false, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
-  {"name": "G26", "display":false, "type":"A","y":0, "height":0, "projector":true, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
-  {"name": "E209", "display":true, "type":"A","y":0, "height":0, "projector":true, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
-  {"name": "B111", "display":true, "type":"B","y":0, "height":0, "projector":true, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
-  {"name": "B002", "display":true, "type":"B","y":0, "height":0, "projector":false, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
-  {"name": "B203", "display":true, "type":"B","y":0, "height":0, "projector":false, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
-  {"name": "Amphi1", "display":true, "type":"amphi","y":0, "height":0, "projector":true, 'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}}
+  {"name": "G21", "display":false, "type":"A","y":0, "height":0, "projector":false, "computer":false,'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "G26", "display":false, "type":"A","y":0, "height":0, "projector":true, "computer":false,'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "E209", "display":true, "type":"A","y":0, "height":0, "projector":true, "computer":true,'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "B111", "display":true, "type":"B","y":0, "height":0, "projector":true, "computer":true,'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "B002", "display":true, "type":"B","y":0, "height":0, "projector":false, "computer":true,'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "B203", "display":true, "type":"B","y":0, "height":0, "projector":false, "computer":true,'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
+  {"name": "Amphi1", "display":true, "type":"amphi","y":0, "height":0, "projector":true, "computer":false,'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}}
 ]
 
 
@@ -135,7 +135,7 @@ let restest = {
 }
 
 
-let filtersList = ["type","projector","ordinateur"]
+let filtersList = ["type","projector","computer"]
 
 let typeRoom = ["amphi","A","B"]
 
