@@ -20,10 +20,6 @@ select.appendChild(CreateText)
 function displaySelectRoom(){
 
 select = document.getElementById("selectRoom");
-var CreateElem = document.createElement("option");
-  CreateElem.textContent = "all";
-  CreateElem.value = "all";
-  select.appendChild(CreateElem);
 
 for (var i = 0; i < rooms.length; i++) {
   var textC = rooms[i].name;
@@ -126,6 +122,29 @@ function generateSelect(parent, dataName)
                 elemS.appendChild(elemO)
             }
             break;
+
+            case "computer" :
+            elemp = document.createElement("p")
+            elemp.innerText = "Salle avec ordinateur ? "
+            parent.appendChild(elemp)
+
+            elemS = document.createElement("select")
+            elemS.id = "selectComputer"
+            elemS.onchange = changeRoomComputer
+            parent.appendChild(elemS)
+
+            elemO = document.createElement("option")
+                elemO.value = "all"
+                elemO.textContent = "all"
+                elemS.appendChild(elemO)
+
+            for (el of truefalse){
+                elemO = document.createElement("option")
+                elemO.ngValue = el
+                elemO.textContent = el
+                elemS.appendChild(elemO)
+            }
+            break;
     }
 
     buttonSuppr(parent)
@@ -151,6 +170,9 @@ function supprFilter(supr)
             break;
         case "projector" :
             room_projo = "all";
+            break;
+        case "computer" :
+            room_computer = "all";
             break;
     }
     parent.remove();
@@ -198,14 +220,19 @@ function liste(room) {
 function changeRoomType(){
     f_room_type = document.getElementById("selectType").value;
     rmv_total();
-    console.log(f_room_type)
     mainT();
 }
 
 function changeRoomProjo(){
     room_projo = document.getElementById("selectProjo").value;
     rmv_total();
-    console.log(room_projo)
+    mainT();
+}
+
+function changeRoomComputer(){
+    room_computer = document.getElementById("selectComputer").value;
+    console.log(room_computer)
+    rmv_total();
     mainT();
 }
 
