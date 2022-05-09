@@ -129,7 +129,7 @@ let restest = {
 "start" : 480,
 "duration" : 190,
 "title" : "réunion",
-"description": "une reservation pour tester l'afficahge des réservations",
+"description": "une reservation pour tester l'affichage des réservations",
 "type": "type",
 "key":true
 }

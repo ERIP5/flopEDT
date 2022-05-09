@@ -13,6 +13,10 @@ var compt_room_posy_T = 0
 var compt_text_posy_T = 0
 var compt_plusy_T = 0
 
+var nbId = 0
+var nbCBcold = 1
+var nbCBhot = 2
+
 var each_room_y_T = days_y_T()
 var y_room_act_T = days_y_T()
 var y_text_act_T = days_y_T()
@@ -283,6 +287,40 @@ function rmv_reservT() {
     rmv_each_roomT()
 }
 
+ /*********************************
+*function color per courses/booking*
+ *********************************/
+    function colorT() {
+        nbCm = rooms[nbId].courses["m"].length
+        nbCtu = rooms[nbId].courses["tu"].length
+        nbCw = rooms[nbId].courses["w"].length
+        nbCth = rooms[nbId].courses["th"].length
+        nbCf = rooms[nbId].courses["f"].length
+        nbCtotal = nbCm + nbCtu + nbCw + nbCth + nbCf
+
+        nbBm = rooms[nbId].booking["m"].length
+        nbBtu = rooms[nbId].booking["tu"].length
+        nbBw = rooms[nbId].booking["w"].length
+        nbBth = rooms[nbId].booking["th"].length
+        nbBf = rooms[nbId].booking["f"].length
+        nbBtotal = nbBm + nbBtu + nbBw + nbBth + nbBf
+
+        nbCBtotal = nbCtotal + nbBtotal
+
+        if (nbCBtotal >= nbCBhot) {
+            nbId += 1
+            return "red"
+        }
+        if (nbCBtotal >= nbCBcold) {
+            nbId += 1
+            return "yellow"
+        }
+        nbId += 1
+        return "green"
+    }
+
+
+
  /***************
 *function display*
  ***************/
@@ -356,6 +394,7 @@ c_room
   .append("text")
   .text(display_text_T)
   .attr("class","room_name")
+  .attr("fill",colorT)
   .attr("x",room_width_T/2)
   .attr("y", each_text_posy)
   .attr("text-anchor", "middle")
@@ -597,6 +636,7 @@ function clean() {
     compt_room_posy_T = 0
     compt_text_posy_T = 0
     compt_plusy_T = 0
+    nbId = 0
     course = []
     couple_room_y = new Map();
     couple_textroom_y = new Map();
