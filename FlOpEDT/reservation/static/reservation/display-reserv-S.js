@@ -26,6 +26,7 @@ each_hour_yS = days_yS()
 var scale_current_hour = scale_day_start_hour()
 planB1 = 0
 var nbIdS_test = 0
+var nbSday = 1
 
 var roomS =[{}]
 var dateS =[{}]
@@ -259,19 +260,90 @@ function colorS_choiceRoom() {
 }
 
 function colorS() {
-for(daysNB)
-    nbCS = rooms[colorS_choiceRoom()].courses["m"].length
-    nbBS = rooms[colorS_choiceRoom()].booking["m"].length
+    if (nbSday == 1) {
+        nbCS = rooms[colorS_choiceRoom()].courses["m"].length
+        nbBS = rooms[colorS_choiceRoom()].booking["m"].length
 
-    nbCBtotalS = nbCS + nbBS
+        nbCBtotalS = nbCS + nbBS
 
-    if (nbCBtotalS >= nbCBhot) {
-        return "red"
+        nbSday = 2
+
+        if (nbCBtotalS >= nbCBhotS) {
+            return "red"
+        }
+        if (nbCBtotalS >= nbCBcoldS) {
+            return "yellow"
+        }
+        return "green"
     }
-    if (nbCBtotalS >= nbCBcold) {
-        return "yellow"
+
+    if (nbSday == 2) {
+        nbCS = rooms[colorS_choiceRoom()].courses["tu"].length
+        nbBS = rooms[colorS_choiceRoom()].booking["tu"].length
+
+        nbCBtotalS = nbCS + nbBS
+
+        nbSday = 3
+
+        if (nbCBtotalS >= nbCBhotS) {
+            return "red"
+        }
+        if (nbCBtotalS >= nbCBcoldS) {
+            return "yellow"
+        }
+        return "green"
     }
-    return "green"
+
+    if (nbSday == 3) {
+        nbCS = rooms[colorS_choiceRoom()].courses["w"].length
+        nbBS = rooms[colorS_choiceRoom()].booking["w"].length
+
+        nbCBtotalS = nbCS + nbBS
+
+        nbSday = 4
+
+        if (nbCBtotalS >= nbCBhotS) {
+            return "red"
+        }
+        if (nbCBtotalS >= nbCBcoldS) {
+            return "yellow"
+        }
+        return "green"
+    }
+
+    if (nbSday == 4) {
+        nbCS = rooms[colorS_choiceRoom()].courses["th"].length
+        nbBS = rooms[colorS_choiceRoom()].booking["th"].length
+
+        nbCBtotalS = nbCS + nbBS
+
+        nbSday = 5
+
+        if (nbCBtotalS >= nbCBhotS) {
+            return "red"
+        }
+        if (nbCBtotalS >= nbCBcoldS) {
+            return "yellow"
+        }
+        return "green"
+    }
+
+    if (nbSday == 5) {
+        nbCS = rooms[colorS_choiceRoom()].courses["f"].length
+        nbBS = rooms[colorS_choiceRoom()].booking["f"].length
+
+        nbCBtotalS = nbCS + nbBS
+
+        nbSday = 1
+
+        if (nbCBtotalS >= nbCBhotS) {
+            return "red"
+        }
+        if (nbCBtotalS >= nbCBcoldS) {
+            return "yellow"
+        }
+        return "green"
+    }
 }
 
 /***************
@@ -315,7 +387,8 @@ function cleanS() {
     each_hour_yS = days_yS()
     scale_current_hour = scale_day_start_hour()
     planB1 = 0
-    var nbIdS_test = 0
+    nbIdS_test = 0
+    nbSday = 1
 }
 
 function rmv_reservS() {
