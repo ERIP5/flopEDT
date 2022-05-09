@@ -37,7 +37,9 @@ var rooms_sort = []
 
 var f_room_type = "all";
 
-var room_projo = "all"
+var room_projo = "all";
+
+var room_ordi = "all";
 
 
 /**********************
@@ -661,6 +663,8 @@ for (room of oldList)
 ***********/
 
 function mainT() {
+
+    console.log(f_room_type)
     clean();
 
     sortRoom()

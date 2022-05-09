@@ -2,7 +2,7 @@
 ****variables****
 ****************/
 
-
+nb_filter = 0;
 
 
 /****************
@@ -136,8 +136,26 @@ function buttonSuppr(parent)
     elemp = document.createElement("input")
     elemp.type = "button"
     elemp.value = "supprimer filtre"
-    elemp.onchange = console.log("test")
+    elemp.id = "suppr"+nb_filter;
+    nb_filter+=1;
+    elemp.onclick = supprFilter
     parent.appendChild(elemp)
+}
+
+function supprFilter(supr)
+{
+    parent = supr.explicitOriginalTarget.parentNode
+    switch (parent.id) {
+        case "type" :
+            f_room_type = "all";
+            break;
+        case "projector" :
+            room_projo = "all";
+            break;
+    }
+    parent.remove();
+    rmv_reservT();
+    mainT();
 }
 
 /************
