@@ -70,7 +70,33 @@ function addFilter(filtre)
 
     generateSelect(elemg, filtre.value)
 
+    removeAddFilterOption("remove", filtre)
+
     document.getElementById("selectfilter").selectedIndex = 0;
+
+    }
+}
+
+function removeAddFilterOption(adr, object)
+{
+    if(adr == "add")
+    {
+    var textC = object.parentNode.id;
+        CreateElem = document.createElement("option");
+        CreateElem.textContent = textC;
+        CreateElem.value = textC;
+        document.getElementById('selectfilter').appendChild(CreateElem);
+    }
+
+    if(adr == "remove")
+    {
+        for (i = 0; i<object.length; i++)
+        {
+            if(object[i].value == object.value)
+            {
+            object.remove(i)
+            }
+        }
     }
 }
 
@@ -175,6 +201,7 @@ function supprFilter(supr)
             room_computer = "all";
             break;
     }
+    removeAddFilterOption("add", supr.explicitOriginalTarget)
     parent.remove();
     rmv_reservT();
     mainT();

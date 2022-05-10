@@ -14,12 +14,7 @@
   grid-column-end: 3;
 }
 
-.filterADD div{
-    float:left;
-}
-
-.filterAct{
-    display : grid;
-    grid-template-columns: max-content max-content;
-    gap : 10%;
+.filterAct g{
+  display : inline-block;
+  margin: 20px;
 }
