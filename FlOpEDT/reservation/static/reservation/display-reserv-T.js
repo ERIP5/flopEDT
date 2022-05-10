@@ -396,6 +396,7 @@ c_room
   .append("text")
   .text(display_text_T)
   .attr("class","room_name")
+  .style("font-size", "25px")
   .attr("fill",colorT)
   .attr("x",room_width_T/2)
   .attr("y", each_text_posy)
