@@ -19,8 +19,6 @@ class Reservation(models.Model):
     room = models.ForeignKey('base.Room', on_delete=models.CASCADE, related_name='reservationRoom')
     id_periodicite = models.ForeignKey('Reservation_periode', on_delete=models.CASCADE, null=True, blank=True)
 
-
-
 class Reservation_type(models.Model):
     name = models.CharField(max_length=30)
 
