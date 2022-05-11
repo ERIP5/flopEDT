@@ -19,23 +19,7 @@ class Reservation(models.Model):
     room = models.ForeignKey('base.Room', on_delete=models.CASCADE, related_name='reservationRoom')
     id_periodicite = models.ForeignKey('Reservation_periode', on_delete=models.CASCADE, null=True, blank=True)
 
-class Reservation2(models.Model):
-    responsible2 = models.ForeignKey('people.User',
-                                     on_delete=models.CASCADE,
-                                     related_name='reservationResp',
-                                     label = ('responsibles name'),
-                                     required = True)
-    reservation_type2 = models.ForeignKey('reservation_type',
-                                          on_delete=models.CASCADE)
-    title2 = models.CharField(label = ('quick description'),
-                              max_length = 30,
-                              required = True)
-    description2 = models.TextField(label = ('description of the reservation'),
-                                    null = True,
-                                    blank = True)
-    key2 = models.BooleanField(label = ('borrowed key'))
-    reservation_date2 = models.DateField(widget = models.DateInput())
-    start2 = models.PositiveSmallIntegerField(widget = models.DateInput())
+
 
 class Reservation_type(models.Model):
     name = models.CharField(max_length=30)
