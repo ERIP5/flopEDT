@@ -125,6 +125,12 @@ class ScheduledCoursesSerializer(serializers.Serializer):
         fields = ['id', 'tutor', 'room', 'start_time', 'day', 'course', 'id_visio']
 
 
+class ReservationCoursesSerializer(serializers.Serializer):
+    # Spécification des champes voulus pour afficher les réservations
+    id = serializers.IntegerField()
+
+
+
 
 class ModuleCosmo_SC_Serializer(serializers.Serializer):
     name = serializers.CharField()
@@ -536,3 +542,8 @@ class IDRoomTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = bm.RoomType
         fields = ['id', 'name']
+
+class ResRoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bm.Room
+        fields = ['id', 'name','types']

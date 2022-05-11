@@ -102,12 +102,12 @@ class ScheduledCoursesViewSet(viewsets.ReadOnlyModelViewSet):
             except pm.Tutor.DoesNotExist:
                 raise exceptions.NotAcceptable(detail='Unknown tutor')
 
-        queryset = bm.ScheduledCourse\
-                     .objects.all().select_related('course__module__train_prog__department',
-                                                   'tutor__display',
-                                                   'course__type',
-                                                   'course__room_type',
-                                                   'course__module__display')\
+        queryset = bm.ScheduledCourse \
+            .objects.all().select_related('course__module__train_prog__department',
+                                          'tutor__display',
+                                          'course__type',
+                                          'course__room_type',
+                                          'course__module__display') \
             .prefetch_related('course__groups__train_prog',
                               'room',
                               'course__supp_tutor')
@@ -115,7 +115,7 @@ class ScheduledCoursesViewSet(viewsets.ReadOnlyModelViewSet):
         # sanity check
         if group_name is not None and self.train_prog is None:
             raise exceptions.NotAcceptable(detail='A training programme should be '
-                                           'given when a group name is given')
+                                                  'given when a group name is given')
 
         if self.train_prog is not None:
             try:
@@ -156,7 +156,6 @@ class ScheduledCoursesViewSet(viewsets.ReadOnlyModelViewSet):
             elif self.dept is not None:
                 queryset = queryset.filter(
                     course__module__train_prog__department=self.dept)
-
 
         return queryset
 
@@ -306,8 +305,8 @@ class CourseTypeDefaultWeekViewSet(viewsets.ReadOnlyModelViewSet):
 
         # Filtering
         if department is not None:
-            qs = qs.select_related('train_prog__department')\
-                   .filter(train_prog__department__abbrev=department)
+            qs = qs.select_related('train_prog__department') \
+                .filter(train_prog__department__abbrev=department)
         if train_prog is not None:
             qs = qs.filter(train_prog__abbrev=train_prog)
         if course_type is not None:
@@ -417,11 +416,11 @@ class ExtraSchedCoursesViewSet(viewsets.ReadOnlyModelViewSet):
 
         # Getting all the needed data
 
-        return qs_esc.filter(course__tutor__username=user)\
-                     .exclude(course__module__train_prog__department__abbrev=dept)\
-                     .select_related('course__tutor',
-                                     'course__type__department',
-                                     'course__module__train_prog__department')
+        return qs_esc.filter(course__tutor__username=user) \
+            .exclude(course__module__train_prog__department__abbrev=dept) \
+            .select_related('course__tutor',
+                            'course__type__department',
+                            'course__module__train_prog__department')
 
 
 class BKNewsFilterSet(filters.FilterSet):
@@ -565,10 +564,10 @@ class IDTutorViewSet(viewsets.ReadOnlyModelViewSet):
 
         dept = self.request.query_params.get('dept', None)
 
-        if(dept is not None):
+        if (dept is not None):
             queryset = queryset.filter(departments__abbrev=dept)
 
-        return(queryset)
+        return (queryset)
 
 
 @method_decorator(name='list',
@@ -591,10 +590,10 @@ class IDTrainProgViewSet(viewsets.ReadOnlyModelViewSet):
 
         dept = self.request.query_params.get('dept', None)
 
-        if(dept is not None):
+        if (dept is not None):
             queryset = queryset.filter(department__abbrev=dept)
 
-        return(queryset)
+        return (queryset)
 
 
 @method_decorator(name='list',
@@ -616,10 +615,10 @@ class IDModuleViewSet(viewsets.ReadOnlyModelViewSet):
         queryset = bm.Module.objects.all()
         dept = self.request.query_params.get('dept', None)
 
-        if(dept is not None):
+        if (dept is not None):
             queryset = queryset.filter(train_prog__department__abbrev=dept)
 
-        return(queryset)
+        return (queryset)
 
 
 @method_decorator(name='list',
@@ -641,10 +640,10 @@ class IDCourseTypeViewSet(viewsets.ReadOnlyModelViewSet):
         queryset = bm.CourseType.objects.all()
         dept = self.request.query_params.get('dept', None)
 
-        if(dept is not None):
+        if (dept is not None):
             queryset = queryset.filter(department__abbrev=dept)
 
-        return(queryset)
+        return (queryset)
 
 
 @method_decorator(name='list',
@@ -666,10 +665,10 @@ class IDGroupViewSet(viewsets.ReadOnlyModelViewSet):
         queryset = bm.StructuralGroup.objects.all()
         dept = self.request.query_params.get('dept', None)
 
-        if(dept is not None):
+        if (dept is not None):
             queryset = queryset.filter(train_prog__department__abbrev=dept)
 
-        return(queryset)
+        return (queryset)
 
 
 @method_decorator(name='list',
@@ -691,10 +690,10 @@ class IDGroupTypeViewSet(viewsets.ReadOnlyModelViewSet):
         queryset = bm.GroupType.objects.all()
         dept = self.request.query_params.get('dept', None)
 
-        if(dept is not None):
+        if (dept is not None):
             queryset = queryset.filter(department__abbrev=dept)
 
-        return(queryset)
+        return (queryset)
 
 
 @method_decorator(name='list',
@@ -716,10 +715,10 @@ class IDRoomViewSet(viewsets.ReadOnlyModelViewSet):
         queryset = bm.Room.objects.all()
         dept = self.request.query_params.get('dept', None)
 
-        if(dept is not None):
+        if (dept is not None):
             queryset = queryset.filter(departments__abbrev=dept)
 
-        return(queryset)
+        return (queryset)
 
 
 @method_decorator(name='list',
@@ -741,10 +740,10 @@ class IDRoomTypeViewSet(viewsets.ReadOnlyModelViewSet):
         queryset = bm.RoomType.objects.all()
         dept = self.request.query_params.get('dept', None)
 
-        if(dept is not None):
+        if (dept is not None):
             queryset = queryset.filter(department__abbrev=dept)
 
-        return(queryset)
+        return (queryset)
 
 
 @method_decorator(name='list',
@@ -771,7 +770,7 @@ class ParameterViewSet(viewsets.ViewSet):
 
         qtutor = pm.Tutor.objects.all()
 
-        if(dept is not None):
+        if (dept is not None):
             qtutor = qtutor.filter(departments__abbrev=dept)
 
         for object in qtutor:
@@ -783,7 +782,7 @@ class ParameterViewSet(viewsets.ViewSet):
             data["base"][typename] = list()
             queryset = model.objects.all()
 
-            if(dept is not None):
+            if (dept is not None):
                 if (typename == "Room"):
                     queryset = queryset.filter(departments__abbrev=dept)
 
@@ -799,3 +798,146 @@ class ParameterViewSet(viewsets.ViewSet):
                 data["base"][typename].append(serializer.data)
 
         return Response(data)
+
+
+@method_decorator(name='list',
+                  decorator=swagger_auto_schema(
+                      manual_parameters=[
+                          # in the filterset
+                          week_param(required=True),
+                          year_param(required=True),
+                          work_copy_param(),
+                          # in the get_queryset
+                          dept_param(),
+                          train_prog_param(),
+                          group_param(),
+                          lineage_param(),
+                          tutor_param()
+                      ])
+                  )
+class ReservationViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    ViewSet to see all the scheduled courses
+
+    Result can be filtered by function ScheduledCourseFilterSet
+    as wanted with week, year and work_copy (0 by default).
+    Request needs a department filter.
+    """
+    permission_classes = [IsAdminOrReadOnly]
+    filter_class = ScheduledCourseFilterSet
+
+    def get_queryset(self):
+        lineage = self.request.query_params.get('lineage', 'false')
+        lineage = True if lineage == 'true' else False
+        self.dept = self.request.query_params.get('dept', None)
+        if self.dept is not None:
+            try:
+                self.dept = bm.Department.objects.get(abbrev=self.dept)
+            except bm.Department.DoesNotExist:
+                raise exceptions.NotAcceptable(detail='Unknown department')
+
+        self.train_prog = self.request.query_params.get('train_prog', None)
+        group_name = self.request.query_params.get('group', None)
+        self.tutor = self.request.query_params.get('tutor_name', None)
+        work_copy = self.request.query_params.get('work_copy', 0)
+        if self.tutor is not None:
+            try:
+                self.tutor = pm.Tutor.objects.get(username=self.tutor)
+            except pm.Tutor.DoesNotExist:
+                raise exceptions.NotAcceptable(detail='Unknown tutor')
+
+        queryset = bm.ScheduledCourse \
+            .objects.all().select_related('course__module__train_prog__department',
+                                          'tutor__display',
+                                          'course__type',
+                                          'course__room_type',
+                                          'course__module__display') \
+            .prefetch_related('course__groups__train_prog',
+                              'room',
+                              'course__supp_tutor')
+        queryset = queryset.filter(work_copy=work_copy)
+        # sanity check
+        if group_name is not None and self.train_prog is None:
+            raise exceptions.NotAcceptable(detail='A training programme should be '
+                                                  'given when a group name is given')
+
+        if self.train_prog is not None:
+            try:
+                if self.dept is not None:
+                    self.train_prog = bm.TrainingProgramme.objects.get(abbrev=self.train_prog,
+                                                                       department=self.dept)
+                else:
+                    self.train_prog = bm.TrainingProgramme.objects.get(
+                        abbrev=self.train_prog)
+            except bm.TrainingProgramme.DoesNotExist:
+                raise exceptions.NotAcceptable(
+                    detail='No such training programme')
+            except MultipleObjectsReturned:
+                raise exceptions.NotAcceptable(
+                    detail='Multiple training programme with this name')
+
+        if group_name is not None:
+            try:
+                declared_group = bm.StructuralGroup.objects.get(
+                    name=group_name, train_prog=self.train_prog)
+                self.groups = {declared_group}
+                if lineage:
+                    self.groups |= declared_group.ancestor_groups()
+            except bm.StructuralGroup.DoesNotExist:
+                raise exceptions.NotAcceptable(detail='No such group')
+            except:
+                raise exceptions.NotAcceptable(detail='Issue with the group')
+            queryset = queryset.filter(course__groups__in=self.groups)
+        else:
+            if self.train_prog is not None:
+                queryset = queryset.filter(
+                    course__groups__train_prog=self.train_prog)
+
+        if group_name is None and self.train_prog is None:
+            if self.tutor is not None:
+                queryset = queryset.filter(
+                    Q(tutor=self.tutor) | Q(course__supp_tutor=self.tutor))
+            elif self.dept is not None:
+                queryset = queryset.filter(
+                    course__module__train_prog__department=self.dept)
+
+        return queryset
+
+    def get_serializer_class(self):
+        # get the department
+        dept = None
+        if self.dept is not None:
+            dept = self.dept
+        else:
+            if self.tutor is not None:
+                for d in self.tutor.departments.all():
+                    uds = pm.UserDepartmentSettings.objects.get(department=d,
+                                                                user=self.tutor)
+                    if uds.is_main:
+                        dept = uds.department
+                        break
+
+                # no primary department
+                if dept is None:
+                    dept = self.tutor.departments.first()
+            elif self.request.query_params.get('group', None):
+                dept = self.groups[0].train_prog.department
+            else:
+                dept = bm.Department.objects.first()
+        if dept.mode.cosmo:
+            return serializers.ScheduledCoursesCosmoSerializer
+        else:
+            return serializers.ScheduledCoursesSerializer
+
+
+class ResRoomViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    ViewSet to see the ID and name of every Room
+
+    """
+    permission_classes = [IsAdminOrReadOnly]
+    serializer_class = serializers.ResRoomSerializer
+
+    def get_queryset(self):
+        queryset = bm.Room.objects.all()
+        return (queryset)
