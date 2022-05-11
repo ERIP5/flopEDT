@@ -414,64 +414,64 @@ c_room_gr
 function display_courses(){
 c_all_courses = d3.select(".room_lines");
 
-for(room of rooms_sort)
-{
-    c_all_courses_day = c_all_courses
-        .select("."+room_class(room))
+    for(room of rooms_sort)
+    {
+        c_all_courses_day = c_all_courses
+            .select("."+room_class(room))
 
-            for(day of days){
-            c_course_res_g = c_all_courses_day
-                .select("."+day.name)
-                .selectAll("test")
-                .data(room.courses[day.ref])
-                .enter()
-                .append("g")
-                .attr("class","plus")
-                .attr("id",room.name + day.ref)
-                .on("dblclick", go_popup_course)
-
-
-            c_course_res = c_course_res_g
-                .append("g")
-                .attr("class",getcourses)
+                for(day of days){
+                c_course_res_g = c_all_courses_day
+                    .select("."+day.name)
+                    .selectAll("test")
+                    .data(room.courses[day.ref])
+                    .enter()
+                    .append("g")
+                    .attr("class","plus")
+                    .attr("id",room.name + day.ref)
+                    .on("dblclick", go_popup_course)
 
 
-            c_course_res
-                .append("rect")
-                .attr("class","display_courses_frame")
-                .attr("stroke","black")
-                .attr("stroke-width",2)
-                .attr("x",courseT_x)
-                .attr("y",courseT_y)
-                .attr("width",days_width_T)
-                .attr("height",res_height_T)
-                .attr("fill",color_courses)
+                c_course_res = c_course_res_g
+                    .append("g")
+                    .attr("class",getcourses)
 
-            c_course_res
-                .append("text")
-                .attr("class", "display_courses_text_mod")
-                .text(get_course_name)
-                .attr("x", res_text_x)
-                .attr("y", course_text_roomy)
-                .attr("text-anchor", "middle")
 
-            c_course_res
-                .append("text")
-                .attr("class", "display_courses_text_date")
-                .text(text_heure_res)
-                .attr("x", res_text_x)
-                .attr("y", course_text_daty)
-                .attr("text-anchor", "middle")
+                c_course_res
+                    .append("rect")
+                    .attr("class","display_courses_frame")
+                    .attr("stroke","black")
+                    .attr("stroke-width",2)
+                    .attr("x",courseT_x)
+                    .attr("y",courseT_y)
+                    .attr("width",days_width_T)
+                    .attr("height",res_height_T)
+                    .attr("fill",color_courses)
 
-            c_course_res
-                .append("text")
-                .attr("class", "display_courses_text_prof")
-                .text(get_course_profg)
-                .attr("x", res_text_x)
-                .attr("y", course_text_profy)
-                .attr("text-anchor", "middle")
-        }
-}
+                c_course_res
+                    .append("text")
+                    .attr("class", "display_courses_text_mod")
+                    .text(get_course_name)
+                    .attr("x", res_text_x)
+                    .attr("y", course_text_roomy)
+                    .attr("text-anchor", "middle")
+
+                c_course_res
+                    .append("text")
+                    .attr("class", "display_courses_text_date")
+                    .text(text_heure_res)
+                    .attr("x", res_text_x)
+                    .attr("y", course_text_daty)
+                    .attr("text-anchor", "middle")
+
+                c_course_res
+                    .append("text")
+                    .attr("class", "display_courses_text_prof")
+                    .text(get_course_profg)
+                    .attr("x", res_text_x)
+                    .attr("y", course_text_profy)
+                    .attr("text-anchor", "middle")
+            }
+    }
 }
 
 function display_reservation(){
@@ -617,7 +617,8 @@ function change_room(room){
 
 function go_popup(ele)
 {
-    console.log(ele.room.name + " " +ele.day.name)
+    //console.log(ele.room.name)
+    window.location.href = "http://localhost:8000/fr/reservation/INFO/addRes"
 }
 
 function go_popup_course(courT)
@@ -627,7 +628,7 @@ function go_popup_course(courT)
 
 function go_popup_res(resT)
 {
-    console.log(resT.room + " " + resT.day)
+    console.log(resT.responsible + resT.type + resT.title + resT.description + resT.key + resT.id_booking + resT.start + resT.duration + resT.room)
 }
 
 function clean() {
