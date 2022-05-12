@@ -5,7 +5,7 @@ from django import forms
 from django.shortcuts import render
 from django.template.response import TemplateResponse
 
-from reservation.models import Reservation, Reservation_periode
+from reservation.models import Reservation, ReservationPeriod
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -30,7 +30,7 @@ class ReservationForm(ModelForm):
 
 class ReservationPeriodForm(ModelForm):
     class Meta:
-        model = Reservation_periode
+        model = ReservationPeriod
         fields = ('period_type','start','ending',)
         widgets = {
             'start': DateInput(),
