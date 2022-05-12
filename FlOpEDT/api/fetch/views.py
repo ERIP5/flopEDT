@@ -808,34 +808,26 @@ class ParameterViewSet(viewsets.ViewSet):
                           year_param(required=True),
                           work_copy_param(),
                           # in the get_queryset
-                          dept_param(),
                           train_prog_param(),
                           group_param(),
                           lineage_param(),
                           tutor_param()
                       ])
                   )
-class ReservationViewSet(viewsets.ReadOnlyModelViewSet):
+class ResCoursesViewSet(viewsets.ReadOnlyModelViewSet):
     """
     ViewSet to see all the scheduled courses
 
     Result can be filtered by function ScheduledCourseFilterSet
     as wanted with week, year and work_copy (0 by default).
-    Request needs a department filter.
     """
     permission_classes = [IsAdminOrReadOnly]
     filter_class = ScheduledCourseFilterSet
+    serializer_class = serializers.ResCourseSerializer
 
     def get_queryset(self):
         lineage = self.request.query_params.get('lineage', 'false')
         lineage = True if lineage == 'true' else False
-        self.dept = self.request.query_params.get('dept', None)
-        if self.dept is not None:
-            try:
-                self.dept = bm.Department.objects.get(abbrev=self.dept)
-            except bm.Department.DoesNotExist:
-                raise exceptions.NotAcceptable(detail='Unknown department')
-
         self.train_prog = self.request.query_params.get('train_prog', None)
         group_name = self.request.query_params.get('group', None)
         self.tutor = self.request.query_params.get('tutor_name', None)
@@ -861,21 +853,6 @@ class ReservationViewSet(viewsets.ReadOnlyModelViewSet):
             raise exceptions.NotAcceptable(detail='A training programme should be '
                                                   'given when a group name is given')
 
-        if self.train_prog is not None:
-            try:
-                if self.dept is not None:
-                    self.train_prog = bm.TrainingProgramme.objects.get(abbrev=self.train_prog,
-                                                                       department=self.dept)
-                else:
-                    self.train_prog = bm.TrainingProgramme.objects.get(
-                        abbrev=self.train_prog)
-            except bm.TrainingProgramme.DoesNotExist:
-                raise exceptions.NotAcceptable(
-                    detail='No such training programme')
-            except MultipleObjectsReturned:
-                raise exceptions.NotAcceptable(
-                    detail='Multiple training programme with this name')
-
         if group_name is not None:
             try:
                 declared_group = bm.StructuralGroup.objects.get(
@@ -897,37 +874,8 @@ class ReservationViewSet(viewsets.ReadOnlyModelViewSet):
             if self.tutor is not None:
                 queryset = queryset.filter(
                     Q(tutor=self.tutor) | Q(course__supp_tutor=self.tutor))
-            elif self.dept is not None:
-                queryset = queryset.filter(
-                    course__module__train_prog__department=self.dept)
-
         return queryset
 
-    def get_serializer_class(self):
-        # get the department
-        dept = None
-        if self.dept is not None:
-            dept = self.dept
-        else:
-            if self.tutor is not None:
-                for d in self.tutor.departments.all():
-                    uds = pm.UserDepartmentSettings.objects.get(department=d,
-                                                                user=self.tutor)
-                    if uds.is_main:
-                        dept = uds.department
-                        break
-
-                # no primary department
-                if dept is None:
-                    dept = self.tutor.departments.first()
-            elif self.request.query_params.get('group', None):
-                dept = self.groups[0].train_prog.department
-            else:
-                dept = bm.Department.objects.first()
-        if dept.mode.cosmo:
-            return serializers.ScheduledCoursesCosmoSerializer
-        else:
-            return serializers.ScheduledCoursesSerializer
 
 
 class ResRoomViewSet(viewsets.ReadOnlyModelViewSet):
