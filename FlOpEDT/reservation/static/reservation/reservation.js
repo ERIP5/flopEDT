@@ -1,13 +1,12 @@
 var allRoom = [];
-var allCourses = []
-var newCourse = {}
 var roomCourse = []
-var otherCourses = []
+var allObjectCourses = []
+var test = []
 
 show_loader(true);
-listDays();
 getRooms();
 getCourses();
+putCourseRoom();
 show_loader(false);
 
 function getRooms(){
@@ -21,7 +20,6 @@ $.ajax({
     success: function (msg) {
       allRoom = JSON.parse(msg)
       creationRooms()
-      console.log(allRoom)
     },
     error: function (xhr, error) {
       console.log("error");
@@ -69,6 +67,8 @@ function creationRooms()
 {
     for (room of allRoom)
     {
+    roomCourse = new Object();
+    listDays();
     room.courses = roomCourse
     room.booking = roomCourse
     }
@@ -76,6 +76,7 @@ function creationRooms()
 
 function organizeCourse(course)
 {
+    var newCourse = new Object();
     newCourse.id = course.id
     newCourse.department = course.course.type.department.abbrev
     newCourse.mod = course.course.module.abbrev
@@ -95,5 +96,21 @@ function organizeCourse(course)
     {
     newCourse.group.push(group.name)
     }
-    roomCourse.push(newCourse)
+    allObjectCourses.push(newCourse)
+}
+
+function putCourseRoom()
+{
+    allRoom.forEach(element => addCourse(element))
+}
+
+function addCourse(room)
+{
+    for (course of allObjectCourses)
+    {
+        if(room.name == course.room)
+        {
+            room.courses[course.day].push(course)
+        }
+    }
 }
