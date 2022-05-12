@@ -21,12 +21,14 @@ var addS_val = 80
 var nbCBcoldS = 1
 var nbCBhotS = 2
 
+
 // cpt not defined reset in cleanS
 each_hour_yS = days_yS()
 var scale_current_hour = scale_day_start_hour()
 planB1 = 0
 var nbIdS_test = 0
 var nbSday = 1
+var captNb = 0
 
 var roomS =[{}]
 var dateS =[{}]
@@ -346,6 +348,39 @@ function colorS() {
     }
 }
 
+//same function as reservS
+function colorS_resType(course) {
+    if (course.type == "type") {
+        return "green"
+    }
+    if (course.type == "partiel") {
+        return "red"
+    }
+
+    return "grey"
+}
+/***************
+*function caption*
+ ***************/
+
+function captionS_x() {
+    return scale_margin
+}
+
+function captionS_y() {
+    captNb +=1
+    return days_heightS() + 200 + (100*captNb)
+}
+
+function captionS_xText() {
+    return captionS_x() + days_widthS/2
+}
+
+function captionS_yText() {
+    captNb -=1
+    return captionS_y() + 50
+}
+
 /***************
 *function remove*
  ***************/
@@ -383,12 +418,23 @@ function rmv_addS() {
         .remove()
 }
 
+function rmv_captS() {
+    c_capt
+        .selectAll("rect")
+        .remove()
+
+    c_capt
+        .selectAll("text")
+        .remove()
+}
+
 function cleanS() {
     each_hour_yS = days_yS()
     scale_current_hour = scale_day_start_hour()
     planB1 = 0
     nbIdS_test = 0
     nbSday = 1
+    captNb = 0
 }
 
 function rmv_reservS() {
@@ -397,6 +443,7 @@ function rmv_reservS() {
     rmv_dateS()
     rmv_grileS()
     rmv_addS()
+    rmv_captS()
     }
 
  /***************
@@ -576,7 +623,7 @@ function display_reservationS() {
                         .attr("y",course_yS)
                         .attr("width",days_widthS)
                         .attr("height",course_heightS)
-                        .attr("fill", "grey")
+                        .attr("fill", colorS_resType)
 
                     // display the title of the reservation
                     c_reservation
@@ -664,12 +711,81 @@ function display_addS() {
         .attr("height",addS_height)
 }
 
+// display the caption for the booking
+function display_captionS() {
+    c_capt = d3.select(".captionS")
+        .selectAll("rect")
+        .data(dateS)
+        .enter()
+
+    c_capt
+        .append("rect")
+        .attr("class","rect_caption")
+        .attr("fill","none")
+        .attr("stroke","black")
+        .attr("stroke-width",2)
+        .attr("x",captionS_x)
+        .attr("y",captionS_y)
+        .attr("width",days_widthS)
+        .attr("height",100)
+
+    c_capt
+        .append("text")
+        .text("Caption's booking :")
+        .attr("class", "capt_text")
+        .attr("x", captionS_xText)
+        .attr("y", captionS_yText)
+        .attr("text-anchor", "middle")
+        .style("font-size", "25px")
+
+    c_capt
+        .append("rect")
+        .attr("class","rect_caption")
+        .attr("fill","green")
+        .attr("stroke","black")
+        .attr("stroke-width",2)
+        .attr("x",captionS_x)
+        .attr("y",captionS_y)
+        .attr("width",days_widthS)
+        .attr("height",100)
+
+    c_capt
+        .append("text")
+        .text("Réunion")
+        .attr("class", "capt_text")
+        .attr("x", captionS_xText)
+        .attr("y", captionS_yText)
+        .attr("text-anchor", "middle")
+        .style("font-size", "25px")
+
+    c_capt
+        .append("rect")
+        .attr("class","rect_caption")
+        .attr("fill","red")
+        .attr("stroke","black")
+        .attr("stroke-width",2)
+        .attr("x",captionS_x)
+        .attr("y",captionS_y)
+        .attr("width",days_widthS)
+        .attr("height",100)
+
+    c_capt
+        .append("text")
+        .text("Partiel")
+        .attr("class", "capt_text")
+        .attr("x", captionS_xText)
+        .attr("y", captionS_yText)
+        .attr("text-anchor", "middle")
+        .style("font-size", "25px")
+}
+
 /*******
 *display*
  ******/
 
 // main for displaying all of what is need at once in other file
 function mainS() {
+
     // display the days
     display_dateS()
     // display the grid
@@ -682,6 +798,8 @@ function mainS() {
     display_reservationS()
     // display the add
     display_addS()
+    // display the caption for the booking
+    display_captionS()
 }
 
 d3.select("svg")

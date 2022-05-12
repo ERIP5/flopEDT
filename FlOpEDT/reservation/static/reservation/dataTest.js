@@ -110,6 +110,19 @@ let rooms = [
     "description": "une reservation pour tester l'affichage des réservations",
     "type": "type",
     "key":true
+},
+{
+    "id_booking" : 654321,
+    "responsible" : "Jeannot",
+    "room" : "414",
+    "room_type" : "M",
+    "day": "w",
+    "start" : 900,
+    "duration" : 100,
+    "title" : "BD",
+    "description": "une reservation pour tester l'affichage des réservations",
+    "type": "partiel",
+    "key":true
 }], 'th':[],'f':[]}},
   {"name": "G21", "display":false, "type":"A","y":0, "height":0, "projector":false, "computer":false,'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
   {"name": "G26", "display":false, "type":"A","y":0, "height":0, "projector":true, "computer":false,'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},

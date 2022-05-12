@@ -13,7 +13,7 @@ var compt_room_posy_T = 0
 var compt_text_posy_T = 0
 var compt_plusy_T = 0
 
-var nbId = 0
+var nbIdT = 0
 var nbCBcold = 1
 var nbCBhot = 2
 
@@ -293,35 +293,45 @@ function rmv_reservT() {
 *function color per courses/booking*
  *********************************/
 function colorT() {
-    nbCm = rooms_sort[nbId].courses["m"].length
-    nbCtu = rooms_sort[nbId].courses["tu"].length
-    nbCw = rooms_sort[nbId].courses["w"].length
-    nbCth = rooms_sort[nbId].courses["th"].length
-    nbCf = rooms_sort[nbId].courses["f"].length
+    nbCm = rooms_sort[nbIdT].courses["m"].length
+    nbCtu = rooms_sort[nbIdT].courses["tu"].length
+    nbCw = rooms_sort[nbIdT].courses["w"].length
+    nbCth = rooms_sort[nbIdT].courses["th"].length
+    nbCf = rooms_sort[nbIdT].courses["f"].length
     nbCtotal = nbCm + nbCtu + nbCw + nbCth + nbCf
 
-    nbBm = rooms_sort[nbId].booking["m"].length
-    nbBtu = rooms_sort[nbId].booking["tu"].length
-    nbBw = rooms_sort[nbId].booking["w"].length
-    nbBth = rooms_sort[nbId].booking["th"].length
-    nbBf = rooms_sort[nbId].booking["f"].length
+    nbBm = rooms_sort[nbIdT].booking["m"].length
+    nbBtu = rooms_sort[nbIdT].booking["tu"].length
+    nbBw = rooms_sort[nbIdT].booking["w"].length
+    nbBth = rooms_sort[nbIdT].booking["th"].length
+    nbBf = rooms_sort[nbIdT].booking["f"].length
     nbBtotal = nbBm + nbBtu + nbBw + nbBth + nbBf
 
     nbCBtotal = nbCtotal + nbBtotal
 
     if (nbCBtotal >= nbCBhot) {
-        nbId += 1
+        nbIdT += 1
         return "red"
     }
     if (nbCBtotal >= nbCBcold) {
-        nbId += 1
+        nbIdT += 1
         return "yellow"
     }
-    nbId += 1
+    nbIdT += 1
     return "green"
 }
 
+//same function as reservS
+function colorT_resType(course) {
+    if (course.type == "type") {
+        return "green"
+    }
+    if (course.type == "partiel") {
+        return "red"
+    }
 
+    return "grey"
+}
 
  /***************
 *function display*
@@ -509,7 +519,7 @@ for(room of rooms_sort)
                 .attr("y",res_y_T)
                 .attr("width",days_width_T)
                 .attr("height",res_height_T)
-                .attr("fill","grey")
+                .attr("fill",colorT_resType)
 
         c_res
             .append("text")
@@ -641,7 +651,7 @@ function clean() {
     compt_room_posy_T = 0
     compt_text_posy_T = 0
     compt_plusy_T = 0
-    nbId = 0
+    nbIdT = 0
     course = []
     couple_room_y = new Map();
     couple_textroom_y = new Map();
