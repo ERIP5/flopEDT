@@ -119,7 +119,7 @@ let rooms = [
     "day": "w",
     "start" : 900,
     "duration" : 100,
-    "title" : "Partiel BD",
+    "title" : "BD",
     "description": "une reservation pour tester l'affichage des réservations",
     "type": "partiel",
     "key":true

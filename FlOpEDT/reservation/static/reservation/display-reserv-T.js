@@ -321,6 +321,18 @@ function colorT() {
     return "green"
 }
 
+//same function as reservS
+function colorT_resType(course) {
+    if (course.type == "type") {
+        return "green"
+    }
+    if (course.type == "partiel") {
+        return "red"
+    }
+
+    return "grey"
+}
+
  /***************
 *function display*
  ***************/
@@ -507,7 +519,7 @@ for(room of rooms_sort)
                 .attr("y",res_y_T)
                 .attr("width",days_width_T)
                 .attr("height",res_height_T)
-                .attr("fill","grey")
+                .attr("fill",colorT_resType)
 
         c_res
             .append("text")

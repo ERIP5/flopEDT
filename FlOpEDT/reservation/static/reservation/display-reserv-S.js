@@ -348,6 +348,7 @@ function colorS() {
     }
 }
 
+//same function as reservS
 function colorS_resType(course) {
     if (course.type == "type") {
         return "green"
@@ -716,6 +717,26 @@ function display_captionS() {
         .selectAll("rect")
         .data(dateS)
         .enter()
+
+    c_capt
+        .append("rect")
+        .attr("class","rect_caption")
+        .attr("fill","none")
+        .attr("stroke","black")
+        .attr("stroke-width",2)
+        .attr("x",captionS_x)
+        .attr("y",captionS_y)
+        .attr("width",days_widthS)
+        .attr("height",100)
+
+    c_capt
+        .append("text")
+        .text("Caption's booking :")
+        .attr("class", "capt_text")
+        .attr("x", captionS_xText)
+        .attr("y", captionS_yText)
+        .attr("text-anchor", "middle")
+        .style("font-size", "25px")
 
     c_capt
         .append("rect")
