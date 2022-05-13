@@ -62,3 +62,8 @@ routerFetch.register(
     r'idroomtype', views.IDRoomTypeViewSet, basename="idroomtype")
 routerFetch.register(r'parameter', views.ParameterViewSet,
                      basename="parameter")
+
+routerFetch.register(r'rescourses', views.ResCoursesViewSet,
+                     basename="rescourses")
+routerFetch.register(r'resrooms', views.ResRoomViewSet,
+                     basename="resrooms")

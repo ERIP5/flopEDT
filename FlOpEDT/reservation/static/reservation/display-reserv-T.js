@@ -13,6 +13,10 @@ var compt_room_posy_T = 0
 var compt_text_posy_T = 0
 var compt_plusy_T = 0
 
+var nbIdT = 0
+var nbCBcold = 1
+var nbCBhot = 2
+
 var each_room_y_T = days_y_T()
 var y_room_act_T = days_y_T()
 var y_text_act_T = days_y_T()
@@ -32,7 +36,14 @@ var rooms_height = new Map();
 
 
 var date =[{}]
-var plus =[{}]
+
+var rooms_sort = []
+
+var f_room_type = "all";
+
+var room_projo = "all";
+
+var room_computer = "all";
 
 
 /**********************
@@ -165,7 +176,7 @@ function getresponsible(res){
 }
 
 function max(){
-for (room of rooms){
+for (room of rooms_sort){
      var taller = 0
      for (day of days){
         if(room.courses[day.ref].length + room.booking[day.ref].length> taller){
@@ -201,7 +212,7 @@ function cac_all_height(){
 var cpt = 0
     for (h of room_max_courses_T){
         all_room_height_T[cpt] = (res_height_T*h)+mini_add_button_height_T
-        rooms_height.set(rooms[cpt].name,(res_height_T*h)+mini_add_button_height_T)
+        rooms_height.set(rooms_sort[cpt].name,(res_height_T*h)+mini_add_button_height_T)
         cpt +=1
     }
 }
@@ -263,7 +274,7 @@ function rmv_roomT() {
 function rmv_each_roomT() {
     c_room_all
         .selectAll("rect_each_room")
-        .data(rooms)
+        .data(rooms_sort)
         .remove()
     c_room_gr
         .remove()
@@ -276,6 +287,50 @@ function rmv_reservT() {
     rmv_dateT()
     rmv_roomT()
     rmv_each_roomT()
+}
+
+ /*********************************
+*function color per courses/booking*
+ *********************************/
+function colorT() {
+    nbCm = rooms_sort[nbIdT].courses["m"].length
+    nbCtu = rooms_sort[nbIdT].courses["tu"].length
+    nbCw = rooms_sort[nbIdT].courses["w"].length
+    nbCth = rooms_sort[nbIdT].courses["th"].length
+    nbCf = rooms_sort[nbIdT].courses["f"].length
+    nbCtotal = nbCm + nbCtu + nbCw + nbCth + nbCf
+
+    nbBm = rooms_sort[nbIdT].booking["m"].length
+    nbBtu = rooms_sort[nbIdT].booking["tu"].length
+    nbBw = rooms_sort[nbIdT].booking["w"].length
+    nbBth = rooms_sort[nbIdT].booking["th"].length
+    nbBf = rooms_sort[nbIdT].booking["f"].length
+    nbBtotal = nbBm + nbBtu + nbBw + nbBth + nbBf
+
+    nbCBtotal = nbCtotal + nbBtotal
+
+    if (nbCBtotal >= nbCBhot) {
+        nbIdT += 1
+        return "red"
+    }
+    if (nbCBtotal >= nbCBcold) {
+        nbIdT += 1
+        return "yellow"
+    }
+    nbIdT += 1
+    return "green"
+}
+
+//same function as reservS
+function colorT_resType(course) {
+    if (course.type == "type") {
+        return "green"
+    }
+    if (course.type == "partiel") {
+        return "red"
+    }
+
+    return "grey"
 }
 
  /***************
@@ -325,7 +380,7 @@ compt_room_posy_T = 0
 compt_text_posy_T = 0
 c_room_all = d3.select(".room_lines")
   .selectAll("rect_each_room")
-  .data(rooms);
+  .data(rooms_sort);
 
 c_room_gr = c_room_all
     .enter()
@@ -345,15 +400,18 @@ c_room
   .attr("x",0)
   .attr("y", cac_room_y)
   .attr("width",room_width_T)
-  .attr("height",get_room_height);
+  .attr("height",get_room_height)
 
 c_room
   .append("text")
   .text(display_text_T)
   .attr("class","room_name")
+  .style("font-size", "25px")
+  .attr("fill",colorT)
   .attr("x",room_width_T/2)
   .attr("y", each_text_posy)
   .attr("text-anchor", "middle")
+  .on("click",change_room)
 
 
 for(element of days){
@@ -366,66 +424,70 @@ c_room_gr
 function display_courses(){
 c_all_courses = d3.select(".room_lines");
 
-for(room of rooms)
-{
-    c_all_courses_day = c_all_courses
-        .select("."+room_class(room))
+    for(room of rooms_sort)
+    {
+        c_all_courses_day = c_all_courses
+            .select("."+room_class(room))
 
-            for(day of days){
-            c_course_res_g = c_all_courses_day
-                .select("."+day.name)
-                .selectAll("test")
-                .data(room.courses[day.ref])
-                .enter();
+                for(day of days){
+                c_course_res_g = c_all_courses_day
+                    .select("."+day.name)
+                    .selectAll("test")
+                    .data(room.courses[day.ref])
+                    .enter()
+                    .append("g")
+                    .attr("class","course")
+                    .attr("id",room.name + day.ref)
+                    .on("dblclick", go_popup_course)
 
 
-            c_course_res = c_course_res_g
-                .append("g")
-                .attr("class",getcourses)
+                c_course_res = c_course_res_g
+                    .append("g")
+                    .attr("class",getcourses)
 
 
-            c_course_res
-                .append("rect")
-                .attr("class","display_courses_frame")
-                .attr("stroke","black")
-                .attr("stroke-width",2)
-                .attr("x",courseT_x)
-                .attr("y",courseT_y)
-                .attr("width",days_width_T)
-                .attr("height",res_height_T)
-                .attr("fill",color_courses)
+                c_course_res
+                    .append("rect")
+                    .attr("class","display_courses_frame")
+                    .attr("stroke","black")
+                    .attr("stroke-width",2)
+                    .attr("x",courseT_x)
+                    .attr("y",courseT_y)
+                    .attr("width",days_width_T)
+                    .attr("height",res_height_T)
+                    .attr("fill",color_courses)
 
-            c_course_res
-                .append("text")
-                .attr("class", "display_courses_text_mod")
-                .text(get_course_name)
-                .attr("x", res_text_x)
-                .attr("y", course_text_roomy)
-                .attr("text-anchor", "middle")
+                c_course_res
+                    .append("text")
+                    .attr("class", "display_courses_text_mod")
+                    .text(get_course_name)
+                    .attr("x", res_text_x)
+                    .attr("y", course_text_roomy)
+                    .attr("text-anchor", "middle")
 
-            c_course_res
-                .append("text")
-                .attr("class", "display_courses_text_date")
-                .text(text_heure_res)
-                .attr("x", res_text_x)
-                .attr("y", course_text_daty)
-                .attr("text-anchor", "middle")
+                c_course_res
+                    .append("text")
+                    .attr("class", "display_courses_text_date")
+                    .text(text_heure_res)
+                    .attr("x", res_text_x)
+                    .attr("y", course_text_daty)
+                    .attr("text-anchor", "middle")
 
-            c_course_res
-                .append("text")
-                .attr("class", "display_courses_text_prof")
-                .text(get_course_profg)
-                .attr("x", res_text_x)
-                .attr("y", course_text_profy)
-                .attr("text-anchor", "middle")
-        }
-}
+                c_course_res
+                    .append("text")
+                    .attr("class", "display_courses_text_prof")
+                    .text(get_course_profg)
+                    .attr("x", res_text_x)
+                    .attr("y", course_text_profy)
+                    .attr("text-anchor", "middle")
+            }
+    }
 }
 
 function display_reservation(){
 c_all_reservations = d3.select(".room_lines");
 
-for(room of rooms)
+for(room of rooms_sort)
 {
     c_all_reservations_day = c_all_reservations
         .select("."+room_class(room))
@@ -437,7 +499,12 @@ for(room of rooms)
                 .select("."+day.name)
                 .selectAll("test")
                 .data(room.booking[day.ref])
-                .enter();
+                .enter()
+                .append("g")
+                .attr("class","plus")
+                .attr("id",room.name + day.ref)
+                .on("dblclick", go_popup_res)
+
 
         c_res = c_res_g
                 .append("g")
@@ -452,7 +519,7 @@ for(room of rooms)
                 .attr("y",res_y_T)
                 .attr("width",days_width_T)
                 .attr("height",res_height_T)
-                .attr("fill","grey")
+                .attr("fill",colorT_resType)
 
         c_res
             .append("text")
@@ -484,22 +551,21 @@ for(room of rooms)
 
 function display_plus(){
 c_all_rooms = d3.select(".room_lines")
-for (room of rooms){
+for (room of rooms_sort){
     c_one_room = c_all_rooms
         .select(".Room"+room.name)
         for (day of days){
             c_plus = c_one_room
                 .select("."+day.name)
                 .selectAll("plus")
-                .data(plus)
+                .data([{"room":room,"day":day}])
                 .enter()
                 .append("g")
                 .attr("class","plus")
                 .attr("id",room.name + day.ref)
+                .on("click", go_popup)
 
             //pour afficher le bouton
-
-
             c_plus
                 .append("circle")
                 .attr("class","display_plus_circle")
@@ -550,43 +616,30 @@ for (room of rooms){
 
 
 
-
-
-
-
-function myFunction(el){
-    console.log("test")
+function change_room(room){
+    hidefilters()
+    rmv_total()
+    rmvStatut = 2
+    current_room = room.name
+    document.getElementById("selectRoom").value = current_room
+    mainS()
 }
 
-function add_listener(){
-var test = document.querySelectorAll(".plus")
-    //console.log(test)
-for (el of test){
-    el.addEventListener("click", function() {
-  myFunction(el);
-});
-    //console.log(el)
-
-}
+function go_popup(ele)
+{
+    //console.log(ele.room.name)
+    window.location.href = "http://localhost:8000/fr/reservation/INFO/addRes"
 }
 
-
-function ourFunction(ml) {
-    console.log("salsa")
+function go_popup_course(courT)
+{
+    console.log(courT.room + " " + courT.day)
 }
 
-
-function room_listener() {
-    var room_lis = document.querySelectorAll(".salles")
-    //console.log(room_lis)
-    for (ml of room_lis) {
-        ml.addEventListener("click", function() {
-            ourFunction(ml)
-        });
-        console.log("ml")
-    }
+function go_popup_res(resT)
+{
+    console.log(resT.responsible + resT.type + resT.title + resT.description + resT.key + resT.id_booking + resT.start + resT.duration + resT.room)
 }
-
 
 function clean() {
     each_room_y_T = days_y_T()
@@ -598,6 +651,7 @@ function clean() {
     compt_room_posy_T = 0
     compt_text_posy_T = 0
     compt_plusy_T = 0
+    nbIdT = 0
     course = []
     couple_room_y = new Map();
     couple_textroom_y = new Map();
@@ -605,15 +659,85 @@ function clean() {
     current_room = "all"
 }
 
+/*******************
+*gestion des filtres
+*******************/
+function sortRoom()
+{
+rooms_sort = allRoom
 
+    rooms_sort = sortType(rooms_sort)
+    rooms_sort = sortProjector(rooms_sort)
+    rooms_sort = sortComputer(rooms_sort)
+
+
+}
+
+function sortType(oldList)
+{
+newL = []
+for (room of oldList)
+{
+    if(f_room_type != "all"){
+        if(room.type == f_room_type)
+        {
+            newL.push(room)
+        }
+    }
+    else
+    {
+    newL = oldList
+    }
+}
+ return newL
+}
+
+function sortProjector(oldList)
+{
+newL = []
+for (room of oldList)
+{
+    if(room_projo != "all"){
+        if((""+room.projector+"") == room_projo)
+            {
+                newL.push(room)
+            }
+    }
+    else
+    {
+    newL = oldList
+    }
+}
+ return newL
+}
+
+function sortComputer(oldList)
+{
+newL = []
+for (room of oldList)
+{
+    if(room_computer != "all"){
+        if((""+room.computer+"") == room_computer)
+            {
+                newL.push(room)
+            }
+    }
+    else
+    {
+    newL = oldList
+    }
+}
+ return newL
+}
 /***********
 *gestion svg
 ***********/
 
-
 function mainT() {
     clean();
-    //console.log("mainT")
+
+    sortRoom();
+
     //filling in the table room_max_courses_T which calculates, for each room, the day with the most lessons
     max();
     //function that populates the all_room_height_T using room_max_courses_T and adding the size of the plus button
@@ -628,10 +752,7 @@ function mainT() {
     display_reservation();
     //for each days and each room, add all plus buttons
     display_plus();
-    //add action listener for each button
-    add_listener();
-    room_listener()
     d3.select("svg")
      .attr("width", window.innerWidth -20)
-     .attr("height", 2000)
+     .attr("height", 40000)
 }

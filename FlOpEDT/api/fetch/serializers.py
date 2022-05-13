@@ -125,6 +125,12 @@ class ScheduledCoursesSerializer(serializers.Serializer):
         fields = ['id', 'tutor', 'room', 'start_time', 'day', 'course', 'id_visio']
 
 
+class ReservationCoursesSerializer(serializers.Serializer):
+    # Spécification des champes voulus pour afficher les réservations
+    id = serializers.IntegerField()
+
+
+
 
 class ModuleCosmo_SC_Serializer(serializers.Serializer):
     name = serializers.CharField()
@@ -536,3 +542,60 @@ class IDRoomTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = bm.RoomType
         fields = ['id', 'name']
+
+class ResRoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bm.Room
+        fields = ['id', 'name','types', 'is_basic']
+
+class CourseResTypeSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    duration = serializers.IntegerField()
+    department = DepartmentAbbrevSerializer()
+    class Meta:
+        model = bm.CourseType
+        fields = ['name','duration', 'department']
+
+
+
+class Course_SC_Type_Serializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    type = CourseResTypeSerializer()
+    room_type = serializers.CharField()
+    week = serializers.SerializerMethodField()
+    year = serializers.SerializerMethodField()
+    groups = Group_SC_Serializer(many=True)
+    tutor = Tutor_Serializer()
+    supp_tutor = Tutor_Serializer(many=True)
+    module = Module_SC_Serializer()
+    is_graded = serializers.BooleanField()
+
+    def get_week(self, obj):
+        if(obj.week is not None):
+            return (obj.week.nb)
+        else:
+            return
+
+    def get_year(self, obj):
+        if(obj.week is not None):
+            return (obj.week.year)
+        else:
+            return
+
+
+    class Meta:
+        model = bm.Course
+        fields = ['id', 'type', 'room_type', 'week', 'year', 'module', 'groups', 'tutor',
+                  'is_graded', 'supp_tutor']
+
+class ResCourseSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField();
+    room = serializers.CharField(allow_null=True)
+    start_time = serializers.IntegerField()
+    day = serializers.CharField()
+    course = Course_SC_Type_Serializer()
+
+    class Meta:
+        model = bm.ScheduledCourse
+        fields = ['id','room','start_time','day','course']
+
