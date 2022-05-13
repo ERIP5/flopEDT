@@ -436,7 +436,7 @@ c_all_courses = d3.select(".room_lines");
                     .data(room.courses[day.ref])
                     .enter()
                     .append("g")
-                    .attr("class","plus")
+                    .attr("class","course")
                     .attr("id",room.name + day.ref)
                     .on("dblclick", go_popup_course)
 
@@ -749,7 +749,7 @@ function mainT() {
     //for each days and each room, add a group for each course and display each course information's
     display_courses();
     //for each days and each room, add a group for each reservation and display each reservation information's
-    //display_reservation();
+    display_reservation();
     //for each days and each room, add all plus buttons
     display_plus();
     d3.select("svg")
