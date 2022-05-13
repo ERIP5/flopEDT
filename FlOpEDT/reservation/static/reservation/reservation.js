@@ -29,6 +29,8 @@ $.ajax({
       show_loader(false);
     }
   });
+
+  allBasic();
 }
 
 function getCourses()
@@ -111,6 +113,21 @@ function addCourse(room)
         if(room.name == course.room)
         {
             room.courses[course.day].push(course)
+        }
+    }
+}
+
+function allBasic()
+{
+    for (room of allRoom)
+    {
+        if (room.is_basic == false)
+        {
+            var remove = allRoom.indexOf(room)
+            if (remove != -1)
+            {
+                allRoom.splice(remove)
+            }
         }
     }
 }
