@@ -2,10 +2,12 @@ var allRoom = [];
 var roomCourse = []
 var allObjectCourses = []
 var test = []
+var alltype = []
 
 show_loader(true);
 getRooms();
 getCourses();
+//getTypes();
 putCourseRoom();
 show_loader(false);
 
@@ -57,6 +59,27 @@ $.ajax({
     }
   });
 }
+
+function getTypes()
+{
+$.ajax({
+    type: "GET", //rest Type
+    dataType: 'text',
+    url: url_room_types,
+    async: false,
+    contentType: "application/json",
+    success: function (msg) {
+      alltype = JSON.parse(msg)
+    },
+    error: function (xhr, error) {
+      console.log("error");
+      console.log(xhr);
+      console.log(error);
+      console.log(xhr.responseText);
+      show_loader(false);
+    }
+  });
+}
 function listDays()
 {
     for (day of days)
@@ -91,7 +114,16 @@ function organizeCourse(course)
     newCourse.graded = course.course.is_graded
     newCourse.color_bg = course.course.module.display.color_bg
     newCourse.color_txt = course.course.module.display.color_txt
-    newCourse.tutor = course.course.tutor.username
+    if (course.course.tutor != null)
+    {
+        newCourse.tutor = course.course.tutor.username
+
+    }
+    else
+    {
+        newCourse.tutor = "no tutor"
+
+    }
     newCourse.supp_tutors = course.course.supp_tutor
     newCourse.group = []
     for (group of course.course.groups)
