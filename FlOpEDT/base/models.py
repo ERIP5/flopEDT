@@ -374,6 +374,7 @@ class Room(models.Model):
                                         blank=True,
                                         related_name="subrooms")
     departments = models.ManyToManyField(Department)
+    attributes = models.ManyToManyField('reservation.RoomAttribute')
 
     @property
     def is_basic(self):

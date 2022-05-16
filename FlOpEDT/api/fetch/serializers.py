@@ -556,6 +556,8 @@ class CourseResTypeSerializer(serializers.Serializer):
         model = bm.CourseType
         fields = ['name','duration', 'department']
 
+
+
 class Course_SC_Type_Serializer(serializers.Serializer):
     id = serializers.IntegerField()
     type = CourseResTypeSerializer()
@@ -596,3 +598,4 @@ class ResCourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = bm.ScheduledCourse
         fields = ['id','room','start_time','day','course']
+

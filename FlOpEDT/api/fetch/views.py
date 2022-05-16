@@ -179,7 +179,7 @@ class ScheduledCoursesViewSet(viewsets.ReadOnlyModelViewSet):
             elif self.request.query_params.get('group', None):
                 dept = self.groups[0].train_prog.department
             else:
-                dept = bm.Department.objects.first()
+                dept = list(self.groups)[0].train_prog.department
         if dept.mode.cosmo:
             return serializers.ScheduledCoursesCosmoSerializer
         else:

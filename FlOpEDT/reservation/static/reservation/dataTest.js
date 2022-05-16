@@ -26,7 +26,7 @@ let rooms = [
     "duration": 85,
     "room": "B112",
     "room_type": "M",
-    "display": true,
+    "display": true, // voir models, ya pas
     "id_visio": -1,
     "graded": false,
     "color_bg": "#ec4dd8",
@@ -35,7 +35,7 @@ let rooms = [
     "supp_tutors" : [],
     "group": "4B",
     "promo": 0,
-    "from_transversal": null
+    "from_transversal": null // voir models
   }],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
   {"name": "E002", "display":true, "type":"A","y":0, "height":0, "projector":true,"computer":false,'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},
   {"name": "414", "display":true, "type":"A","y":0, "height":0, "projector":false,"computer":true,'courses':{'m':[],'tu':[],'w':[{
