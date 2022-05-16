@@ -1,31 +1,43 @@
 /**********************
-*Définition des variables*
+    *Initialisation*
 **********************/
-var largeurWindowS = window.innerWidth -40;
 
-var days_widthS = (largeurWindow*0.9)/5
+var window_widthS = window.innerWidth -40;
 
+// width of a day
+var days_widthS = (window_widthS*0.9)/5
+
+//-- date --//
+// height of the date rectangle
 var date_heightS = 50
+// margin of the date from the top
 var date_margin_topS = 20
 
-var scale_width_Total = largeurWindowS - (days_width_T*5)
-var scale_width = (largeurWindowS - (days_width_T*5))*0.6
-var scale_margin = (largeurWindowS - (days_width_T*5))*0.4
+//-- scale --//
+var scale_width_Total = window_widthS - (days_width_T*5)
+var scale_width = (window_widthS - (days_width_T*5))*0.6
+var scale_margin = (window_widthS - (days_width_T*5))*0.4
 var scale_x = 100
 
+// start of the day in minutes
 var scale_start_time = 8*60//480
+// end of the day in minutes
 var scale_end_time_day = 18*60+45 //1125
 
+//-- add --//
 var addS_val = 80
 
-var nbCBcoldS = 1
-var nbCBhotS = 2
+//-- color per courses/booking --//
+// when the number of course/booking is acceptable
+var nbCBcoldS = 3
+// when there is too much course/booking
+var nbCBhotS = 4
 
 
 // cpt not defined reset in cleanS
 each_hour_yS = days_yS()
 var scale_current_hour = scale_day_start_hour()
-planB1 = 0
+var planB1 = 0
 var nbIdS_test = 0
 var nbSday = 1
 var captNb = 0
@@ -34,7 +46,7 @@ var dateS =[{}]
 var scaleS =[{}]
 
 /**********************
-*gestion des variables*
+*variable's management*
 **********************/
 
 //-- date --//
@@ -112,7 +124,7 @@ function display_scale_end_time_day() {
     return scale_end_time_day_hour_concat()
 }
 
-function scale_each_time_soixante() {
+function scale_each_time_sixty() {
     var y = each_hour_yS;
     if (y == 70) {
         each_hour_yS += ((scale_start_time+60)-scale_start_time-scale_start_time%60);
@@ -128,9 +140,9 @@ function scale_textx_S()
 }
 
 //-- course --//
-function course_xS(course){
-    for (element of days){
-        if (element["ref"] ==  course["day"]){
+function course_xS(course) {
+    for (element of days) {
+        if (element["ref"] ==  course["day"]) {
             return days_widthS*element["num"]+ scale_width_Total
         }
     }
@@ -197,54 +209,54 @@ function double_popform_res(res) {
      *Text*
  ***************/
 
-function get_courseS_name2(course){
+function get_courseS_name2(course) {
     return course.mod
 }
 
-function get_courseS_title(res){
+function get_courseS_title(res) {
     return res.title
 }
 
-function get_courseS_name(course){
+function get_courseS_name(course) {
     return (course.department+ " : "+ course.mod)
 }
 
-function get_courseS_hour(course){
+function get_courseS_hour(course) {
     return (get_time(course.start)+" - "+get_time(course.start+course.duration))
 }
 
-function get_timeS(val){
+function get_timeS(val) {
     var tostring = Math.floor(val/60)+"h"+(val%60)
     return tostring
 }
 
-function get_courseS_tutor(course){
+function get_courseS_tutor(course) {
     return "Tutor : "+course.tutor
 }
 
-function get_courseS_responsible(course){
+function get_courseS_responsible(course) {
     return "responsible : "+course.responsible
 }
 
-function res_textS_x(course){
+function res_textS_x(course) {
     for (day of days)
     {
-        if (day.ref == course.day){
+        if (day.ref == course.day) {
         return day.num*days_width_T+room_width_T+(days_width_T/2)
         }
     }
     return room_width_T+(days_width_T/2)
 }
 
-function res_textS_y(course){
+function res_textS_y(course) {
     return course_yS(course)+course.duration/4
 }
 
-function res_textS_hour_y(course){
+function res_textS_hour_y(course) {
     return course_yS(course)+course.duration/2
 }
 
-function res_textS_tutor_y(course){
+function res_textS_tutor_y(course) {
     return course_yS(course)+course.duration*0.75
 }
 
@@ -252,7 +264,7 @@ function res_textS_tutor_y(course){
 *function color per courses/booking*
  *********************************/
 function colorS_choiceRoom() {
-    for (nbIdS_test; nbIdS_test < allRoom.length; nbIdS_test++){
+    for (nbIdS_test; nbIdS_test < allRoom.length; nbIdS_test++) {
         if (allRoom[nbIdS_test].name == current_room) {
             nbIdS = nbIdS_test
             return nbIdS
@@ -355,9 +367,9 @@ function colorS_resType(course) {
     if (course.type == "partiel") {
         return "red"
     }
-
     return "grey"
 }
+
 /***************
 *function caption*
  ***************/
@@ -450,7 +462,7 @@ function rmv_reservS() {
  ***************/
 
 // display the days
-function display_dateS(){
+function display_dateS() {
     c_dateS = d3.select(".dateS")
         .selectAll("rect")
         .data(dateS)
@@ -467,7 +479,7 @@ function display_dateS(){
 }
 
 // display the grid
-function display_gridS(){
+function display_gridS() {
     c_gridallS = d3.select(".grilleS")
         .selectAll("rect_grid")
         .data(days)
@@ -491,7 +503,7 @@ function display_gridS(){
   }
 
 // display the schedule with the hours
-function display_scaleS(){
+function display_scaleS() {
     c_scale = d3.select(".scaleS")
         .selectAll("rect")
         .data(scaleS)
@@ -514,7 +526,7 @@ function display_scaleS(){
         .append("text")
         .text("")
         .attr("x",scale_textx_S)
-        .attr("y", scale_each_time_soixante())
+        .attr("y", scale_each_time_sixty())
         .attr("text-anchor", "middle")
 
     // display the first whole hour after the start hour
@@ -523,28 +535,28 @@ function display_scaleS(){
         .text(scale_day_start_hour_concat())
         .attr("class","display_hour_first")
         .attr("x",scale_textx_S)
-        .attr("y", scale_each_time_soixante())
+        .attr("y", scale_each_time_sixty())
         .attr("text-anchor", "middle")
 
     // add each hour until the end of the day
-    for (hh = scale_current_hour+1; hh<scale_end_time_day_hour()+1; hh++){
+    for (hh = scale_current_hour+1; hh<scale_end_time_day_hour()+1; hh++) {
         c_scale
             .append("text")
             .text(scale_current_hour_concat)
             .attr("class","display_hour")
             .attr("x",scale_textx_S)
-            .attr("y", scale_each_time_soixante())
+            .attr("y", scale_each_time_sixty())
             .attr("text-anchor", "middle")
     }
 }
 
 // display the courses
-function display_coursesS(){
+function display_coursesS() {
 
     c_courses_day = d3.select(".grilleS");
-    for(room of allRoom){
-        if(room.name == current_room){
-            for (day of days){
+    for(room of allRoom) {
+        if(room.name == current_room) {
+            for (day of days) {
                 c_course = c_courses_day
                     .select("."+day.name)
                     .selectAll("course")
@@ -600,9 +612,9 @@ function display_coursesS(){
 // display the reservation
 function display_reservationS() {
     c_reservation_day = d3.select(".grilleS");
-        for(room of allRoom){
-            if(room.name == current_room){
-                for (day of days){
+        for(room of allRoom) {
+            if(room.name == current_room) {
+                for (day of days) {
                     c_reservation = c_reservation_day
                         .select("."+day.name)
                         .selectAll("booking")
@@ -799,8 +811,8 @@ function mainS() {
     display_addS()
     // display the caption for the booking
     display_captionS()
-}
 
-d3.select("svg")
+    d3.select("svg")
     .attr("height", 1600)
     .attr("width", 1600)
+}

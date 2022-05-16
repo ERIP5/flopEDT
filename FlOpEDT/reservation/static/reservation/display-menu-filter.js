@@ -4,107 +4,91 @@
 
 nb_filter = 0;
 
-
 /****************
 *****Selects*****
 ****************/
 
-function displayMenutext(id, text)
-{
-var select = document.getElementById(id);
-var CreateText = document.createElement("p")
-CreateText.innerText = text
-select.appendChild(CreateText)
+function displayMenutext(id, text) {
+    var select = document.getElementById(id);
+    var CreateText = document.createElement("p")
+    CreateText.innerText = text
+    select.appendChild(CreateText)
 }
 
-function displaySelectRoom(){
-
-select = document.getElementById("selectRoom");
-
-for (var i = 0; i < allRoom.length; i++) {
-  var textC = allRoom[i].name;
-  CreateElem = document.createElement("option");
-  CreateElem.textContent = textC;
-  CreateElem.value = textC;
-  select.appendChild(CreateElem);
-}
-
-}
-
-
-
-function displayAllFilters(){
-
-select = document.getElementById("selectfilter");
-for (fil of filtersList) {
-  CreateElem = document.createElement("option");
-  CreateElem.textContent = fil;
-  CreateElem.value = fil;
-  select.appendChild(CreateElem);
-}
-}
-
-
-function hidefilters()
-{
-var element = document.getElementById("filters").style.display = "none";
-}
-
-function showfilters()
-{
-var element = document.getElementById("filters").style.display = "block";
-}
-
-
-function addFilter(filtre)
-{
-    if(filtre.value != "---"){
-    select = document.getElementById("filterAct")
-    elemg = document.createElement("g")
-    elemg.id= filtre.value
-    select.appendChild(elemg)
-
-    elemp = document.createElement("p")
-    elemp.innerText = "filtre : " + filtre.value
-    elemg.appendChild(elemp)
-
-    generateSelect(elemg, filtre.value)
-
-    removeAddFilterOption("remove", filtre)
-
-    document.getElementById("selectfilter").selectedIndex = 0;
-
+function displaySelectRoom() {
+    select = document.getElementById("selectRoom");
+    for (var i = 0; i < allRoom.length; i++) {
+        var textC = allRoom[i].name;
+        CreateElem = document.createElement("option");
+        CreateElem.textContent = textC;
+        CreateElem.value = textC;
+        select.appendChild(CreateElem);
     }
 }
 
-function removeAddFilterOption(adr, object)
-{
-    if(adr == "add")
-    {
-    var textC = object.parentNode.id;
+
+
+function displayAllFilters() {
+    select = document.getElementById("selectfilter");
+    for (fil of filtersList) {
+        CreateElem = document.createElement("option");
+        CreateElem.textContent = fil;
+        CreateElem.value = fil;
+        select.appendChild(CreateElem);
+    }
+}
+
+
+function hidefilters() {
+    var element = document.getElementById("filters").style.display = "none";
+}
+
+function showfilters() {
+    var element = document.getElementById("filters").style.display = "block";
+}
+
+
+function addFilter(filtre) {
+    if(filtre.value != "---") {
+        select = document.getElementById("filterAct")
+        elemg = document.createElement("g")
+        elemg.id= filtre.value
+        select.appendChild(elemg)
+
+        elemp = document.createElement("p")
+        elemp.innerText = "filtre : " + filtre.value
+        elemg.appendChild(elemp)
+
+        generateSelect(elemg, filtre.value)
+
+        removeAddFilterOption("remove", filtre)
+
+        document.getElementById("selectfilter").selectedIndex = 0;
+    }
+}
+
+function removeAddFilterOption(adr, object) {
+    if(adr == "add") {
+        var textC = object.parentNode.id;
         CreateElem = document.createElement("option");
         CreateElem.textContent = textC;
         CreateElem.value = textC;
         document.getElementById('selectfilter').appendChild(CreateElem);
     }
 
-    if(adr == "remove")
-    {
-        for (i = 0; i<object.length; i++)
-        {
-            if(object[i].value == object.value)
-            {
-            object.remove(i)
+    if(adr == "remove") {
+        for (i = 0; i<object.length; i++) {
+            if(object[i].value == object.value) {
+                object.remove(i)
             }
         }
     }
 }
 
-function generateSelect(parent, dataName)
-{
+function generateSelect(parent, dataName) {
     switch (dataName) {
-        case "type" :
 
+        case "type" :
             elemp = document.createElement("p")
             elemp.innerText = "Choisir un type de salle : "
             parent.appendChild(elemp)
@@ -119,13 +103,14 @@ function generateSelect(parent, dataName)
                 elemO.textContent = "all"
                 elemS.appendChild(elemO)
 
-            for (el of typeRoom){
+            for (el of typeRoom) {
                 elemO = document.createElement("option")
                 elemO.value = el
                 elemO.textContent = el
                 elemS.appendChild(elemO)
             }
             break;
+
         case "projector" :
             elemp = document.createElement("p")
             elemp.innerText = "Salle avec projecteur ? "
@@ -141,7 +126,7 @@ function generateSelect(parent, dataName)
                 elemO.textContent = "all"
                 elemS.appendChild(elemO)
 
-            for (el of truefalse){
+            for (el of truefalse) {
                 elemO = document.createElement("option")
                 elemO.ngValue = el
                 elemO.textContent = el
@@ -149,7 +134,7 @@ function generateSelect(parent, dataName)
             }
             break;
 
-            case "computer" :
+        case "computer" :
             elemp = document.createElement("p")
             elemp.innerText = "Salle avec ordinateur ? "
             parent.appendChild(elemp)
@@ -160,11 +145,11 @@ function generateSelect(parent, dataName)
             parent.appendChild(elemS)
 
             elemO = document.createElement("option")
-                elemO.value = "all"
-                elemO.textContent = "all"
-                elemS.appendChild(elemO)
+            elemO.value = "all"
+            elemO.textContent = "all"
+            elemS.appendChild(elemO)
 
-            for (el of truefalse){
+            for (el of truefalse) {
                 elemO = document.createElement("option")
                 elemO.ngValue = el
                 elemO.textContent = el
@@ -172,12 +157,10 @@ function generateSelect(parent, dataName)
             }
             break;
     }
-
     buttonSuppr(parent)
 }
 
-function buttonSuppr(parent)
-{
+function buttonSuppr(parent) {
     elemp = document.createElement("input")
     elemp.type = "button"
     elemp.value = "supprimer filtre"
@@ -187,8 +170,7 @@ function buttonSuppr(parent)
     parent.appendChild(elemp)
 }
 
-function supprFilter(supr)
-{
+function supprFilter(supr) {
     parent = supr.explicitOriginalTarget.parentNode
     switch (parent.id) {
         case "type" :
@@ -218,7 +200,6 @@ function rmv_total() {
 
     if (rmvStatut == 2) {
          rmv_reservS()
-
     }
 }
 
@@ -244,35 +225,36 @@ function liste(room) {
     }
 }
 
-function changeRoomType(){
+function changeRoomType() {
     f_room_type = document.getElementById("selectType").value;
     rmv_total();
     mainT();
 }
 
-function changeRoomProjo(){
+function changeRoomProjo() {
     room_projo = document.getElementById("selectProjo").value;
     rmv_total();
     mainT();
 }
 
-function changeRoomComputer(){
+function changeRoomComputer() {
     room_computer = document.getElementById("selectComputer").value;
     console.log(room_computer)
     rmv_total();
     mainT();
 }
 
-function displayFilters(){
+function displayFilters() {
         displaySelectRoom()
         displayAllFilters()
 }
 
-function mainMenu(){
+function mainMenu() {
     rmvStatut = 1
     valFilter = "aucun"
     displayFilters()
     mainT()
 }
 
+// execute the main
 mainMenu()
