@@ -5,7 +5,8 @@ from django import forms
 from django.shortcuts import render
 from django.template.response import TemplateResponse
 
-from reservation.models import Reservation, Reservation_periode
+from reservation.models import *
+
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -16,25 +17,32 @@ class TimeInput(forms.TimeInput):
 class ReservationForm(ModelForm):
     class Meta:
         model = Reservation
-        fields = ('responsible','reservation_type','title','description','key','reservation_date','start','duration','room',)
+        fields = "__all__"
         widgets = {
             'reservation_date': DateInput(),
             'start': TimeInput(),
             'duration': TimeInput(),
+            'Period_choice': forms.RadioSelect(choices=period_choice),
+            'ed_period': DateInput()
+
         }
         labels = {
-            'responsible': "Choisir un responsable",
-            'title': "description breve de la réservation",
-            'description' : "Description de",
+            'responsible': "Responsible's name",
+            'title': "Title of reservation",
+            'description': "Description",
+            'key': "Borrowed key",
+            'courriel': "Send confirmation courriel",
+            'periodicity': "Add periodicity to the reservation",
+            'ed_period': "End of the periodicity"
         }
 
 class ReservationPeriodForm(ModelForm):
     class Meta:
         model = Reservation_periode
-        fields = ('period_type','start','ending',)
+        fields = "__all__"
         widgets = {
             'start': DateInput(),
-            'ending': DateInput(),
+            'ending': DateInput()
         }
 
 
