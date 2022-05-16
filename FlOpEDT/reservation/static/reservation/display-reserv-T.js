@@ -11,8 +11,8 @@ var date_width_T = days_width_T*5
 var date_height_T = 50
 var date_margtop_T = 20
 
-var nbCBcold = 2
-var nbCBhot = 4
+var nbCBcold = 3*5
+var nbCBhot = 5*5
 
 var each_room_y_T = days_y_T()
 
@@ -229,11 +229,8 @@ function get_course_profg(course) {
 }
 
 function add_button_height(room, day) {
-
-var  height = (rooms_height.get(room.name)+ couple_room_y.get(room.name + day.ref+"base")) - couple_room_y.get(room.name + day.ref)
-
-return height
-
+    var  height = (rooms_height.get(room.name)+ couple_room_y.get(room.name + day.ref+"base")) - couple_room_y.get(room.name + day.ref)
+    return height
 }
 
 function circle_add_posy(room, day) {
