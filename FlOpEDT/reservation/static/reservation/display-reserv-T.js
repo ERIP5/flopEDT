@@ -664,7 +664,7 @@ function clean() {
 *******************/
 function sortRoom()
 {
-rooms_sort = rooms
+rooms_sort = allRoom
 
     rooms_sort = sortType(rooms_sort)
     rooms_sort = sortProjector(rooms_sort)
@@ -749,10 +749,10 @@ function mainT() {
     //for each days and each room, add a group for each course and display each course information's
     display_courses();
     //for each days and each room, add a group for each reservation and display each reservation information's
-    display_reservation();
+    //display_reservation();
     //for each days and each room, add all plus buttons
     display_plus();
     d3.select("svg")
      .attr("width", window.innerWidth -20)
-     .attr("height", 2000)
+     .attr("height", 20000)
 }

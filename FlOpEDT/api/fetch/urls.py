@@ -63,7 +63,7 @@ routerFetch.register(
 routerFetch.register(r'parameter', views.ParameterViewSet,
                      basename="parameter")
 
-routerFetch.register(r'rescourses', views.ReservationViewSet,
+routerFetch.register(r'rescourses', views.ResCoursesViewSet,
                      basename="rescourses")
 routerFetch.register(r'resrooms', views.ResRoomViewSet,
                      basename="resrooms")
