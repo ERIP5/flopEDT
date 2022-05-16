@@ -28,7 +28,7 @@ var scale_end_time_day = 18*60+45 //1125
 var addS_val = 80
 
 //-- color per courses/booking --//
-// when the number of course/booking is acceptable
+// when the number of course/booking is still acceptable
 var nbCBcoldS = 3
 // when there is too much course/booking
 var nbCBhotS = 4
