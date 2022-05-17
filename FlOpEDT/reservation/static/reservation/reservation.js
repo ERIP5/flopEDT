@@ -9,6 +9,7 @@ getRooms();
 getCourses();
 //getTypes();
 putCourseRoom();
+sortAllCourses();
 show_loader(false);
 
 function getRooms(){
@@ -121,7 +122,7 @@ function organizeCourse(course)
     }
     else
     {
-        newCourse.tutor = "no tutor"
+        newCourse.tutor = ""
 
     }
     newCourse.supp_tutors = course.course.supp_tutor
@@ -160,6 +161,22 @@ function allBasic()
             {
                 allRoom.splice(remove)
             }
+        }
+    }
+}
+
+function sortAllCourses()
+{
+for (room of allRoom){
+        for(day of days){
+        room.courses[day.ref].sort(function compare(a, b)
+            {
+                if (a.start < b.start)
+                    return -1;
+                if (a.start > b.start )
+                    return 1;
+                return 0;
+            });
         }
     }
 }

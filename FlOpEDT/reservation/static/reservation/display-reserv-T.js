@@ -24,9 +24,9 @@ var y_text_act_T = days_y_T()
 var room_max_courses_T = []
 var all_room_height_T = []
 
-var mini_add_button_height_T = 80
+var mini_add_button_height_T = 40
 
-var res_height_T = 130
+var res_height_T = 70
 
 var course = []
 
@@ -231,7 +231,7 @@ function get_course_name(course){
 }
 
 function get_course_profg(course){
-    return "Tutor : "+course.tutor
+    return course.tutor
 }
 
 function add_button_height(room, day){
