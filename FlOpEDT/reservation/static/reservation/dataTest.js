@@ -109,6 +109,8 @@ let rooms = [
     "title" : "réunion",
     "description": "une reservation pour tester l'affichage des réservations",
     "type": "type",
+    "color_bg": "#99cccc",
+    "color_txt": "#000000",
     "key":true
 },
 {
@@ -122,6 +124,8 @@ let rooms = [
     "title" : "BD",
     "description": "une reservation pour tester l'affichage des réservations",
     "type": "partiel",
+    "color_bg": "#95a5a6",
+    "color_txt": "#000000",
     "key":true
 }], 'th':[],'f':[]}},
   {"name": "G21", "display":false, "type":"A","y":0, "height":0, "projector":false, "computer":false,'courses':{'m':[],'tu':[],'w':[], 'th':[],'f':[]},'booking' :{'m':[],'tu':[],'w':[], 'th':[],'f':[]}},

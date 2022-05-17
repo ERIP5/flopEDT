@@ -359,6 +359,7 @@ function colorS() {
     }
 }
 
+/*
 //same function as reservS
 function colorS_resType(course) {
     if (course.type == "type") {
@@ -368,6 +369,10 @@ function colorS_resType(course) {
         return "red"
     }
     return "grey"
+}
+*/
+function colorS_resType(course) {
+    return course.color_bg
 }
 
 /***************
@@ -576,7 +581,7 @@ function display_coursesS() {
                     .attr("y",course_yS)
                     .attr("width",days_widthS)
                     .attr("height",course_heightS)
-                    .attr("fill",color_courses)
+                    .attr("fill",color_courses) // function in reservT
 
                 // display the department and the courses name
                 c_course

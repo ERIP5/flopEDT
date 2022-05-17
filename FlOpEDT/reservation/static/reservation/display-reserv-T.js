@@ -220,7 +220,9 @@ function add_x(day) {
 }
 
 function color_courses(course) {
-    return course.color_bg
+    //return course.color_bg
+    return "#4169e1"
+    //color from grr  #4169e1  #99cccc  #95a5a6
 }
 
 function get_course_name(course) {
@@ -245,6 +247,127 @@ function circle_add_posy(room, day) {
 
 function circle_add_posx(day) {
     return add_x(day)+days_width_T/2
+}
+
+/*******************
+*filter management*
+*******************/
+function sortRoom() {
+    rooms_sort = allRoom
+    rooms_sort = sortType(rooms_sort)
+    rooms_sort = sortProjector(rooms_sort)
+    rooms_sort = sortComputer(rooms_sort)
+}
+
+function sortType(oldList) {
+    newL = []
+    for (room of oldList) {
+        if(f_room_type != "all") {
+            if(room.type == f_room_type) {
+                newL.push(room)
+            }
+        }
+        else {
+            newL = oldList
+        }
+    }
+    return newL
+}
+
+function sortProjector(oldList) {
+    newL = []
+    for (room of oldList) {
+        if(room_projo != "all") {
+            if((""+room.projector+"") == room_projo) {
+                newL.push(room)
+            }
+        }
+        else {
+            newL = oldList
+        }
+    }
+    return newL
+}
+
+function sortComputer(oldList) {
+    newL = []
+    for (room of oldList) {
+        if(room_computer != "all") {
+            if((""+room.computer+"") == room_computer) {
+                newL.push(room)
+            }
+        }
+        else {
+            newL = oldList
+        }
+    }
+    return newL
+}
+
+/***********
+ *form*
+***********/
+
+function go_popup(ele) {
+    //console.log(ele.room.name)
+    window.location.href = "http://localhost:8000/fr/reservation/INFO/addRes"
+}
+
+function go_popup_course(courT) {
+    console.log(courT.room + " " + courT.day)
+}
+
+function go_popup_res(resT) {
+    console.log(resT.responsible + resT.type + resT.title + resT.description + resT.key + resT.id_booking + resT.start + resT.duration + resT.room)
+}
+
+/*********************************
+*function color per courses/booking*
+ *********************************/
+
+function colorT() {
+    nbCm = rooms_sort[nbIdT].courses["m"].length
+    nbCtu = rooms_sort[nbIdT].courses["tu"].length
+    nbCw = rooms_sort[nbIdT].courses["w"].length
+    nbCth = rooms_sort[nbIdT].courses["th"].length
+    nbCf = rooms_sort[nbIdT].courses["f"].length
+    nbCtotal = nbCm + nbCtu + nbCw + nbCth + nbCf
+
+    nbBm = rooms_sort[nbIdT].booking["m"].length
+    nbBtu = rooms_sort[nbIdT].booking["tu"].length
+    nbBw = rooms_sort[nbIdT].booking["w"].length
+    nbBth = rooms_sort[nbIdT].booking["th"].length
+    nbBf = rooms_sort[nbIdT].booking["f"].length
+    nbBtotal = nbBm + nbBtu + nbBw + nbBth + nbBf
+
+    nbCBtotal = nbCtotal + nbBtotal
+
+    if (nbCBtotal >= nbCBhot) {
+        nbIdT += 1
+        return "red"
+    }
+    if (nbCBtotal >= nbCBcold) {
+        nbIdT += 1
+        return "yellow"
+    }
+    nbIdT += 1
+    return "green"
+}
+
+/*
+function colorT_resType(course) {
+    if (course.type == "type") {
+        return "blue"
+    }
+    if (course.type == "partiel") {
+        return "red"
+    }
+
+    return "grey"
+}*/
+
+function colorT_resType(course) {
+    return course.color_bg
 }
 
 /***************
@@ -285,48 +408,31 @@ function rmv_reservT() {
     rmv_each_roomT()
 }
 
- /*********************************
-*function color per courses/booking*
- *********************************/
-function colorT() {
-    nbCm = rooms_sort[nbIdT].courses["m"].length
-    nbCtu = rooms_sort[nbIdT].courses["tu"].length
-    nbCw = rooms_sort[nbIdT].courses["w"].length
-    nbCth = rooms_sort[nbIdT].courses["th"].length
-    nbCf = rooms_sort[nbIdT].courses["f"].length
-    nbCtotal = nbCm + nbCtu + nbCw + nbCth + nbCf
-
-    nbBm = rooms_sort[nbIdT].booking["m"].length
-    nbBtu = rooms_sort[nbIdT].booking["tu"].length
-    nbBw = rooms_sort[nbIdT].booking["w"].length
-    nbBth = rooms_sort[nbIdT].booking["th"].length
-    nbBf = rooms_sort[nbIdT].booking["f"].length
-    nbBtotal = nbBm + nbBtu + nbBw + nbBth + nbBf
-
-    nbCBtotal = nbCtotal + nbBtotal
-
-    if (nbCBtotal >= nbCBhot) {
-        nbIdT += 1
-        return "red"
-    }
-    if (nbCBtotal >= nbCBcold) {
-        nbIdT += 1
-        return "yellow"
-    }
-    nbIdT += 1
-    return "green"
+function change_room(room) {
+    hidefilters()
+    rmv_total()
+    rmvStatut = 2
+    current_room = room.name
+    document.getElementById("selectRoom").value = current_room
+    mainS()
 }
 
-//same function as reservS
-function colorT_resType(course) {
-    if (course.type == "type") {
-        return "green"
-    }
-    if (course.type == "partiel") {
-        return "red"
-    }
-
-    return "grey"
+function clean() {
+    y_room_act_T = days_y_T()
+    y_text_act_T = days_y_T()
+    each_room_y_T = days_y_T()
+    room_max_courses_T = []
+    all_room_height_T = []
+    compt_room_height_T = 0
+    compt_room_posy_T = 0
+    compt_text_posy_T = 0
+    compt_plusy_T = 0
+    nbIdT = 0
+    course = []
+    couple_room_y = new Map();
+    couple_textroom_y = new Map();
+    rooms_height = new Map();
+    current_room = "all"
 }
 
  /***************
@@ -592,103 +698,6 @@ function display_add() {
                 .attr("height",add_button_height(room,day))
         }
     }
-}
-
-
-
-function change_room(room) {
-    hidefilters()
-    rmv_total()
-    rmvStatut = 2
-    current_room = room.name
-    document.getElementById("selectRoom").value = current_room
-    mainS()
-}
-
-function go_popup(ele) {
-    //console.log(ele.room.name)
-    window.location.href = "http://localhost:8000/fr/reservation/INFO/addRes"
-}
-
-function go_popup_course(courT) {
-    console.log(courT.room + " " + courT.day)
-}
-
-function go_popup_res(resT) {
-    console.log(resT.responsible + resT.type + resT.title + resT.description + resT.key + resT.id_booking + resT.start + resT.duration + resT.room)
-}
-
-function clean() {
-    y_room_act_T = days_y_T()
-    y_text_act_T = days_y_T()
-    each_room_y_T = days_y_T()
-    room_max_courses_T = []
-    all_room_height_T = []
-    compt_room_height_T = 0
-    compt_room_posy_T = 0
-    compt_text_posy_T = 0
-    compt_plusy_T = 0
-    nbIdT = 0
-    course = []
-    couple_room_y = new Map();
-    couple_textroom_y = new Map();
-    rooms_height = new Map();
-    current_room = "all"
-}
-
-/*******************
-*filter management*
-*******************/
-function sortRoom() {
-    rooms_sort = allRoom
-    rooms_sort = sortType(rooms_sort)
-    rooms_sort = sortProjector(rooms_sort)
-    rooms_sort = sortComputer(rooms_sort)
-}
-
-function sortType(oldList) {
-    newL = []
-    for (room of oldList) {
-        if(f_room_type != "all") {
-            if(room.type == f_room_type) {
-                newL.push(room)
-            }
-        }
-        else {
-            newL = oldList
-        }
-    }
-    return newL
-}
-
-function sortProjector(oldList) {
-    newL = []
-    for (room of oldList) {
-        if(room_projo != "all") {
-            if((""+room.projector+"") == room_projo) {
-                newL.push(room)
-            }
-        }
-        else {
-            newL = oldList
-        }
-    }
-    return newL
-}
-
-function sortComputer(oldList) {
-    newL = []
-    for (room of oldList) {
-        if(room_computer != "all") {
-            if((""+room.computer+"") == room_computer) {
-                newL.push(room)
-            }
-        }
-        else {
-            newL = oldList
-        }
-    }
-    return newL
 }
 
 /***********
