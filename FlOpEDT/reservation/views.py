@@ -24,7 +24,6 @@ class ReservationForm(ModelForm):
             'duration': TimeInput(),
             'Period_choice': forms.RadioSelect(choices=period_choice),
             'ed_period': DateInput()
-
         }
         labels = {
             'responsible': "Responsible's name",
@@ -44,8 +43,6 @@ class ReservationPeriodForm(ModelForm):
             'start': DateInput(),
             'ending': DateInput()
         }
-
-
 
 def addReservation(request, department):
     reservation_form = ReservationForm()
