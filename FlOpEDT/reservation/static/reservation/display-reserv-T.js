@@ -145,12 +145,21 @@ function res_text_x(course) {
 }
 
 function text_heure_res(res) {
-    return (get_time(res.start)+" - "+get_time(res.start+res.duration))
+    return (get_time(res.start)+ " - "+ get_time(res.start+res.duration))
 }
 
 function get_time(val) {
+    if (val%60 ==0) {
+        var tostring = ""+Math.floor(val/60)+"h00"
+        return tostring
+    }
     var tostring = ""+Math.floor(val/60)+"h"+(val%60)
     return tostring
+}
+
+function get_timeS0(val) {
+
+    return ""
 }
 
 function getday(day) {

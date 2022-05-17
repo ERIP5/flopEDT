@@ -225,11 +225,6 @@ function get_courseS_hour(course) {
     return (get_time(course.start)+" - "+get_time(course.start+course.duration))
 }
 
-function get_timeS(val) {
-    var tostring = Math.floor(val/60)+"h"+(val%60)
-    return tostring
-}
-
 function get_courseS_tutor(course) {
     return "Tutor : "+course.tutor
 }
