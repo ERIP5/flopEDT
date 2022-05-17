@@ -28,13 +28,13 @@ var scale_end_time_day = 18*60+45 //1125
 var addS_val = 80
 
 //-- color per courses/booking --//
-// when the number of course/booking is still acceptable
+// the number of course/booking is still acceptable
 var nbCBcoldS = 3
-// when there is too much course/booking
+// there is too much course/booking
 var nbCBhotS = 4
 
 
-// cpt not defined reset in cleanS
+// variable or cpt not defined reset in cleanS
 each_hour_yS = days_yS()
 var scale_current_hour = scale_day_start_hour()
 var planB1 = 0
