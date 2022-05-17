@@ -588,6 +588,8 @@ function display_coursesS() {
                     .append("text")
                     .text(get_courseS_name)
                     .attr("class", "course_text")
+                    .attr("fill",color_text)
+                    .attr("font-weight", "bold")
                     .attr("x", res_textS_x)
                     .attr("y", res_textS_y)
                     .attr("text-anchor", "middle")

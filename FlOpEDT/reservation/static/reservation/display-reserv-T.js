@@ -370,6 +370,22 @@ function colorT_resType(course) {
     return course.color_bg
 }
 
+function color_text(course) {
+    if (course.department == "INFO") {
+        return "black"
+    }
+    if (course.department == "GIM") {
+        return "lightGreen"
+    }
+    if (course.department == "RT") {
+        return "lightGrey"
+    }
+    if (course.department == "CS") {
+        return "pink"
+    }
+    return "red"
+}
+
 /***************
 *function remove*
  ***************/
@@ -554,6 +570,8 @@ function display_courses() {
                 .append("text")
                 .attr("class", "display_courses_text_mod")
                 .text(get_course_name)
+                .attr("fill",color_text)
+                .attr("font-weight", "bold")
                 .attr("x", res_text_x)
                 .attr("y", course_text_roomy)
                 .attr("text-anchor", "middle")
@@ -616,6 +634,7 @@ function display_reservation() {
                 .text(getreservation)
                 .attr("x",res_text_x)
                 .attr("y",res_text_titley)
+                //.style("color", "color_text")
                 .attr("text-anchor", "middle")
 
             c_res
