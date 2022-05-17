@@ -14,6 +14,9 @@ let days = [{num: 0, ref: "m", name: "Lundi"},
             {num: 3, ref: "th", name: "Jeudi"},
             {num: 4, ref: "f", name: "Vendredi"}] ;
 
+// useless for now, must display booking with ajax before using it
+//let book = [{"idBook": 0, "type": "partiel", "color" = "#99cccc"}, {"idBook": 1, "type": "type", "color" = "#95a5a6"}] ;
+
 
 let rooms = [
   {"name": "B112", "display":true, "type":"A","y":0, "height":0, "projector":true,"computer":true, 'courses':{'m':[{

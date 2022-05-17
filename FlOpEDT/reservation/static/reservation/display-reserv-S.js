@@ -218,7 +218,11 @@ function get_courseS_title(res) {
 }
 
 function get_courseS_name(course) {
-    return (course.department+ " : "+ course.mod)
+    return (course.department)
+}
+
+function get_courseS_name3(course) {
+    return (" : "+ course.mod)
 }
 
 function get_courseS_hour(course) {
@@ -588,6 +592,11 @@ function display_coursesS() {
                     .attr("x", res_textS_x)
                     .attr("y", res_textS_y)
                     .attr("text-anchor", "middle")
+                    .append("tspan")
+                    .text(get_courseS_name3)
+                    .attr("font-weight", "100")
+                    .attr("text-anchor", "middle")
+                    .attr("fill","black")
 
                 // display the start and end hour
                 c_course
