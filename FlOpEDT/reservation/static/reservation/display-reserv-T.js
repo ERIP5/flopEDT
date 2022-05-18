@@ -235,15 +235,7 @@ function color_courses(course) {
 }
 
 function get_course_name(course) {
-    return (course.department)
-}
-
-function get_course_name2(course) {
-    return (" : "+course.mod)
-}
-
-function get_courseS_name2(course) {
-    return (" : "+ course.mod)
+    return (course.department+ " : "+ course.mod)
 }
 
 function get_course_profg(course) {
@@ -592,11 +584,6 @@ function display_courses() {
                 .attr("x", res_text_x)
                 .attr("y", course_text_roomy)
                 .attr("text-anchor", "middle")
-                .append("tspan")
-                .text(get_course_name2)
-                .attr("font-weight", "100")
-                .attr("text-anchor", "middle")
-                .attr("fill","black")
 
             c_course_res
                 .append("text")
