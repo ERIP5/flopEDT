@@ -14,7 +14,7 @@ def addReservation(request, department):
         reservation_form = ReservationForm(request.POST)
         if reservation_form.is_valid():
             reserva = reservation_form.save()
-            return redirect("https://www.djangoproject.com")
+            return redirect("http://localhost:8000/fr/reservation/INFO/listeReserv")
     else:
         reservation_form = ReservationForm()
 
