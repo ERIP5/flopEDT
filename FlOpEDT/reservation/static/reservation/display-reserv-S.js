@@ -35,7 +35,7 @@ var nbCBhotS = 4
 
 
 // variable or cpt not defined reset in cleanS
-each_hour_yS = days_yS()
+each_hour_yS = days_y_T()
 var scale_current_hour = scale_day_start_hour()
 var planB1 = 0
 var nbIdS_test = 0
@@ -63,16 +63,8 @@ function days_xS(day) {
     return days_widthS*(day.num)+scale_width_Total
 }
 
-function days_yS() {
-    return date_heightS+date_margin_topS
-}
-
 function days_heightS() {
     return days_durationS()
-}
-
-function getdayS(day) {
-    return day["name"]
 }
 
 //-- scale --//
@@ -162,7 +154,7 @@ function addS_x(day) {
 }
 
 function addS_y() {
-    return days_yS() + days_heightS()
+    return days_y_T() + days_heightS()
 }
 
 function addS_width() {
@@ -209,14 +201,6 @@ function double_popform_res(res) {
      *Text*
  ***************/
 
-function get_courseS_name2(course) {
-    return course.mod
-}
-
-function get_courseS_title(res) {
-    return res.title
-}
-
 function get_courseS_name(course) {
     return (course.department+ " : "+ course.mod)
 }
@@ -227,10 +211,6 @@ function get_courseS_hour(course) {
 
 function get_courseS_tutor(course) {
     return "Tutor : "+course.tutor
-}
-
-function get_courseS_responsible(course) {
-    return "responsible : "+course.responsible
 }
 
 function res_textS_x(course) {
@@ -440,7 +420,7 @@ function rmv_captS() {
 }
 
 function cleanS() {
-    each_hour_yS = days_yS()
+    each_hour_yS = days_y_T()
     scale_current_hour = scale_day_start_hour()
     planB1 = 0
     nbIdS_test = 0
@@ -487,7 +467,7 @@ function display_gridS() {
     c_gridS = c_gridallS
         .enter()
         .append("g")
-        .attr("class",getdayS)
+        .attr("class",getday)
 
     // display the column for the five days
     c_gridS
@@ -497,7 +477,7 @@ function display_gridS() {
         .attr("stroke","black")
         .attr("stroke-width",2)
         .attr("x",days_xS)
-        .attr("y",days_yS)
+        .attr("y",days_y_T)
         .attr("width",days_widthS)
         .attr("height",days_heightS())
   }
@@ -623,7 +603,7 @@ function display_reservationS() {
                         .data(room.booking[day.ref])
                         .enter()
                         .append("g")
-                        .attr("class",get_courseS_title)
+                        .attr("class",getreservation)
                         .on("dblclick", double_popform_res)
 
                     // display the reservation rectangle
@@ -641,7 +621,7 @@ function display_reservationS() {
                     // display the title of the reservation
                     c_reservation
                         .append("text")
-                        .text(get_courseS_title)
+                        .text(getreservation)
                         .attr("class", "course_text")
                         .attr("x", res_textS_x)
                         .attr("y", res_textS_y)
@@ -659,7 +639,7 @@ function display_reservationS() {
                     // display the reservation's responsible
                     c_reservation
                         .append("text")
-                        .text(get_courseS_responsible)
+                        .text(getresponsible)
                         .attr("class", "course_text")
                         .attr("x", res_textS_x)
                         .attr("y", res_textS_tutor_y)

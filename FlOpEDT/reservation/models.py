@@ -6,6 +6,8 @@ from base.models import Room
 from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
+from base.timing import Day
+
 period_choice= [
     ('each_week', 'Each week'),
     ('each_month', 'Each month'),
@@ -48,13 +50,15 @@ class Reservation(models.Model):
     key = models.BooleanField(default=False)
     courriel = models.BooleanField(default=False)
     reservation_date = models.DateField()
+    #dayRes = models.CharField(
+        #max_length=2, choices=Day.CHOICES, default=Day.MONDAY)
     start = models.PositiveSmallIntegerField()
     duration = models.PositiveIntegerField()
     periodicity = models.BooleanField(default=False)
     Period_choice = models.CharField(max_length=99, help_text="Only required if 'periodicity' is selected ")
     each_week_choice = models.CharField(max_length=99,choices=each_week_ch, blank = True)
-    each_x_choice = models.CharField(max_length=99,choices=each_x_ch)
-    each_y_choice = models.CharField(max_length=99,choices=each_y_ch)
+    each_x_choice = models.CharField(max_length=99,choices=each_x_ch, blank = True)
+    each_y_choice = models.CharField(max_length=99,choices=each_y_ch, blank = True)
     ed_period = models.DateField()
 
 
