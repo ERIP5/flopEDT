@@ -590,7 +590,7 @@ class Course_SC_Type_Serializer(serializers.Serializer):
 
 class ResCourseSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField();
-    room = serializers.CharField(allow_null=True)
+    room = ResRoomSerializer();
     start_time = serializers.IntegerField()
     day = serializers.CharField()
     course = Course_SC_Type_Serializer()
