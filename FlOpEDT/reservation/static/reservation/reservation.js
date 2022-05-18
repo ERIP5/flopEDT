@@ -23,6 +23,7 @@ $.ajax({
     success: function (msg) {
       allRoom = JSON.parse(msg)
       creationRooms()
+        allBasic();
     },
     error: function (xhr, error) {
       console.log("error");
@@ -32,8 +33,6 @@ $.ajax({
       show_loader(false);
     }
   });
-
-  allBasic();
 }
 
 function getCourses()
@@ -48,7 +47,12 @@ $.ajax({
       data = JSON.parse(msg)
       for (el of data)
       {
-        organizeCourse(el)
+        if(el.room.is_basic){
+            organizeCourse(el)
+        }else{
+            organizeNotBasicCourses(el)
+        }
+
       }
     },
     error: function (xhr, error) {
@@ -110,7 +114,7 @@ function organizeCourse(course)
     newCourse.day = course.day
     newCourse.start = course.start_time
     newCourse.duration = course.course.type.duration
-    newCourse.room = course.room
+    newCourse.room = course.room.name
     newCourse.room_type = course.course.room_type
     newCourse.graded = course.course.is_graded
     newCourse.color_bg = course.course.module.display.color_bg
@@ -118,7 +122,6 @@ function organizeCourse(course)
     if (course.course.tutor != null)
     {
         newCourse.tutor = course.course.tutor.username
-
     }
     else
     {
@@ -129,9 +132,34 @@ function organizeCourse(course)
     newCourse.group = []
     for (group of course.course.groups)
     {
-    newCourse.group.push(group.name)
+        newCourse.group.push(group.name)
     }
     allObjectCourses.push(newCourse)
+}
+
+function organizeNotBasicCourses(course)
+{
+    if ((course.room.name).includes('+')){
+        var tabRoomC = (course.room.name).split('+')
+        var pref = (course.room.name.substr(0,1))
+        for (room of tabRoomC){
+            if(room.substr(0,1) == pref){
+                course.room.name = room
+            }else{
+                course.room.name = pref+room
+            }
+            console.log(course)
+            organizeCourse(course)
+        }
+    }
+    if ((course.room.name).includes('-')){
+        var tabRoomC = (course.room.name).split('-')
+        for (room of tabRoomC){
+            course.room.name = room
+            organizeCourse(course)
+        }
+    }
+
 }
 
 function putCourseRoom()
