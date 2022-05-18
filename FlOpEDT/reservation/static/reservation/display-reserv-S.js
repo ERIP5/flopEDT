@@ -636,7 +636,7 @@ function display_reservationS() {
                         .attr("y",course_yS)
                         .attr("width",days_widthS)
                         .attr("height",course_heightS)
-                        .attr("fill", colorS_resType)
+                        //.attr("fill", colorS_resType)
 
                     // display the title of the reservation
                     c_reservation
@@ -754,7 +754,7 @@ function display_captionS() {
     c_capt
         .append("rect")
         .attr("class","rect_caption")
-        .attr("fill","green")
+        .attr("fill","#99cccc")
         .attr("stroke","black")
         .attr("stroke-width",2)
         .attr("x",captionS_x)
@@ -774,7 +774,7 @@ function display_captionS() {
     c_capt
         .append("rect")
         .attr("class","rect_caption")
-        .attr("fill","red")
+        .attr("fill","#95a5a6")
         .attr("stroke","black")
         .attr("stroke-width",2)
         .attr("x",captionS_x)
