@@ -8,25 +8,12 @@
     <script src="{% static 'base/d3.v4.min.js' %}"></script>
     <script type='text/javascript' src="{% static 'reservation/form_pop.js' %}"></script>
 
-<style>
-.reservation_room {
-	width: 50%;
-	height: 100%;
-	float: left;
-}
+    <h1> Add reservation </h1>
 
-.reservation_period{
-	width: 50%;
-	height: 100%;
-	float: left;
-}
-</style>
-
-    <div class="reservation_room">
-    {{ reservation_form.as_p }}
-    </div>
-    <div class="reservation_period">
-    {{ reservationP_form.as_p }}
-    </div>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ reservation_form.as_p }}
+        <input type="submit" value="Soumettre">
+    </form>
 
 {% endblock %}

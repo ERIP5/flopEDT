@@ -42,7 +42,7 @@ each_y_ch =(
 class Reservation(models.Model):
     responsible = models.ForeignKey('people.User',  on_delete=models.CASCADE, related_name='reservationResp')
     room = models.ForeignKey('base.Room', on_delete=models.CASCADE, related_name='reservationRoom')
-    reservation_type = models.ForeignKey('reservation_type', on_delete=models.CASCADE)
+    reservation_type = models.ForeignKey('reservation_type', on_delete=models.CASCADE, blank = True)
     title = models.CharField(max_length=30)
     description = models.TextField(null=True, blank=True)
     key = models.BooleanField(default=False)
@@ -51,17 +51,12 @@ class Reservation(models.Model):
     start = models.PositiveSmallIntegerField()
     duration = models.PositiveIntegerField()
     periodicity = models.BooleanField(default=False)
-    Period_choice = models.CharField(max_length=99, help_text="Only required if 'periodicity' is selected ")
+    Period_choice = models.CharField(max_length=99, help_text="Only required if 'periodicity' is selected ", blank = True)
     each_week_choice = models.CharField(max_length=99,choices=each_week_ch, blank = True)
-    each_x_choice = models.CharField(max_length=99,choices=each_x_ch)
-    each_y_choice = models.CharField(max_length=99,choices=each_y_ch)
-    ed_period = models.DateField()
+    each_x_choice = models.CharField(max_length=99,choices=each_x_ch, blank = True)
+    each_y_choice = models.CharField(max_length=99,choices=each_y_ch, blank = True)
+    ed_period = models.DateField(blank = True)
 
 
 class Reservation_type(models.Model):
     name = models.CharField(max_length=30)
-
-
-class Reservation_periode(models.Model):
-    start = models.DateField()
-    ending = models.DateField()
