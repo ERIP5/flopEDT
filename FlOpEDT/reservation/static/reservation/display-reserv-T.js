@@ -51,6 +51,7 @@ var current_room = "all"
 *variable's management*
 **********************/
 
+// use in reserv_S
 function days_y_T() {
     return date_height_T+date_margtop_T
 }
@@ -148,6 +149,7 @@ function text_heure_res(res) {
     return (get_time(res.start)+ " - "+ get_time(res.start+res.duration))
 }
 
+// use in reserv_S
 function get_time(val) {
     if (val%60 ==0) {
         var tostring = ""+Math.floor(val/60)+"h00"
@@ -157,11 +159,7 @@ function get_time(val) {
     return tostring
 }
 
-function get_timeS0(val) {
-
-    return ""
-}
-
+// use in reserv_S
 function getday(day) {
     return day["name"]
 }
@@ -174,11 +172,12 @@ function getcourses(course) {
     return course.mod
 }
 
+//use in reserv_S
 function getreservation(res) {
     return res.title
 }
 
-
+// use in resrv_S
 function getresponsible(res) {
     return "responsible : "+res.responsible
 }
