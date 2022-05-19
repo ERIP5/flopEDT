@@ -14,7 +14,7 @@ def addReservation(request, department):
         reservation_form = ReservationForm(request.POST)
         if reservation_form.is_valid():
             reserva = reservation_form.save()
-            return redirect("http://localhost:8000/fr/reservation/INFO/listeReserv")
+            return redirect("https://www.google.com/")
     else:
         reservation_form = ReservationForm()
 
