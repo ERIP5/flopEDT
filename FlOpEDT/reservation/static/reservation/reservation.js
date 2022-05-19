@@ -1,4 +1,5 @@
 var allRoom = [];
+var allDept = [];
 var roomCourse = []
 var allObjectCourses = []
 var test = []
@@ -7,7 +8,7 @@ var alltype = []
 show_loader(true);
 getRooms();
 getCourses();
-//getTypes();
+getDepts();
 putCourseRoom();
 sortAllCourses();
 show_loader(false);
@@ -17,7 +18,7 @@ function getRooms(){
 $.ajax({
     type: "GET", //rest Type
     dataType: 'text',
-    url: url_fetch_room_reservation,
+    url: url_fetch_rooms_reservation,
     async: false,
     contentType: "application/json",
     success: function (msg) {
@@ -65,16 +66,16 @@ $.ajax({
   });
 }
 
-function getTypes()
-{
-$.ajax({
+function getDepts(){
+    $.ajax({
     type: "GET", //rest Type
     dataType: 'text',
-    url: url_room_types,
+    url: url_fetch_departments_reservation,
     async: false,
     contentType: "application/json",
     success: function (msg) {
-      alltype = JSON.parse(msg)
+      allDept = JSON.parse(msg)
+      console.log(allDept)
     },
     error: function (xhr, error) {
       console.log("error");
@@ -97,10 +98,8 @@ function creationRooms()
 {
     for (room of allRoom)
     {
-    roomCourse = new Object(listDays());
-    room.courses = roomCourse
-    roomCourse = new Object(listDays());
-    room.booking = roomCourse
+    room.courses = new Object(listDays());
+    room.booking = new Object(listDays());
     }
 }
 
@@ -148,7 +147,6 @@ function organizeNotBasicCourses(course)
             }else{
                 course.room.name = pref+room
             }
-            console.log(course)
             organizeCourse(course)
         }
     }

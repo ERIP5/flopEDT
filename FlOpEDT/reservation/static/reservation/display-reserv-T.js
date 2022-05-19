@@ -30,6 +30,8 @@ var room_projo = "all";
 
 var room_computer = "all";
 
+var room_department = "all";
+
 // variable or cpt not defined reset in cleanT
 var y_room_act_T = days_y_T()
 var y_text_act_T = days_y_T()
@@ -264,7 +266,7 @@ function sortRoom() {
     rooms_sort = allRoom
     rooms_sort = sortType(rooms_sort)
     rooms_sort = sortProjector(rooms_sort)
-    rooms_sort = sortComputer(rooms_sort)
+    //rooms_sort = sortDepartment(rooms_sort)
 }
 
 function sortType(oldList) {
@@ -311,6 +313,7 @@ function sortComputer(oldList) {
     }
     return newL
 }
+
 
 /***********
  *form*

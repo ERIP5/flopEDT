@@ -156,6 +156,28 @@ function generateSelect(parent, dataName) {
                 elemS.appendChild(elemO)
             }
             break;
+        case "department" :
+            elemp = document.createElement("p")
+            elemp.innerText = "Choose a department ? "
+            parent.appendChild(elemp)
+
+            elemS = document.createElement("select")
+            elemS.id = "selectDepartment"
+            elemS.onchange = changeRoomDept
+            parent.appendChild(elemS)
+
+            elemO = document.createElement("option")
+            elemO.value = "all"
+            elemO.textContent = "all"
+            elemS.appendChild(elemO)
+
+            for (el of allDept) {
+                elemO = document.createElement("option")
+                elemO.ngValue = el.abbrev
+                elemO.textContent = el.abbrev
+                elemS.appendChild(elemO)
+            }
+            break;
     }
     buttonSuppr(parent)
 }
@@ -239,7 +261,12 @@ function changeRoomProjo() {
 
 function changeRoomComputer() {
     room_computer = document.getElementById("selectComputer").value;
-    console.log(room_computer)
+    rmv_total();
+    mainT();
+}
+
+function changeRoomDept() {
+    room_department = document.getElementById("selectDepartment").value;
     rmv_total();
     mainT();
 }

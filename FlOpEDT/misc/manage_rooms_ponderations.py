@@ -8,12 +8,12 @@ def all_room_types_subsets_with_corresponding_basic_rooms(room_types_query_set):
     result = {'new': {}, 'old': {}}
 
     # Initialization: for each room_type, create a rt_tuple that unites all room_types
-    # that have basic_rooms included in rt.basic_rooms()
+    # that have basic_rooms included in rt.basic_rooms
     for rt in RT:
-        basic_rooms = rt.basic_rooms()
+        basic_rooms = rt.basic_rooms
         rt_set = {rt}
         for rt2 in set(RT)-{rt}:
-            if rt2.basic_rooms().issubset(basic_rooms):
+            if rt2.basic_rooms.issubset(basic_rooms):
                 rt_set.add(rt2)
         rt_tuple = convert_rt_set_to_sorted_tuple(rt_set)
         result['new'][rt_tuple] = basic_rooms
@@ -54,7 +54,7 @@ def room_types_subsets_with_ponderations_for_constraints(room_types_subsets_with
         if not basic_rooms:
             result[room_types_tuple] = list(1 for _ in room_types_tuple)
         else:
-            result[room_types_tuple] = list(max(len(room.basic_rooms() & basic_rooms)
+            result[room_types_tuple] = list(max(len(room.basic_rooms & basic_rooms)
                                                 for room in rt.members.all())
                                             for rt in room_types_tuple)
     return result

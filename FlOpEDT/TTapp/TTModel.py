@@ -493,7 +493,7 @@ class TTModel(FlopModel):
                 #                                   Q(start_time__gt=sl.start_time - F('course__type__duration'))),
                 #                                  room=rg, day=sl.day).exists():
                 if fcrg:
-                    for r in rg.basic_rooms():
+                    for r in rg.basic_rooms:
                         self.add_constraint(self.sum(self.TTrooms[(s_sl, c, room)]
                                                      for s_sl in slots_filter(self.wdb.courses_slots, simultaneous_to=sl)
                                                      for c in self.wdb.compatible_courses[s_sl]

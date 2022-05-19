@@ -155,7 +155,7 @@ let restest = {
 }
 
 
-let filtersList = ["type","projector","computer"]
+let filtersList = ["type","projector","computer","department"]
 
 let typeRoom = ["amphi","A","B"]
 

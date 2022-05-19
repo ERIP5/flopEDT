@@ -386,6 +386,7 @@ class Room(models.Model):
             ret |= sub.and_subrooms()
         return ret
 
+    @property
     def basic_rooms(self):
         s = set(r for r in self.and_subrooms() if r.is_basic)
         return s
@@ -431,12 +432,12 @@ class RoomPonderation(models.Model):
 
     def save(self, *args, **kwargs):
         super(RoomPonderation, self).save(*args, **kwargs)
-        self.add_basic_rooms()
+        self.add_basic_rooms
 
     def add_basic_rooms(self):
         RT = RoomType.objects.filter(id__in=self.room_types)
         for rt in RT:
-            for basic_room in rt.basic_rooms():
+            for basic_room in rt.basic_rooms:
                 self.basic_rooms.add(basic_room)
 
     def get_room_types_set(self):

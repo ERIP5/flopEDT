@@ -888,4 +888,4 @@ class ResRoomViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         queryset = bm.Room.objects.all()
-        return (queryset)
+        return queryset
