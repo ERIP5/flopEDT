@@ -546,7 +546,7 @@ class IDRoomTypeSerializer(serializers.ModelSerializer):
 class ResRoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = bm.Room
-        fields = ['id', 'name','types', 'is_basic']
+        fields = ['id', 'name', 'types', 'is_basic'] #, 'basic_rooms']
 
 class CourseResTypeSerializer(serializers.Serializer):
     name = serializers.CharField()
@@ -554,7 +554,7 @@ class CourseResTypeSerializer(serializers.Serializer):
     department = DepartmentAbbrevSerializer()
     class Meta:
         model = bm.CourseType
-        fields = ['name','duration', 'department']
+        fields = ['name', 'duration', 'department']
 
 
 

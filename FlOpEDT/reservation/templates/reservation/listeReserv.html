@@ -6,8 +6,9 @@
     {% load i18n %}
     {% load static %}
     <script>
-        var url_fetch_room_reservation = "{% url 'api:fetch:resrooms-list' %}";
+        var url_fetch_rooms_reservation = "{% url 'api:fetch:resrooms-list' %}";
         var url_fetch_courses_reservation = "{% url 'api:fetch:rescourses-list' %}";
+        var url_fetch_departments_reservation = "{% url 'api:fetch:dept-list' %}";
 
     </script>
     <link rel="stylesheet" href="{% static 'reservation/display-menu-filter.css' %}"/>
