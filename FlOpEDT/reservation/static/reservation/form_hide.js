@@ -20,3 +20,12 @@ if has_periodicity == true
 
     if by month
 */
+var truck = 3
+
+function first_hide() {
+    document.getElementById("id_periodicity_type").parentElement.hidden=true
+}
+
+function mainHide() {
+    first_hide()
+}
