@@ -2,61 +2,57 @@ from django.contrib import admin
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from base.models import Room
-
+from django.contrib.postgres.fields import ArrayField
+from base.timing import Day
 from django.utils.translation import gettext_lazy as _
-
-# Create your models here.
-period_choice= [
-    ('each_week', 'Each week'),
-    ('each_month', 'Each month'),
-    ('each_year', 'Each year'),
-    ('XY', 'X Y of the month'),
-    ]
-
-each_week_ch =(
-    ("1", "Each week"),
-    ("2", "Each 2 weeks"),
-    ("3", "Each 3 weeks"),
-    ("4", "Each 4 weeks"),
-)
-
-each_x_ch =(
-    ("1", "1"),
-    ("2", "2"),
-    ("3", "3"),
-    ("4", "4"),
-    ("5", "5"),
-    ("last", "Last"),
-)
-
-each_y_ch =(
-    ("m", "Monday"),
-    ("tu", "Tuesday"),
-    ("w", "Wednesday"),
-    ("th", "Thursday"),
-    ("f", "Friday"),
-    ("sa", "Saturday"),
-    ("su", "Sunday"),
-)
 
 class Reservation(models.Model):
     responsible = models.ForeignKey('people.User',  on_delete=models.CASCADE, related_name='reservationResp')
     room = models.ForeignKey('base.Room', on_delete=models.CASCADE, related_name='reservationRoom')
-    reservation_type = models.ForeignKey('reservation_type', on_delete=models.CASCADE, blank=True, null=True)
+    reservation_type = models.ForeignKey('ReservationType', on_delete=models.CASCADE, blank=True, null=True)
     title = models.CharField(max_length=30)
     description = models.TextField(null=True, blank=True)
-    key = models.BooleanField(default=False)
-    courriel = models.BooleanField(default=False)
-    reservation_date = models.DateField()
-    start = models.PositiveSmallIntegerField()
+    with_key = models.BooleanField(default=False)
+    email = models.BooleanField(default=False)
+    date = models.DateField()
+    start_time = models.PositiveSmallIntegerField()
     duration = models.PositiveIntegerField()
-    periodicity = models.BooleanField(default=False)
-    Period_choice = models.CharField(max_length=99, help_text="Only required if 'periodicity' is selected ", blank=True, null=True)
-    each_week_choice = models.CharField(max_length=99,choices=each_week_ch, blank=True, null=True)
-    each_x_choice = models.CharField(max_length=99,choices=each_x_ch, blank=True, null=True)
-    each_y_choice = models.CharField(max_length=99,choices=each_y_ch, blank=True, null=True)
-    end_period = models.DateField(blank=True, null=True)
+    periodicity = models.ForeignKey("ReservationPeriodicity", null=True, blank=True, on_delete=models.SET_NULL)
 
 
-class Reservation_type(models.Model):
+class ReservationType(models.Model):
     name = models.CharField(max_length=30)
+
+
+class ReservationPeriodicity(models.Model):
+    class PeriodicityType(models.TextChoices):
+        #EachDay = 'ED', _('Each day')
+        ByWeek = 'BW', _('By week')
+        EachMonthSameDate = 'EM', _('Each month at the same date')
+        ByMonth = 'BM', _('By Month')
+
+    class ByMonthX(models.TextChoices):
+        AnteLast = 'AL', _('Ante Last')
+        Last = 'L', _('Last')
+        First = 'F', _('First')
+
+    periodicity_type = models.CharField(
+        max_length=2,
+        choices=PeriodicityType.choices,
+        default=PeriodicityType.ByWeek,
+    )
+    start = models.DateField(blank=True)
+    end = models.DateField(blank=True)
+
+    ### ByWeek Paramaters ###
+    # Jours de la semaine qui doivent être inclus dans la réservation ByWeek
+    bw_weekdays = ArrayField(models.CharField(max_length=2,
+                                              choices=Day.CHOICES), help_text="blabla")
+    # La réservation ByWeek sera reproduite toutes les n semaines (avec n = bw_weeks_nb)
+    bw_weeks_nb = models.PositiveSmallIntegerField()
+
+    ### ByMonth Paramaters ###
+    # La réservation ByMonth est tous les Xe Y du mois
+    bm_x_choice = models.CharField(max_length=2, choices=ByMonthX.choices, blank=True, null=True)
+    bm_y_choice = models.CharField(max_length=2, choices=Day.CHOICES, blank=True, null=True)
+

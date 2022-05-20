@@ -13,7 +13,10 @@
     <form action="" method="post">
         {% csrf_token %}
         {{ reservation_form.as_p }}
+        {{ periodicity_form.as_p }}
         <input type="submit" value="Soumettre">
     </form>
+
+    <script type='text/javascript' src="{% static 'reservation/form_hide.js' %}"></script>
 
 {% endblock %}

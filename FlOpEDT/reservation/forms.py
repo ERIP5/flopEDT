@@ -2,6 +2,7 @@ from django.forms import ModelForm
 from django import forms
 from django.shortcuts import render
 from django.template.response import TemplateResponse
+from django.utils.translation import gettext_lazy as _
 
 from reservation.models import *
 
@@ -12,21 +13,36 @@ class DateInput(forms.DateInput):
 class TimeInput(forms.TimeInput):
     input_type = 'time'
 
+
+
 class ReservationForm(ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(ReservationForm, self).__init__(*args, **kwargs)
+        self.fields['has_periodicity'] = forms.BooleanField(required=False,
+                                                            initial=False
+                                                            )
+
     class Meta:
         model = Reservation
-        fields = "__all__"
+        fields = '__all__'
         widgets = {
-            'reservation_date': DateInput(),
-            'Period_choice': forms.RadioSelect(choices=period_choice),
-            'ed_period': DateInput()
+            'date': DateInput(),
+            'end': DateInput()
         }
         labels = {
-            'responsible': "Responsible's name",
-            'title': "Title of reservation",
-            'description': "Description",
-            'key': "Borrowed key",
-            'courriel2': "Send confirmation courriel",
-            'periodicity': "Add periodicity to the reservation",
-            'ed_period': "End of the periodicity"
+            'responsible': _("Responsible's name"),
+            'title': _("Title of reservation"),
+            'with_key': _("Borrowed key"),
+            'email': _("Send confirmation email"),
+        }
+
+
+class ReservationPeriodicityForm(ModelForm):
+    class Meta:
+        model = ReservationPeriodicity
+        fields = '__all__'
+        widgets = {
+            'start': DateInput(),
+            'end': DateInput()
         }
