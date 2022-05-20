@@ -98,8 +98,10 @@ function creationRooms()
 {
     for (room of allRoom)
     {
-    room.courses = new Object(listDays());
-    room.booking = new Object(listDays());
+    roomCourse = new Object(listDays());
+    room.courses = roomCourse
+    roomCourse = new Object(listDays());
+    room.booking = roomCourse
     }
 }
 
