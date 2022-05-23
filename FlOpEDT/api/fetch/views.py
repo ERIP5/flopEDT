@@ -42,7 +42,7 @@ import displayweb.models as dwm
 
 from api.fetch import serializers
 from api.shared.params import dept_param, week_param, year_param, user_param, \
-    work_copy_param, group_param, train_prog_param, lineage_param, tutor_param
+    work_copy_param, group_param, train_prog_param, lineage_param, tutor_param, cosmo_param
 from api.permissions import IsTutorOrReadOnly, IsAdminOrReadOnly
 
 
@@ -68,7 +68,8 @@ class ScheduledCourseFilterSet(filters.FilterSet):
                           train_prog_param(),
                           group_param(),
                           lineage_param(),
-                          tutor_param()
+                          tutor_param(),
+                          cosmo_param()
                       ])
                   )
 class ScheduledCoursesViewSet(viewsets.ReadOnlyModelViewSet):
@@ -180,7 +181,9 @@ class ScheduledCoursesViewSet(viewsets.ReadOnlyModelViewSet):
                 dept = self.groups[0].train_prog.department
             elif self.request.query_params.get('train_prog', None):
                 dept = list(self.groups)[0].train_prog.department
-            else:
+            elif self.request.query_params.get('lineage', 'false'):
+                return serializers.ScheduledCoursesCosmoSerializer
+            else :
                 return serializers.ScheduledCoursesSerializer
 
         if dept.mode.cosmo:
