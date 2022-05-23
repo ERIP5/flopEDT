@@ -19,6 +19,10 @@
 
     <script type='text/javascript' src="{% static 'reservation/form_hide.js' %}"></script>
 
+     <script type="text/javascript">
     mainHide()
+    document.getElementById("id_has_periodicity").onclick = mainHide;
+    document.getElementById("id_periodicity_type").onclick = mainHide;
+    </script>
 
 {% endblock %}

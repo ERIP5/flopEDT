@@ -25,7 +25,7 @@ var scale_start_time = 8*60//480
 var scale_end_time_day = 18*60+45 //1125
 
 //-- add --//
-var addS_val = 80
+var addS_val = 80 //should be 40 but the rectangle doesn't work
 
 //-- color per courses/booking --//
 // the number of course/booking is still acceptable
@@ -669,7 +669,7 @@ function display_addS() {
         .attr("stroke-width",3)
         .attr("cx",addS_circle_cx)
         .attr("cy",addS_circle_cy)
-        .attr("r", addS_val*0.66)
+        .attr("r", addS_val*0.33) // *0.66 normally
 
     // display the horizontal rectangle
     c_add_rect_horizontal = c_addall
