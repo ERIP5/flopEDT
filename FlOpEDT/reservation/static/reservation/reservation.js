@@ -1,4 +1,4 @@
-var allRoom = [];
+var allRoom = {};
 var allDept = [];
 var roomCourse = []
 var allObjectCourses = []
@@ -9,7 +9,6 @@ show_loader(true);
 getRooms();
 getCourses();
 getDepts();
-putCourseRoom();
 sortAllCourses();
 show_loader(false);
 
@@ -22,8 +21,10 @@ $.ajax({
     async: false,
     contentType: "application/json",
     success: function (msg) {
-      allRoom = JSON.parse(msg)
-      creationRooms()
+      jsonRoom = JSON.parse(msg)
+      for (room of jsonRoom){
+        creationRooms(room)
+      }
         allBasic();
     },
     error: function (xhr, error) {
@@ -75,7 +76,6 @@ function getDepts(){
     contentType: "application/json",
     success: function (msg) {
       allDept = JSON.parse(msg)
-      console.log(allDept)
     },
     error: function (xhr, error) {
       console.log("error");
@@ -94,15 +94,17 @@ function listDays()
     }
 }
 
-function creationRooms()
-{
-    for (room of allRoom)
-    {
+function creationRooms(room){
+    newRoom = new Object();
+    newRoom.id = room.id;
+    newRoom.is_basic = room.is_basic
+    newRoom.name = room.name
+    newRoom.types = room.types
     roomCourse = new Object(listDays());
-    room.courses = roomCourse
+    newRoom.courses = roomCourse
     roomCourse = new Object(listDays());
-    room.booking = roomCourse
-    }
+    newRoom.booking = roomCourse
+    allRoom[room.name]= newRoom
 }
 
 function organizeCourse(course)
@@ -135,7 +137,7 @@ function organizeCourse(course)
     {
         newCourse.group.push(group.name)
     }
-    allObjectCourses.push(newCourse)
+    allRoom[course.room.name].courses[course.day].push(newCourse)
 }
 
 function organizeNotBasicCourses(course)
@@ -161,43 +163,21 @@ function organizeNotBasicCourses(course)
     }
 
 }
-
-function putCourseRoom()
-{
-    allRoom.forEach(element => addCourse(element))
-}
-
-function addCourse(room)
-{
-    for (course of allObjectCourses)
-    {
-        if(room.name == course.room)
-        {
-            room.courses[course.day].push(course)
-        }
-    }
-}
-
 function allBasic()
 {
-    for (room of allRoom)
+    for (room in allRoom)
     {
-        if (room.is_basic == false)
-        {
-            var remove = allRoom.indexOf(room)
-            if (remove != -1)
-            {
-                allRoom.splice(remove)
-            }
+        if (allRoom[room].is_basic == false){
+            delete allRoom[room]
         }
     }
 }
 
 function sortAllCourses()
 {
-for (room of allRoom){
+for (room in allRoom){
         for(day of days){
-        room.courses[day.ref].sort(function compare(a, b)
+        allRoom[room].courses[day.ref].sort(function compare(a, b)
             {
                 if (a.start < b.start)
                     return -1;
