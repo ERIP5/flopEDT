@@ -263,7 +263,7 @@ function circle_add_posx(day) {
 *filter management*
 *******************/
 function sortRoom() {
-    rooms_sort = allRoom
+    rooms_sort = Object.values(allRoom)
     rooms_sort = sortType(rooms_sort)
     rooms_sort = sortProjector(rooms_sort)
     //rooms_sort = sortDepartment(rooms_sort)
