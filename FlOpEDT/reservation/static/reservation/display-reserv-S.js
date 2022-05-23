@@ -238,19 +238,11 @@ function res_textS_tutor_y(course) {
 /*********************************
 *function color per courses/booking*
  *********************************/
-function colorS_choiceRoom() {
-    for (nbIdS_test; nbIdS_test < allRoom.length; nbIdS_test++) {
-        if (allRoom[nbIdS_test].name == current_room) {
-            nbIdS = nbIdS_test
-            return nbIdS
-        }
-    }
-}
 
 function colorS() {
     if (nbSday == 1) {
-        nbCS = allRoom[colorS_choiceRoom()].courses["m"].length
-        nbBS = allRoom[colorS_choiceRoom()].booking["m"].length
+        nbCS = allRoom[current_room].courses["m"].length
+        nbBS = allRoom[current_room].booking["m"].length
 
         nbCBtotalS = nbCS + nbBS
 
@@ -266,8 +258,8 @@ function colorS() {
     }
 
     if (nbSday == 2) {
-        nbCS = allRoom[colorS_choiceRoom()].courses["tu"].length
-        nbBS = allRoom[colorS_choiceRoom()].booking["tu"].length
+        nbCS = allRoom[current_room].courses["tu"].length
+        nbBS = allRoom[current_room].booking["tu"].length
 
         nbCBtotalS = nbCS + nbBS
 
@@ -283,8 +275,8 @@ function colorS() {
     }
 
     if (nbSday == 3) {
-        nbCS = allRoom[colorS_choiceRoom()].courses["w"].length
-        nbBS = allRoom[colorS_choiceRoom()].booking["w"].length
+        nbCS = allRoom[current_room].courses["w"].length
+        nbBS = allRoom[current_room].booking["w"].length
 
         nbCBtotalS = nbCS + nbBS
 
@@ -300,8 +292,8 @@ function colorS() {
     }
 
     if (nbSday == 4) {
-        nbCS = allRoom[colorS_choiceRoom()].courses["th"].length
-        nbBS = allRoom[colorS_choiceRoom()].booking["th"].length
+        nbCS = allRoom[current_room].courses["th"].length
+        nbBS = allRoom[current_room].booking["th"].length
 
         nbCBtotalS = nbCS + nbBS
 
@@ -317,8 +309,8 @@ function colorS() {
     }
 
     if (nbSday == 5) {
-        nbCS = allRoom[colorS_choiceRoom()].courses["f"].length
-        nbBS = allRoom[colorS_choiceRoom()].booking["f"].length
+        nbCS = allRoom[current_room].courses["f"].length
+        nbBS = allRoom[current_room].booking["f"].length
 
         nbCBtotalS = nbCS + nbBS
 
@@ -534,7 +526,7 @@ function display_scaleS() {
 function display_coursesS() {
 
     c_courses_day = d3.select(".grilleS");
-    for(room of allRoom) {
+    for(room of Object.values(allRoom)) {
         if(room.name == current_room) {
             for (day of days) {
                 c_course = c_courses_day
@@ -594,7 +586,7 @@ function display_coursesS() {
 // display the reservation
 function display_reservationS() {
     c_reservation_day = d3.select(".grilleS");
-        for(room of allRoom) {
+        for(room of Object.values(allRoom)) {
             if(room.name == current_room) {
                 for (day of days) {
                     c_reservation = c_reservation_day
