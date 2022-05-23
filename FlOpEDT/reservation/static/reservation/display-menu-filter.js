@@ -17,8 +17,8 @@ function displayMenutext(id, text) {
 
 function displaySelectRoom() {
     select = document.getElementById("selectRoom");
-    for (var i = 0; i < allRoom.length; i++) {
-        var textC = allRoom[i].name;
+    for (room in allRoom) {
+        var textC = allRoom[room].name;
         CreateElem = document.createElement("option");
         CreateElem.textContent = textC;
         CreateElem.value = textC;
