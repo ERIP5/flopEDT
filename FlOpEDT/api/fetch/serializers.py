@@ -551,7 +551,7 @@ class ResRoomSerializer(serializers.ModelSerializer):
 class CourseResTypeSerializer(serializers.Serializer):
     name = serializers.CharField()
     duration = serializers.IntegerField()
-    department = DepartmentAbbrevSerializer()
+    department = serializers.CharField()
     class Meta:
         model = bm.CourseType
         fields = ['name', 'duration', 'department']
@@ -588,14 +588,19 @@ class Course_SC_Type_Serializer(serializers.Serializer):
         fields = ['id', 'type', 'room_type', 'week', 'year', 'module', 'groups', 'tutor',
                   'is_graded', 'supp_tutor']
 
+class Course_SC_Room_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = bm.Room
+        fields = ['name', 'is_basic']
+
 class ResCourseSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField();
-    room = ResRoomSerializer();
+    id = serializers.IntegerField()
+    room = Course_SC_Room_Serializer()
     start_time = serializers.IntegerField()
     day = serializers.CharField()
     course = Course_SC_Type_Serializer()
 
     class Meta:
         model = bm.ScheduledCourse
-        fields = ['id','room','start_time','day','course']
+        fields = ['id', 'room', 'start_time', 'day', 'course']
 

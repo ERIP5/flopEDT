@@ -178,8 +178,11 @@ class ScheduledCoursesViewSet(viewsets.ReadOnlyModelViewSet):
                     dept = self.tutor.departments.first()
             elif self.request.query_params.get('group', None):
                 dept = self.groups[0].train_prog.department
-            else:
+            elif self.request.query_params.get('train_prog', None):
                 dept = list(self.groups)[0].train_prog.department
+            else:
+                return serializers.ScheduledCoursesSerializer
+
         if dept.mode.cosmo:
             return serializers.ScheduledCoursesCosmoSerializer
         else:
@@ -814,68 +817,18 @@ class ParameterViewSet(viewsets.ViewSet):
                           tutor_param()
                       ])
                   )
-class ResCoursesViewSet(viewsets.ReadOnlyModelViewSet):
+
+
+class ResCoursesViewSet(ScheduledCoursesViewSet):
     """
     ViewSet to see all the scheduled courses
 
     Result can be filtered by function ScheduledCourseFilterSet
     as wanted with week, year and work_copy (0 by default).
     """
-    permission_classes = [IsAdminOrReadOnly]
-    filter_class = ScheduledCourseFilterSet
-    serializer_class = serializers.ResCourseSerializer
 
-    def get_queryset(self):
-        lineage = self.request.query_params.get('lineage', 'false')
-        lineage = True if lineage == 'true' else False
-        self.train_prog = self.request.query_params.get('train_prog', None)
-        group_name = self.request.query_params.get('group', None)
-        self.tutor = self.request.query_params.get('tutor_name', None)
-        work_copy = self.request.query_params.get('work_copy', 0)
-        if self.tutor is not None:
-            try:
-                self.tutor = pm.Tutor.objects.get(username=self.tutor)
-            except pm.Tutor.DoesNotExist:
-                raise exceptions.NotAcceptable(detail='Unknown tutor')
-
-        queryset = bm.ScheduledCourse \
-            .objects.all().select_related('course__module__train_prog__department',
-                                          'tutor__display',
-                                          'course__type',
-                                          'course__room_type',
-                                          'course__module__display') \
-            .prefetch_related('course__groups__train_prog',
-                              'room',
-                              'course__supp_tutor')
-        queryset = queryset.filter(work_copy=work_copy)
-        # sanity check
-        if group_name is not None and self.train_prog is None:
-            raise exceptions.NotAcceptable(detail='A training programme should be '
-                                                  'given when a group name is given')
-
-        if group_name is not None:
-            try:
-                declared_group = bm.StructuralGroup.objects.get(
-                    name=group_name, train_prog=self.train_prog)
-                self.groups = {declared_group}
-                if lineage:
-                    self.groups |= declared_group.ancestor_groups()
-            except bm.StructuralGroup.DoesNotExist:
-                raise exceptions.NotAcceptable(detail='No such group')
-            except:
-                raise exceptions.NotAcceptable(detail='Issue with the group')
-            queryset = queryset.filter(course__groups__in=self.groups)
-        else:
-            if self.train_prog is not None:
-                queryset = queryset.filter(
-                    course__groups__train_prog=self.train_prog)
-
-        if group_name is None and self.train_prog is None:
-            if self.tutor is not None:
-                queryset = queryset.filter(
-                    Q(tutor=self.tutor) | Q(course__supp_tutor=self.tutor))
-        return queryset
-
+    def get_serializer_class(self):
+        return serializers.ResCourseSerializer
 
 
 class ResRoomViewSet(viewsets.ReadOnlyModelViewSet):

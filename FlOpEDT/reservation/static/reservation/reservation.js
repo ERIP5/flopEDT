@@ -52,7 +52,6 @@ $.ajax({
         if(el.room.is_basic){
             organizeCourse(el)
         }else{
-            organizeNotBasicCourses(el)
         }
 
       }
@@ -111,7 +110,7 @@ function organizeCourse(course)
 {
     var newCourse = new Object();
     newCourse.id = course.id
-    newCourse.department = course.course.type.department.abbrev
+    newCourse.department = course.course.type.department
     newCourse.mod = course.course.module.abbrev
     newCourse.C_type = course.course.type.name
     newCourse.day = course.day
@@ -120,8 +119,6 @@ function organizeCourse(course)
     newCourse.room = course.room.name
     newCourse.room_type = course.course.room_type
     newCourse.graded = course.course.is_graded
-    newCourse.color_bg = course.course.module.display.color_bg
-    newCourse.color_txt = course.course.module.display.color_txt
     if (course.course.tutor != null)
     {
         newCourse.tutor = course.course.tutor.username
@@ -140,29 +137,6 @@ function organizeCourse(course)
     allRoom[course.room.name].courses[course.day].push(newCourse)
 }
 
-function organizeNotBasicCourses(course)
-{
-    if ((course.room.name).includes('+')){
-        var tabRoomC = (course.room.name).split('+')
-        var pref = (course.room.name.substr(0,1))
-        for (room of tabRoomC){
-            if(room.substr(0,1) == pref){
-                course.room.name = room
-            }else{
-                course.room.name = pref+room
-            }
-            organizeCourse(course)
-        }
-    }
-    if ((course.room.name).includes('-')){
-        var tabRoomC = (course.room.name).split('-')
-        for (room of tabRoomC){
-            course.room.name = room
-            organizeCourse(course)
-        }
-    }
-
-}
 function allBasic()
 {
     for (room in allRoom)
