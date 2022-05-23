@@ -16,6 +16,7 @@ def addReservation(request, department):
         if reservation_form.is_valid() and periodicity_form.is_valid():
             reservation_data = reservation_form.cleaned_data
             periodicity_data = periodicity_form.cleaned_data
+            check_reservation()
             if not reservation_data['has_periodicity']:
                 save_reservation(reservation_data)
             else:
@@ -35,8 +36,17 @@ def listReserv(req, department):
 
 
 def check_reservation(reservation_data):
-    result = {'status': 'OK', 'more': ''}
-    return result
+    # Si un cours est entre heure début et heure de fin : status NOK
+    # more 'heure indisponible'
+    indispo = reservation_data.start_time
+
+    if ():
+        result = {'status': 'OK', 'more': ''}
+        return result
+
+    else:
+        result = {'status': 'NOK', 'more': ''}
+        return result
 
 def save_reservation(reservation_data):
     if check_reservation(reservation_data)['status'] == 'OK':

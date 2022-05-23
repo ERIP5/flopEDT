@@ -13,8 +13,6 @@ class DateInput(forms.DateInput):
 class TimeInput(forms.TimeInput):
     input_type = 'time'
 
-
-
 class ReservationForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
@@ -28,7 +26,9 @@ class ReservationForm(ModelForm):
         fields = '__all__'
         widgets = {
             'date': DateInput(),
-            'end': DateInput()
+            'end': DateInput(),
+            'start_time': TimeInput(),
+            'end_time': TimeInput()
         }
         labels = {
             'responsible': _("Responsible's name"),

@@ -5,6 +5,7 @@ from base.models import Room
 from django.contrib.postgres.fields import ArrayField
 from base.timing import Day
 from django.utils.translation import gettext_lazy as _
+from datetime import datetime
 
 class Reservation(models.Model):
     responsible = models.ForeignKey('people.User',  on_delete=models.CASCADE, related_name='reservationResp')
@@ -15,8 +16,8 @@ class Reservation(models.Model):
     with_key = models.BooleanField(default=False)
     email = models.BooleanField(default=False)
     date = models.DateField()
-    start_time = models.PositiveSmallIntegerField()
-    duration = models.PositiveIntegerField()
+    start_time = models.TimeField()
+    end_time = models.TimeField()
     periodicity = models.ForeignKey("ReservationPeriodicity", null=True, blank=True, on_delete=models.SET_NULL)
 
 

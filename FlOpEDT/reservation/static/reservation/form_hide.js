@@ -4,7 +4,7 @@ function errorHide() {
 }
 
 function mainHide() {
-    // must be hidden
+    // must stay hidden
     document.getElementById("id_periodicity").parentElement.hidden=true
 
     // hide all at the start
@@ -18,6 +18,7 @@ function mainHide() {
 
     // has_periodicity checked = true
     if (document.getElementById("id_has_periodicity").checked == true){
+        document.getElementById("periodicity").hidden = false
         document.getElementById("id_periodicity_type").parentElement.hidden=false
         document.getElementById("id_start").parentElement.hidden=false
         document.getElementById("id_end").parentElement.hidden=false
@@ -56,5 +57,6 @@ function mainHide() {
         document.getElementById("id_bw_weeks_nb").parentElement.hidden=true
         document.getElementById("id_bm_x_choice").parentElement.hidden=true
         document.getElementById("id_bm_y_choice").parentElement.hidden=true
+        document.getElementById("periodicity").hidden = true
     }
 }

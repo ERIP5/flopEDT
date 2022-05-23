@@ -13,16 +13,18 @@
     <form action="" method="post">
         {% csrf_token %}
         {{ reservation_form.as_p }}
-        {{ periodicity_form.as_p }}
+        <g id="periodicity">
+            {{ periodicity_form.as_p }}
+        </g>
         <input type="submit" value="Soumettre">
     </form>
 
     <script type='text/javascript' src="{% static 'reservation/form_hide.js' %}"></script>
 
      <script type="text/javascript">
-    mainHide()
-    document.getElementById("id_has_periodicity").onclick = mainHide;
-    document.getElementById("id_periodicity_type").onclick = mainHide;
+        mainHide()
+        document.getElementById("id_has_periodicity").onclick = mainHide;
+        document.getElementById("id_periodicity_type").onclick = mainHide;
     </script>
 
 {% endblock %}

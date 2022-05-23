@@ -661,7 +661,7 @@ function display_addS() {
         .attr("stroke-width",3)
         .attr("cx",addS_circle_cx)
         .attr("cy",addS_circle_cy)
-        .attr("r", addS_val*0.33) // *0.66 normally
+        .attr("r", addS_val*0.66)
 
     // display the horizontal rectangle
     c_add_rect_horizontal = c_addall
