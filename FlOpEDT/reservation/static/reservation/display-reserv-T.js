@@ -229,10 +229,8 @@ function add_x(day) {
     return (day.num*days_width_T+room_width_T)
 }
 
-function color_courses(course) {
-    //return course.color_bg
+function color_courses() {
     return "#4169e1"
-    //color from grr  #4169e1  #99cccc  #95a5a6
 }
 
 function get_course_name(course) {

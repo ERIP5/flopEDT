@@ -94,3 +94,11 @@ def lineage_param(**kwargs):
                              description="includes parent groups (default: false)",
                              type=openapi.TYPE_BOOLEAN,
                              **kwargs)
+
+
+def cosmo_param(**kwargs):
+    return openapi.Parameter('cosmo',
+                             openapi.IN_QUERY,
+                             description="display cosmo (taken into account only if train_prog, dept, tutor and group are blanks) (default: false)",
+                             type=openapi.TYPE_BOOLEAN,
+                             **kwargs)
