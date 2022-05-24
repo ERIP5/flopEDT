@@ -1,8 +1,3 @@
-function errorHide() {
-    document.getElementsByClassName("errorlist")
-
-}
-
 function mainHide() {
     // must stay hidden
     document.getElementById("id_periodicity").parentElement.hidden=true
@@ -58,5 +53,10 @@ function mainHide() {
         document.getElementById("id_bm_x_choice").parentElement.hidden=true
         document.getElementById("id_bm_y_choice").parentElement.hidden=true
         document.getElementById("periodicity").hidden = true
+
+        list_error = document.getElementById("periodicity").getElementsByClassName("errorlist")
+        for (i=0; i< list_error.length; i++) {
+            list_error[i].hidden=true
+        }
     }
 }
