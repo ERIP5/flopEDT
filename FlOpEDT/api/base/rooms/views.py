@@ -122,3 +122,18 @@ class RoomSortsViewSet(viewsets.ModelViewSet):
     filterset_fields = '__all__'
 
 
+class RoomAttributeViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet to see all the room attributes.
+    """
+    queryset = bm.RoomAttribute.objects.all()
+    serializer_class = serializers.RoomAttributeSerializer
+
+
+class AttributeByRoomViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet to see, for each room, all his attributes.
+    """
+
+    queryset = bm.LinkRoomAttributes.objects.all()
+    serializer_class = serializers.AttributeByRoomSerializer

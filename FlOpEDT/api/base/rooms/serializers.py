@@ -49,3 +49,13 @@ class RoomSortsSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class RoomAttributeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bm.RoomAttribute
+        fields = ['name', 'description', 'attribute_type', 'array_values', 'default_value']
+
+
+class AttributeByRoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = bm.LinkRoomAttributes
+        fields = ['room', 'attribute', 'value']

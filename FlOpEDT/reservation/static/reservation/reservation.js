@@ -1,5 +1,5 @@
 var allRoom = {};
-var allDept = [];
+var allAttributes = [];
 var roomCourse = []
 var allObjectCourses = []
 var test = []
@@ -8,7 +8,8 @@ var alltype = []
 show_loader(true);
 getRooms();
 getCourses();
-getDepts();
+getAttributes();
+//getRoomAttributes();
 sortAllCourses();
 show_loader(false);
 
@@ -66,15 +67,15 @@ $.ajax({
   });
 }
 
-function getDepts(){
-    $.ajax({
+function getAttributes(){
+$.ajax({
     type: "GET", //rest Type
     dataType: 'text',
-    url: url_fetch_departments_reservation,
+    url: url_room_attribute,
     async: false,
     contentType: "application/json",
     success: function (msg) {
-      allDept = JSON.parse(msg)
+        allAttributes = msg
     },
     error: function (xhr, error) {
       console.log("error");
@@ -85,6 +86,27 @@ function getDepts(){
     }
   });
 }
+
+function getRoomAttributes(){
+$.ajax({
+    type: "GET", //rest Type
+    dataType: 'text',
+    url: url_room_attribute,
+    async: false,
+    contentType: "application/json",
+    success: function (msg) {
+        allAttributes = msg
+    },
+    error: function (xhr, error) {
+      console.log("error");
+      console.log(xhr);
+      console.log(error);
+      console.log(xhr.responseText);
+      show_loader(false);
+    }
+  });
+}
+
 function listDays()
 {
     for (day of days)
@@ -102,6 +124,7 @@ function creationRooms(room){
     roomCourse = new Object(listDays());
     newRoom.courses = roomCourse
     roomCourse = new Object(listDays());
+    newRoom.attributes = {}
     newRoom.booking = roomCourse
     allRoom[room.name]= newRoom
 }

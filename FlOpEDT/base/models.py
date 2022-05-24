@@ -30,12 +30,14 @@ from colorfield.fields import ColorField
 from django.contrib.auth.models import AbstractUser
 from django.contrib.postgres.fields import ArrayField
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db.models import UniqueConstraint
 from django.db.models.signals import post_save
 from django.db import models
 from django.dispatch import receiver
 
 from base.timing import hhmm, str_slot, Day, Time, days_list, days_index
 import base.weeks
+import json
 
 from django.utils.translation import gettext_lazy as _
 
@@ -374,7 +376,6 @@ class Room(models.Model):
                                         blank=True,
                                         related_name="subrooms")
     departments = models.ManyToManyField(Department)
-    #attributes = models.ManyToManyField('reservation.RoomAttribute')
 
     @property
     def is_basic(self):
@@ -1002,5 +1003,42 @@ class Regen(models.Model):
             ret += "Pas de (re-)génération prévue"
 
         return ret
+
+
+class RoomAttribute(models.Model):
+    name = models.CharField(max_length=20)
+    description = models.TextField(null=True)
+
+    class AttributeType(models.TextChoices):
+        Numeric = 'N', _('Integer')
+        Boolean = 'B', _('Boolean')
+        Array = 'A', _('Arraylist')
+
+    attribute_type = models.CharField(
+        max_length=2,
+        choices=AttributeType.choices,
+        default=AttributeType.Boolean,
+    )
+
+    array_values = ArrayField(models.CharField(max_length=20), null=True)
+    default_value = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        super(RoomAttribute, self).save(*args, **kwargs)
+        for r in Room.objects.all():
+            LinkRoomAttributes.objects.get_or_create(room=r, attribute=self,
+                                                     defaults={"value": self.default_value})
+
+
+class LinkRoomAttributes(models.Model):
+    room = models.ForeignKey('Room', on_delete=models.CASCADE, related_name="valued_attributes")
+    attribute = models.ForeignKey('RoomAttribute', on_delete=models.CASCADE)
+    value = models.CharField(max_length=20)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=['room', 'attribute'], name='unique_room_attribute'),]
 
 # </editor-fold desc="MISC">

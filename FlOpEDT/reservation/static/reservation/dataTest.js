@@ -141,18 +141,7 @@ let rooms = [
 ]
 
 
-let restest = {
-"id_booking" : 123456,
-"responsible" : "Jean",
-"room" : "414",
-"room_type" : "M",
-"start" : 480,
-"duration" : 190,
-"title" : "réunion",
-"description": "une reservation pour tester l'affichage des réservations",
-"type": "type",
-"key":true
-}
+
 
 
 let filtersList = ["type","projector","computer","department"]

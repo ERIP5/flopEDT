@@ -181,7 +181,7 @@ class ScheduledCoursesViewSet(viewsets.ReadOnlyModelViewSet):
                 dept = self.groups[0].train_prog.department
             elif self.request.query_params.get('train_prog', None):
                 dept = list(self.groups)[0].train_prog.department
-            elif self.request.query_params.get('cosmo', 'false'):
+            elif self.request.query_params.get('cosmo', 'true'):
                 return serializers.ScheduledCoursesCosmoSerializer
             else :
                 return serializers.ScheduledCoursesSerializer
