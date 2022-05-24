@@ -1,5 +1,5 @@
 var allRoom = {};
-var allAttributes = [];
+var allAttributes = {};
 var roomCourse = []
 var allObjectCourses = []
 var test = []
@@ -11,7 +11,7 @@ show_loader(true);
 getRooms();
 getCourses();
 getAttributes();
-//getRoomAttributes();
+getRoomAttributes();
 sortAllCourses();
 show_loader(false);
 }
@@ -78,7 +78,9 @@ $.ajax({
     async: false,
     contentType: "application/json",
     success: function (msg) {
-        allAttributes = msg
+        for(data of JSON.parse(msg)){
+            allAttributes[data.id]= data;
+        }
     },
     error: function (xhr, error) {
       console.log("error");
@@ -94,11 +96,13 @@ function getRoomAttributes(){
 $.ajax({
     type: "GET", //rest Type
     dataType: 'text',
-    url: url_room_attribute,
+    url: url_room_roomAttribute,
     async: false,
     contentType: "application/json",
     success: function (msg) {
-        allAttributes = msg
+        for(data of JSON.parse(msg)){
+            putRoomAttribute(data)
+        }
     },
     error: function (xhr, error) {
       console.log("error");
@@ -127,7 +131,7 @@ function creationRooms(room){
     roomCourse = new Object(listDays());
     newRoom.courses = roomCourse
     roomCourse = new Object(listDays());
-    newRoom.attributes = {}
+    newRoom.attributes = []
     newRoom.booking = roomCourse
     allRoom[room.name]= newRoom
 }
@@ -169,6 +173,17 @@ function allBasic()
     {
         if (allRoom[room].is_basic == false){
             delete allRoom[room]
+        }
+    }
+}
+
+function putRoomAttribute(data){
+    for(room in allRoom){
+        if (allRoom[room].id == data.room){
+            atr = {}
+            key = allAttributes[data.attribute]
+            atr[key.name] = data.value
+            allRoom[room].attributes.push(atr)
         }
     }
 }
