@@ -5,6 +5,8 @@ var allObjectCourses = []
 var test = []
 var alltype = []
 
+
+function main_reservation(){
 show_loader(true);
 getRooms();
 getCourses();
@@ -12,6 +14,7 @@ getAttributes();
 //getRoomAttributes();
 sortAllCourses();
 show_loader(false);
+}
 
 function getRooms(){
 
