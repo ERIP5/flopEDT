@@ -131,7 +131,7 @@ function creationRooms(room){
     roomCourse = new Object(listDays());
     newRoom.courses = roomCourse
     roomCourse = new Object(listDays());
-    newRoom.attributes = []
+    newRoom.attributes = {}
     newRoom.booking = roomCourse
     allRoom[room.name]= newRoom
 }
@@ -180,10 +180,7 @@ function allBasic()
 function putRoomAttribute(data){
     for(room in allRoom){
         if (allRoom[room].id == data.room){
-            atr = {}
-            key = allAttributes[data.attribute]
-            atr[key.name] = data.value
-            allRoom[room].attributes.push(atr)
+            allRoom[room].attributes[allAttributes[data.attribute].name] = data.value
         }
     }
 }

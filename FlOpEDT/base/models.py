@@ -366,6 +366,43 @@ class RoomType(models.Model):
         return s
 
 
+class RoomAttribute(models.Model):
+    name = models.CharField(max_length=20)
+    description = models.TextField(null=True)
+
+    class AttributeType(models.TextChoices):
+        Numeric = 'N', _('Numeric')
+        Boolean = 'B', _('Boolean')
+        Array = 'A', _('Arraylist')
+
+    attribute_type = models.CharField(
+        max_length=2,
+        choices=AttributeType.choices,
+        default=AttributeType.Boolean,
+    )
+
+    array_values = ArrayField(models.CharField(max_length=20), null=True)
+    default_value = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        super(RoomAttribute, self).save(*args, **kwargs)
+        for r in Room.objects.all():
+            LinkRoomAttributes.objects.get_or_create(room=r, attribute=self,
+                                                     defaults={"value": self.default_value})
+
+
+class LinkRoomAttributes(models.Model):
+    room = models.ForeignKey('Room', on_delete=models.CASCADE, related_name="valued_attributes")
+    attribute = models.ForeignKey('RoomAttribute', on_delete=models.CASCADE)
+    value = models.CharField(max_length=20)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=['room', 'attribute'], name='unique_room_attribute'),]
+
+
 class Room(models.Model):
     name = models.CharField(max_length=50)
     types = models.ManyToManyField(RoomType,
@@ -1003,42 +1040,5 @@ class Regen(models.Model):
             ret += "Pas de (re-)génération prévue"
 
         return ret
-
-
-class RoomAttribute(models.Model):
-    name = models.CharField(max_length=20)
-    description = models.TextField(null=True)
-
-    class AttributeType(models.TextChoices):
-        Numeric = 'N', _('Integer')
-        Boolean = 'B', _('Boolean')
-        Array = 'A', _('Arraylist')
-
-    attribute_type = models.CharField(
-        max_length=2,
-        choices=AttributeType.choices,
-        default=AttributeType.Boolean,
-    )
-
-    array_values = ArrayField(models.CharField(max_length=20), null=True)
-    default_value = models.CharField(max_length=20)
-
-    def __str__(self):
-        return self.name
-
-    def save(self, *args, **kwargs):
-        super(RoomAttribute, self).save(*args, **kwargs)
-        for r in Room.objects.all():
-            LinkRoomAttributes.objects.get_or_create(room=r, attribute=self,
-                                                     defaults={"value": self.default_value})
-
-
-class LinkRoomAttributes(models.Model):
-    room = models.ForeignKey('Room', on_delete=models.CASCADE, related_name="valued_attributes")
-    attribute = models.ForeignKey('RoomAttribute', on_delete=models.CASCADE)
-    value = models.CharField(max_length=20)
-
-    class Meta:
-        constraints = [models.UniqueConstraint(fields=['room', 'attribute'], name='unique_room_attribute'),]
 
 # </editor-fold desc="MISC">

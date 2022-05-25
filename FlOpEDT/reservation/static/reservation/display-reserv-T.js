@@ -24,13 +24,7 @@ var date =[{}]
 
 var rooms_sort = []
 
-var f_room_type = "all";
-
-var room_projo = "all";
-
-var room_computer = "all";
-
-var room_department = "all";
+var filter_list = {}
 
 // variable or cpt not defined reset in cleanT
 var y_room_act_T = days_y_T()
@@ -261,57 +255,26 @@ function circle_add_posx(day) {
 *filter management*
 *******************/
 function sortRoom() {
-    rooms_sort = Object.values(allRoom)
-    rooms_sort = sortType(rooms_sort)
-    rooms_sort = sortProjector(rooms_sort)
-    //rooms_sort = sortDepartment(rooms_sort)
-}
+    rooms_sort = []
 
-function sortType(oldList) {
-    newL = []
-    for (room of oldList) {
-        if(f_room_type != "all") {
-            if(room.type == f_room_type) {
-                newL.push(room)
+    if (Object.keys(filter_list).length == 0){
+        rooms_sort = Object.values(allRoom)
+    }else{
+        for (room of Object.values(allRoom)){
+            var toadd = true
+            for (filter in filter_list){
+                if(room.attributes[filter] != filter_list[filter]){
+                    toadd = false
+                }
+            }
+            if (toadd){
+                rooms_sort.push(room)
             }
         }
-        else {
-            newL = oldList
-        }
     }
-    return newL
-}
 
-function sortProjector(oldList) {
-    newL = []
-    for (room of oldList) {
-        if(room_projo != "all") {
-            if((""+room.projector+"") == room_projo) {
-                newL.push(room)
-            }
-        }
-        else {
-            newL = oldList
-        }
-    }
-    return newL
-}
 
-function sortComputer(oldList) {
-    newL = []
-    for (room of oldList) {
-        if(room_computer != "all") {
-            if((""+room.computer+"") == room_computer) {
-                newL.push(room)
-            }
-        }
-        else {
-            newL = oldList
-        }
-    }
-    return newL
 }
-
 
 /***********
  *form*

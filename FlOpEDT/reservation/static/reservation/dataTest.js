@@ -141,11 +141,4 @@ let rooms = [
 ]
 
 
-
-
-
-let filtersList = ["type","projector","computer","department"]
-
-let typeRoom = ["amphi","A","B"]
-
-let truefalse = [true,false]
+let truefalse = ['True','False']
