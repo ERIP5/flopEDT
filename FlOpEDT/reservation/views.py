@@ -5,10 +5,11 @@ from django import forms
 from django.shortcuts import render, redirect
 from django.template.response import TemplateResponse
 from pip._internal import req
+from base.models import Room, ScheduledCourse
+from base.timing import days_list
 
 from reservation.forms import ReservationForm, ReservationPeriodicityForm
 from reservation.models import *
-
 
 def addReservation(request, department):
     if request.method == 'POST':
@@ -37,17 +38,34 @@ def listReserv(req, department):
 
 
 def check_reservation(reservation_data):
-    # Si un cours est entre heure début et heure de fin : status NOK
-    # more 'heure indisponible'
-    indispo = reservation_data.start_time
-    for(x) in allRoom:
-        startDur = allRoom[x].courses.start + allRoom[x].courses.duration
-        if (startDur < reservation_data.start_time or startDur > reservation_data.end_time):
+    #convert time field in minute
+    start_min = reservation_data['start_time'].hour*60 + reservation_data['start_time'].minute
+    end_min = reservation_data['end_time'].hour*60 + reservation_data['end_time'].minute
+
+    good_day_nb = reservation_data['date'].weekday()
+    good_year_nb = reservation_data['date'].year()
+    good_day = days_list[good_day_nb - 1]
+
+    good_room = Room.objects.get(name=reservation_data['room'])
+
+    all_courses= ScheduledCourse.objects.filter(work_copy=0)
+    good_time = all_courses.filter(day=good_day, course__week__nb=11, course__week_year=good_year_nb)
+    #room_courses = all_courses.filter(room=good_room)
+    for sched_course in good_time:
+        #sched_course.start_time
+        #sched_course.course.week.nb
+        #sched_course.course.type.duration
+
+
+        start_dur = 600
+        #startDur = Room.object.get(good_room.courses.good_day[room].start) + \
+        #           Room.object.get(good_room.courses.good_day[room].duration)
+        if (start_dur <= start_min or start_dur >= end_min):
             result = {'status': 'OK', 'more': ''}
             return result
 
         else:
-            result = {'status': 'NOK', 'more': 'incorrect hour'}
+            result = {'status': 'NOK', 'more': 'unavailable hour'}
             return result
 
 
