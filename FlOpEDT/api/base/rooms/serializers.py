@@ -52,7 +52,7 @@ class RoomSortsSerializer(serializers.ModelSerializer):
 class RoomAttributeSerializer(serializers.ModelSerializer):
     class Meta:
         model = bm.RoomAttribute
-        fields = ['name', 'description', 'attribute_type', 'array_values', 'default_value']
+        fields = '__all__'
 
 
 class AttributeByRoomSerializer(serializers.ModelSerializer):
