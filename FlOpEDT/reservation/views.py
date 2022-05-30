@@ -7,6 +7,7 @@ from django.template.response import TemplateResponse
 from pip._internal import req
 from base.models import Room, ScheduledCourse
 from base.timing import days_list
+from django.http import HttpResponse
 
 from reservation.forms import ReservationForm, ReservationPeriodicityForm
 from reservation.models import *
@@ -19,7 +20,11 @@ def addReservation(request, department):
             reservation_data = reservation_form.cleaned_data
             periodicity_data = periodicity_form.cleaned_data
             if not reservation_data['has_periodicity']:
-                save_reservation(reservation_data)
+                if save_reservation(reservation_data)=='OK':
+                    return HttpResponse('yahou')
+                #redirect(page basique + message pop up)
+                else:
+                    return HttpResponse('pas content')
             else:
                 check_periodicity(periodicity_data)
 
@@ -56,9 +61,10 @@ def check_reservation(reservation_data):
                                    room__name=reservation_data['room'])
 
     for sched_course in good_time:
-        start_dur = good_time[sched_course].start_time+ \
-                   good_time[sched_course].course.type.duration
-        if (start_dur >= start_min or start_dur <= end_min):
+        start_dur = sched_course.start_time+ \
+                   sched_course.course.type.duration
+        #if (start_dur >= start_min or start_dur <= end_min):
+        if
             result = {'status': 'NOK', 'more': 'unavailable hour'}
             return result
 
@@ -68,10 +74,10 @@ def check_reservation(reservation_data):
 
 def save_reservation(reservation_data):
     if check_reservation(reservation_data)['status'] == 'OK':
-        pass  # appel_a_l_api...
+        return 'OK'
 
     else:
-        pass
+        return 'NOK'
 
 
 def check_periodicity(periodicity_data):
