@@ -39,6 +39,7 @@ from api.base.urls import routerBase
 from api.base.rooms.urls import routerRooms
 from api.base.groups.urls import routerGroups
 from api.base.courses.urls import routerCourses
+from api.reservation.urls import routerReservation
 from api.fetch.urls import routerFetch
 from api.people.urls import routerPeople
 from api.preferences.urls import routerPreferences
@@ -103,6 +104,8 @@ urlpatterns = [
          include((routerRooms.urls, 'api'), namespace = 'rooms')),
     path('courses/',
          include((routerCourses.urls, 'api'), namespace = 'course')),
+    path('reservation/',
+         include((routerReservation.urls, 'api'), namespace = 'reservation')),
     path('groups/',
          include((routerGroups.urls, 'api'), namespace = 'groups')),
     path('extra/',

@@ -820,8 +820,6 @@ class ParameterViewSet(viewsets.ViewSet):
                           tutor_param()
                       ])
                   )
-
-
 class ResCoursesViewSet(ScheduledCoursesViewSet):
     """
     ViewSet to see all the scheduled courses

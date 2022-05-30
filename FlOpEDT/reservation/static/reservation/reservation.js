@@ -1,15 +1,17 @@
 var allRoom = {};
 var allAttributes = {};
 var roomCourse = []
-var allObjectCourses = []
+var allObjectReservations = []
 var test = []
 var alltype = []
+let my = {"week" : 11 , "year" :2022}
 
 
 function main_reservation(){
 show_loader(true);
 getRooms();
 getCourses();
+getReservation();
 getAttributes();
 getRoomAttributes();
 sortAllCourses();
@@ -41,8 +43,7 @@ $.ajax({
   });
 }
 
-function getCourses()
-{let my = {"week" : 11 , "year" :2022}
+function getCourses(){
 $.ajax({
     type: "GET", //rest Type
     dataType: 'text',
@@ -58,6 +59,28 @@ $.ajax({
         }else{
         }
 
+      }
+    },
+    error: function (xhr, error) {
+      console.log("error");
+      console.log(xhr);
+      console.log(error);
+      console.log(xhr.responseText);
+      show_loader(false);
+    }
+  });
+}
+
+function getReservation(){
+$.ajax({
+    type: "GET", //rest Type
+    dataType: 'text',
+    url: build_url(url_reservation_allReservations, my),
+    async: false,
+    contentType: "application/json",
+    success: function (msg) {
+      for (el of JSON.parse(msg)){
+        organizeReservation(el);
       }
     },
     error: function (xhr, error) {
@@ -165,6 +188,27 @@ function organizeCourse(course)
         newCourse.group.push(group.name)
     }
     allRoom[course.room.name].courses[course.day].push(newCourse)
+}
+
+function organizeReservation(res){
+    var reservation = new Object();
+    reservation.id_booking = res.id;
+    reservation.responsible = res.responsible
+    reservation.room = res.room.name
+    reservation.room_type = res.room.types
+    date = new Date(res.date)
+    reservation.day = days[date.getDay()-1].ref
+    startsplit = res.start_time.split(':')
+    reservation.start = (parseInt(startsplit[0]*60 + parseInt(startsplit[1])))
+    endsplit = res.end_time.split(':')
+    reservation.duration = ((parseInt(endsplit[0]*60 + parseInt(endsplit[1]))) - reservation.start)
+    console.log(reservation.duration)
+    reservation.title = res.title
+    reservation.description = res.description
+    reservation.type = res.reservation_type
+    reservation.key = res.with_key
+
+    allRoom[reservation.room].booking[reservation.day].push(reservation)
 }
 
 function allBasic()
