@@ -62,9 +62,8 @@ def check_reservation(reservation_data):
             result = {'status': 'NOK', 'more': 'unavailable hour'}
             return result
 
-        else:
-            result = {'status': 'OK', 'more': ''}
-            return result
+    result = {'status': 'OK', 'more': ''}
+    return result
 
 
 def save_reservation(reservation_data):
