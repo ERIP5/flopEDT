@@ -48,22 +48,16 @@ def check_reservation(reservation_data):
     good_year_nb = reservation_data['date'].year
     good_week_nb = reservation_data['date'].isocalendar()[1]
 
+    #filter
     all_courses= ScheduledCourse.objects.filter(work_copy=0)
     good_time = all_courses.filter(day=good_day,
                                    course__week__nb=good_week_nb,
                                    course__week__year=good_year_nb,
-                                   room__name=reservation_data['room']
-                                   )
+                                   room__name=reservation_data['room'])
 
     for sched_course in good_time:
-        #sched_course.course.week.nb   plus besoin normalement
-        #sched_course.start_time
-        #sched_course.course.type.duration
-
-
-        start_dur = 600
-        #startDur = Room.object.get(good_room.courses.good_day[room].start) + \
-        #           Room.object.get(good_room.courses.good_day[room].duration)
+        start_dur = good_time[sched_course].start_time+ \
+                   good_time[sched_course].course.type.duration
         if (start_dur >= start_min or start_dur <= end_min):
             result = {'status': 'NOK', 'more': 'unavailable hour'}
             return result
