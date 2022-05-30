@@ -42,31 +42,28 @@ def check_reservation(reservation_data):
     start_min = reservation_data['start_time'].hour*60 + reservation_data['start_time'].minute
     end_min = reservation_data['end_time'].hour*60 + reservation_data['end_time'].minute
 
+    #date
     good_day_nb = reservation_data['date'].weekday()
-    good_year_nb = reservation_data['date'].year()
     good_day = days_list[good_day_nb - 1]
+    good_year_nb = reservation_data['date'].year
+    good_week_nb = reservation_data['date'].isocalendar()[1]
 
-    good_room = Room.objects.get(name=reservation_data['room'])
-
+    #filter
     all_courses= ScheduledCourse.objects.filter(work_copy=0)
-    good_time = all_courses.filter(day=good_day, course__week__nb=11, course__week_year=good_year_nb)
-    #room_courses = all_courses.filter(room=good_room)
+    good_time = all_courses.filter(day=good_day,
+                                   course__week__nb=good_week_nb,
+                                   course__week__year=good_year_nb,
+                                   room__name=reservation_data['room'])
+
     for sched_course in good_time:
-        #sched_course.start_time
-        #sched_course.course.week.nb
-        #sched_course.course.type.duration
-
-
-        start_dur = 600
-        #startDur = Room.object.get(good_room.courses.good_day[room].start) + \
-        #           Room.object.get(good_room.courses.good_day[room].duration)
-        if (start_dur <= start_min or start_dur >= end_min):
-            result = {'status': 'OK', 'more': ''}
-            return result
-
-        else:
+        start_dur = good_time[sched_course].start_time+ \
+                   good_time[sched_course].course.type.duration
+        if (start_dur >= start_min or start_dur <= end_min):
             result = {'status': 'NOK', 'more': 'unavailable hour'}
             return result
+
+    result = {'status': 'OK', 'more': ''}
+    return result
 
 
 def save_reservation(reservation_data):
