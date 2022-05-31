@@ -202,7 +202,6 @@ function organizeReservation(res){
     reservation.start = (parseInt(startsplit[0]*60 + parseInt(startsplit[1])))
     endsplit = res.end_time.split(':')
     reservation.duration = ((parseInt(endsplit[0]*60 + parseInt(endsplit[1]))) - reservation.start)
-    console.log(reservation.duration)
     reservation.title = res.title
     reservation.description = res.description
     reservation.type = res.reservation_type

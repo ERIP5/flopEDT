@@ -263,10 +263,20 @@ function sortRoom() {
         for (room of Object.values(allRoom)){
             var toadd = true
             for (filter in filter_list){
-                if(room.attributes[filter] != filter_list[filter]){
-                    toadd = false
+
+
+
+            const num = Number(filter_list[filter])
+            if (Number.isInteger(num)){
+                if(Number(room.attributes[filter]) < Number(filter_list[filter])){
+                        toadd = false
+                    }
+                }else{
+                    if(room.attributes[filter] != filter_list[filter]){
+                            toadd = false
+                        }
+                    }
                 }
-            }
             if (toadd){
                 rooms_sort.push(room)
             }
@@ -598,7 +608,7 @@ function display_reservation() {
                 .attr("y",res_y_T)
                 .attr("width",days_width_T)
                 .attr("height",res_height_T)
-                .attr("fill",colorT_resType)
+                .attr("fill","#95a5a6")
 
             c_res
                 .append("text")
@@ -709,7 +719,7 @@ function mainT() {
     //for each days and each room, add a group for each course and display each course information's
     display_courses();
     //for each days and each room, add a group for each reservation and display each reservation information's
-    //display_reservation();
+    display_reservation();
     //for each days and each room, add all add buttons
     display_add();
 
