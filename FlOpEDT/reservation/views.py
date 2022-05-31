@@ -24,7 +24,7 @@ def addReservation(request, department):
                     return HttpResponse('yahou')
                 #redirect(page basique + message pop up)
                 else:
-                    return HttpResponse('pas content')
+                    return HttpResponse('reservation impossible')
             else:
                 check_periodicity(periodicity_data)
 
@@ -61,10 +61,11 @@ def check_reservation(reservation_data):
                                    room__name=reservation_data['room'])
 
     for sched_course in good_time:
-        start_dur = sched_course.start_time+ \
-                   sched_course.course.type.duration
+        start_course = sched_course.start_time
+        end_course = sched_course.start_time + sched_course.course.type.duration
         #if (start_dur >= start_min or start_dur <= end_min):
-        if
+        #if self.start_time < other.end_time and other.start_time < self.end_time:
+        if (start_course < start_min and end_course > start_min) or (start_course > start_min and start_course < end_min):
             result = {'status': 'NOK', 'more': 'unavailable hour'}
             return result
 
