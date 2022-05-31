@@ -105,6 +105,8 @@ function generateSelect(parent, idAttribute) {
                 elemO.textContent = el
                 elemS.appendChild(elemO)
             }
+
+            parent.appendChild(document.createElement("p"))
             break;
 
         case "A" :
@@ -124,14 +126,35 @@ function generateSelect(parent, idAttribute) {
                 elemO.textContent = el
                 elemS.appendChild(elemO)
             }
+
+            parent.appendChild(document.createElement("p"))
             break;
 
         case "N" :
+
+            elemp = document.createElement("p")
+            elemp.innerText = "mini :"
+            parent.appendChild(elemp)
+
             elemp = document.createElement("input")
             elemp.id = allAttributes[idAttribute].name
-            elemp.type = "text"
-            elemp.oninput = addFilterChange
+            elemp.type = "number"
+            elemp.oninput = addFilterNumberMinChange
             parent.appendChild(elemp)
+
+            elemp = document.createElement("p")
+            elemp.innerText = "max :"
+            parent.appendChild(elemp)
+
+            elemp = document.createElement("input")
+            elemp.id = allAttributes[idAttribute].name
+            elemp.type = "number"
+            elemp.oninput = addFilterNumberMaxChange
+            parent.appendChild(elemp)
+
+            parent.appendChild(document.createElement("p"))
+
+            filter_list[allAttributes[idAttribute].name] = {}
 
             break;
     }
@@ -196,6 +219,17 @@ function liste(room) {
 
 function addFilterChange(filter) {
     filter_list[filter.explicitOriginalTarget.id] = filter.explicitOriginalTarget.value
+    rmv_total();
+    mainT();
+}
+
+function addFilterNumberMinChange(filter) {
+    filter_list[filter.explicitOriginalTarget.id].min = filter.explicitOriginalTarget.value
+    rmv_total();
+    mainT();
+}
+function addFilterNumberMaxChange(filter) {
+    filter_list[filter.explicitOriginalTarget.id].max = filter.explicitOriginalTarget.value
     rmv_total();
     mainT();
 }
