@@ -23,8 +23,9 @@ def addReservation(request, department):
             periodicity_data = periodicity_form.cleaned_data
             if not reservation_data['has_periodicity']:
                 if save_reservation(reservation_data) == 'OK':
-                    return HttpResponse('yahou')
-                    #redirect['/www.google.com/']
+                    # The URL and the file location may not be the same after our work,
+                    # so I redirect the user in hard to where it should redirect
+                    return redirect("http://localhost:8000/fr/reservation/INFO/listeReserv")
                 else:
                     return HttpResponse('reservation impossible')
             else:
