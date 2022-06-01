@@ -24,7 +24,7 @@ def addReservation(request, department):
             if not reservation_data['has_periodicity']:
                 if save_reservation(reservation_data) == 'OK':
                     return HttpResponse('yahou')
-                #redirect(page basique + message pop up)
+                    #redirect['/www.google.com/']
                 else:
                     return HttpResponse('reservation impossible')
             else:
@@ -74,8 +74,18 @@ def check_reservation(reservation_data):
 
 def save_reservation(reservation_data):
     if check_reservation(reservation_data)['status'] == 'OK':
-        #new_res = Reservation(room=, day=, week=)
-        #new_res.save()
+        new_res = Reservation.objects.create(responsible=reservation_data['responsible'],
+                              room=reservation_data['room'],
+                              reservation_type=reservation_data['reservation_type'],
+                              title=reservation_data['title'],
+                              description=reservation_data['description'],
+                              with_key=reservation_data['with_key'],
+                              email=reservation_data['email'],
+                              date=reservation_data['date'],
+                              start_time=reservation_data['start_time'],
+                              end_time=reservation_data['end_time'],
+                              periodicity=reservation_data['periodicity'])
+        new_res.save()
         #ou requete à l'api
         return 'OK'
 
