@@ -402,6 +402,8 @@ class LinkRoomAttributes(models.Model):
     class Meta:
         constraints = [models.UniqueConstraint(fields=['room', 'attribute'], name='unique_room_attribute'),]
 
+    def __str__(self):
+        return self.attribute.name + " : " + self.value
 
 class Room(models.Model):
     name = models.CharField(max_length=50)
