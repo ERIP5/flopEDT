@@ -24,7 +24,7 @@ def addReservation(request, department):
             if not reservation_data['has_periodicity']:
                 if save_reservation(reservation_data) == 'OK':
                     return HttpResponse('yahou')
-                    #redirect('http://localhost:8000/fr/reservation/INFO/listeReserv')
+                    #redirect['/www.google.com/']
                 else:
                     return HttpResponse('reservation impossible')
             else:

@@ -336,11 +336,11 @@ function colorS_resType(course) {
         return "red"
     }
     return "grey"
-}
-*/
+}*/
+/*
 function colorS_resType(course) {
     return course.color_bg
-}
+}/*
 
 /***************
 *function caption*
@@ -609,6 +609,7 @@ function display_reservationS() {
                         .attr("width",days_widthS)
                         .attr("height",course_heightS)
                         //.attr("fill", colorS_resType)
+                        .attr("fill", '#95a5a6')
 
                     // display the title of the reservation
                     c_reservation
