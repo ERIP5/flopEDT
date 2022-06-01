@@ -14,6 +14,7 @@ getCourses();
 getReservation();
 getAttributes();
 getRoomAttributes();
+getTimeSettings();
 sortAllCourses();
 show_loader(false);
 }
@@ -135,6 +136,28 @@ $.ajax({
       show_loader(false);
     }
   });
+}
+
+function getTimeSettings(){
+$.ajax({
+    type: "GET", //rest Type
+    dataType: 'text',
+    url: url_base_timesettings,
+    async: false,
+    contentType: "application/json",
+    success: function (msg) {
+      jsonRoom = JSON.parse(msg)
+      console.log(jsonRoom)
+    },
+    error: function (xhr, error) {
+      console.log("error");
+      console.log(xhr);
+      console.log(error);
+      console.log(xhr.responseText);
+      show_loader(false);
+    }
+  });
+
 }
 
 function listDays()

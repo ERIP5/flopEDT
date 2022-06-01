@@ -263,17 +263,17 @@ function sortRoom() {
         for (room of Object.values(allRoom)){
             var toadd = true
             for (filter in filter_list){
-
-
-
-            const num = Number(filter_list[filter])
-            if (Number.isInteger(num)){
-                if(Number(room.attributes[filter]) < Number(filter_list[filter])){
-                        toadd = false
+                if ((typeof filter_list[filter]) == "object"){
+                    for (value in filter_list[filter]){
+                        if (value == "min" && Number(room.attributes[filter]) < filter_list[filter][value] && filter_list[filter][value] != ""){
+                            toadd = false
+                        }else if (value == "max" && Number(room.attributes[filter]) > filter_list[filter][value] && filter_list[filter][value] != ""){
+                            toadd = false
+                        }
                     }
                 }else{
                     if(room.attributes[filter] != filter_list[filter]){
-                            toadd = false
+                                toadd = false
                         }
                     }
                 }
