@@ -5,6 +5,7 @@ var allObjectReservations = []
 var test = []
 var alltype = []
 let my = {"week" : 11 , "year" :2022}
+var allTimeSetting = {}
 
 
 function main_reservation(){
@@ -146,8 +147,7 @@ $.ajax({
     async: false,
     contentType: "application/json",
     success: function (msg) {
-      jsonRoom = JSON.parse(msg)
-      console.log(jsonRoom)
+      allTimeSetting = JSON.parse(msg)
     },
     error: function (xhr, error) {
       console.log("error");

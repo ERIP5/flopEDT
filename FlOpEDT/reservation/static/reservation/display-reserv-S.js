@@ -19,11 +19,6 @@ var scale_width = (window_widthS - (days_width_T*5))*0.6
 var scale_margin = (window_widthS - (days_width_T*5))*0.4
 var scale_x = 100
 
-// start of the day in minutes
-var scale_start_time = 8*60//480
-// end of the day in minutes
-var scale_end_time_day = 18*60+45 //1125
-
 //-- add --//
 var addS_val = 80 //should be 40 but the rectangle doesn't work
 
@@ -35,6 +30,10 @@ var nbCBhotS = 4
 
 
 // variable or cpt not defined reset in cleanS
+var min_start_time = 99999
+var i_start_time = 0
+var max_end_time = 0
+var i_end_time = 0
 each_hour_yS = days_y_T()
 var scale_current_hour = scale_day_start_hour()
 var planB1 = 0
@@ -56,7 +55,7 @@ function date_widthS() {
 
 //-- days --//
 function days_durationS() {
-    return (scale_end_time_day-scale_start_time)
+    return (calc_scale_end_time()-calc_scale_start_time())
 }
 
 function days_xS(day) {
@@ -68,6 +67,25 @@ function days_heightS() {
 }
 
 //-- scale --//
+function calc_scale_start_time() {
+    for (i_start_time; i_start_time < allTimeSetting.length; i_start_time++) {
+        if (min_start_time > allTimeSetting[i_start_time].day_start_time) {
+            min_start_time = allTimeSetting[i_start_time].day_start_time
+        }
+    }
+    return min_start_time
+}
+
+function calc_scale_end_time() {
+    for (i_end_time; i_end_time < allTimeSetting.length; i_end_time++) {
+        if (max_end_time < allTimeSetting[i_end_time].day_finish_time) {
+            max_end_time = allTimeSetting[i_end_time].day_finish_time
+        }
+    }
+    return max_end_time
+}
+
+
 function cac_scale_y() {
     return date_heightS+date_margin_topS
 }
@@ -81,7 +99,7 @@ function scale_height() {
 }
 
 function scale_day_start_hour() {
-	return Math.floor(scale_start_time/60)+1
+	return Math.floor(calc_scale_start_time()/60)+1
 }
 
 
@@ -101,7 +119,7 @@ function scale_day_start_hour_concat() {
 }
 
 function scale_end_time_day_hour() {
-	return Math.floor(scale_end_time_day/60)
+	return Math.floor(calc_scale_end_time()/60)
 }
 
 function scale_end_time_day_hour_concat() {
@@ -119,7 +137,7 @@ function display_scale_end_time_day() {
 function scale_each_time_sixty() {
     var y = each_hour_yS;
     if (y == 70) {
-        each_hour_yS += ((scale_start_time+60)-scale_start_time-scale_start_time%60);
+        each_hour_yS += ((calc_scale_start_time()+60)-calc_scale_start_time()-calc_scale_start_time()%60);
         return y
     }
     each_hour_yS += 60;
@@ -141,7 +159,7 @@ function course_xS(course) {
 }
 
 function course_yS(course) {
-   return course.start+date_margin_topS+date_heightS-scale_start_time
+   return course.start+date_margin_topS+date_heightS-calc_scale_start_time()
 }
 
 function course_heightS(course) {
@@ -412,6 +430,10 @@ function rmv_captS() {
 }
 
 function cleanS() {
+    min_start_time = 99999
+    i_start_time = 0
+    max_end_time = 0
+    i_end_time = 0
     each_hour_yS = days_y_T()
     scale_current_hour = scale_day_start_hour()
     planB1 = 0
