@@ -213,8 +213,18 @@ function cac_room_y(room) {
 function cac_all_height() {
     var cpt = 0
         for (h of room_max_courses_T) {
-            all_room_height_T[cpt] = (res_height_T*h)+mini_add_button_height_T
-            rooms_height.set(rooms_sort[cpt].name,(res_height_T*h)+mini_add_button_height_T)
+            if(is_tutor){
+                all_room_height_T[cpt] = (res_height_T*h)+mini_add_button_height_T
+                rooms_height.set(rooms_sort[cpt].name,(res_height_T*h)+mini_add_button_height_T)
+            }else{
+                if(h == 0){
+                    all_room_height_T[cpt] = mini_add_button_height_T
+                rooms_height.set(rooms_sort[cpt].name,mini_add_button_height_T)
+                }else{
+                all_room_height_T[cpt] = (res_height_T*h)
+                rooms_height.set(rooms_sort[cpt].name,(res_height_T*h))
+                }
+            }
             cpt +=1
         }
 }
@@ -378,6 +388,13 @@ function rmv_dateT() {
         .remove()
 }
 
+function rmv_grille() {
+    d3.select(".grille")
+        .selectAll("rect")
+        .data(days)
+        .remove()
+}
+
 /* doesn't work ? */
 function rmv_roomT() {
     d3.select("svg")
@@ -403,6 +420,7 @@ function rmv_reservT() {
     rmv_dateT()
     rmv_roomT()
     rmv_each_roomT()
+    rmv_grille()
 }
 
 function change_room(room) {
@@ -485,13 +503,13 @@ function display_each_room() {
 
     c_room
         .append("rect")
-        .attr("class","block_title_frame")
+        .attr("class","room_frame_all")
         .attr("fill","none")
         .attr("stroke","black")
         .attr("stroke-width",2)
         .attr("x",0)
         .attr("y", cac_room_y)
-        .attr("width",room_width_T)
+        .attr("width",largeurWindow)
         .attr("height",get_room_height)
 
     c_room
@@ -700,6 +718,22 @@ function display_add() {
     }
 }
 
+function display_grid(){
+d3.select(".grille")
+    .selectAll("rect_day")
+    .data(days)
+    .enter()
+    .append("rect")
+    .attr("class","rect_day")
+    .attr("fill","none")
+    .attr("stroke","black")
+    .attr("stroke-width",2)
+    .attr("x",add_x)
+    .attr("y", date_margtop_T)
+    .attr("width", days_width_T)
+    .attr("height",y_room_act_T - 20)
+}
+
 /***********
  *display*
 ***********/
@@ -720,9 +754,12 @@ function mainT() {
     //for each days and each room, add a group for each reservation and display each reservation information's
     display_reservation();
     //for each days and each room, add all add buttons
+    if(is_tutor){
     display_add();
+    }
+    display_grid();
 
     d3.select("svg")
      .attr("width", window.innerWidth -20)
-     .attr("height", 20000)
+     .attr("height", y_room_act_T)
 }
