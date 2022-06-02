@@ -48,9 +48,9 @@ class ReservationPeriodicity(models.Model):
     ### ByWeek Paramaters ###
     # Jours de la semaine qui doivent être inclus dans la réservation ByWeek
     bw_weekdays = ArrayField(models.CharField(max_length=2,
-                                              choices=Day.CHOICES), help_text="blabla")
+                                              choices=Day.CHOICES), help_text="m, tu, w, th, f", blank=True, null=True)
     # La réservation ByWeek sera reproduite toutes les n semaines (avec n = bw_weeks_nb)
-    bw_weeks_nb = models.PositiveSmallIntegerField()
+    bw_weeks_nb = models.PositiveSmallIntegerField(blank=True, null=True)
 
     ### ByMonth Paramaters ###
     # La réservation ByMonth est tous les Xe Y du mois

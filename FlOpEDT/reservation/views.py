@@ -19,7 +19,6 @@ def addReservation(request, department):
         periodicity_form = ReservationPeriodicityForm(request.POST)
         if reservation_form.is_valid() and periodicity_form.is_valid():
             reservation_data = reservation_form.cleaned_data
-
             periodicity_data = periodicity_form.cleaned_data
             if not reservation_data['has_periodicity']:
                 if save_reservation(reservation_data) == 'OK':
@@ -40,6 +39,7 @@ def addReservation(request, department):
         periodicity_form = ReservationPeriodicityForm()
         return render(request, 'reservation/form.html', {'reservation_form': reservation_form,
                                                          'periodicity_form': periodicity_form})
+
 
 
 def listReserv(req, department):
@@ -102,3 +102,7 @@ def check_periodicity(periodicity_data):
         # if reservation_result['status'] == 'OK':
 
     # return result
+
+
+#dans la console
+#Reservation.objects.all().delete()
