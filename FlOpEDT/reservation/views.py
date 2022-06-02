@@ -9,6 +9,7 @@ from pip._internal import req
 from base.models import Room, ScheduledCourse, Week
 from base.timing import days_list, time_to_floptime
 from django.http import HttpResponse
+from django.contrib import messages
 
 from reservation.forms import ReservationForm, ReservationPeriodicityForm
 from reservation.models import *
@@ -22,6 +23,9 @@ def addReservation(request, department):
             periodicity_data = periodicity_form.cleaned_data
             if not reservation_data['has_periodicity']:
                 if save_reservation(reservation_data) == 'OK':
+                    messages.success(request, 'New reservation ')
+                    messages.success(request, reservation_data['title'])
+                    messages.success(request, ' added')
                     # The URL and the file location may not be the same after our work,
                     # so I redirect the user in hard to where it should redirect
                     return redirect("http://localhost:8000/fr/reservation/INFO/listeReserv")
