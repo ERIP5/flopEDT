@@ -6,14 +6,18 @@ from django.shortcuts import render, redirect
 from django.db.models import F
 from django.template.response import TemplateResponse
 from pip._internal import req
+from rest_framework.utils import json
+
 from base.models import Room, ScheduledCourse, Week
 from base.timing import days_list, time_to_floptime
 from django.http import HttpResponse
+from core.decorators import tutor_or_superuser_required
 from django.contrib import messages
 
 from reservation.forms import ReservationForm, ReservationPeriodicityForm
 from reservation.models import *
 
+@tutor_or_superuser_required
 def addReservation(request, department):
     if request.method == 'POST':
         reservation_form = ReservationForm(request.POST)
@@ -47,7 +51,13 @@ def addReservation(request, department):
 
 
 def listReserv(req, department):
-    return TemplateResponse(req, "reservation/listeReserv.html")
+    user = req.user
+    if user.is_tutor or user.is_superuser:
+        button_add = True
+    else:
+        button_add = False
+    context = {'is_tutor': json.dumps(button_add)}
+    return TemplateResponse(req, "reservation/listeReserv.html", context)
 
 
 def check_reservation(reservation_data):
