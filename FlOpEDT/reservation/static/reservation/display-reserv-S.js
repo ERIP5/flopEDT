@@ -204,7 +204,7 @@ function addS_circle_cy() {
 }
 
 function popform(day) {
-    console.log(current_room + " " +day.name)
+    window.location.href = "http://localhost:8000/fr/reservation/INFO/addRes"
 }
 
 function double_popform_course(cours) {

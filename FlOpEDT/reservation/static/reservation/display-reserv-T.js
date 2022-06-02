@@ -291,7 +291,6 @@ function sortRoom() {
 ***********/
 
 function go_popup(ele) {
-    //console.log(ele.room.name)
     window.location.href = "http://localhost:8000/fr/reservation/INFO/addRes"
 }
 
