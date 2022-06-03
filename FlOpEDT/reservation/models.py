@@ -1,3 +1,4 @@
+from colorfield.fields import ColorField
 from django.contrib import admin
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -23,6 +24,10 @@ class Reservation(models.Model):
 
 class ReservationType(models.Model):
     name = models.CharField(max_length=30)
+    bg_color = ColorField(default='#95a5a6')
+
+    def __str__(self):
+        return self.name
 
 
 class ReservationPeriodicity(models.Model):

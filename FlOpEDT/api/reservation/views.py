@@ -31,3 +31,9 @@ class ReservationViewSet(viewsets.ModelViewSet):
         return all_res
 
     filterset_fields = '__all__'
+
+class ReservationTViewSet(viewsets.ModelViewSet):
+
+    serializer_class = serializers.ReservationTSerializer
+    queryset = rm.ReservationType.objects.all()
+    filterset_fields = '__all__'
