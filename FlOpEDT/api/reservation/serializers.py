@@ -1,3 +1,4 @@
+from colorfield.fields import ColorField
 from rest_framework import serializers
 
 import reservation.models as rm
@@ -18,4 +19,12 @@ class ReservationSerializer(serializers.Serializer):
 
     class Meta:
         model = rm.Reservation
+        fields = '__all__'
+
+class ReservationTSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    bg_color = serializers.CharField()
+
+    class Meta:
+        model = rm.ReservationType
         fields = '__all__'
