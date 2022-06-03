@@ -1,0 +1,33 @@
+### ByWeek Paramaters ###
+    # Jours de la semaine qui doivent être inclus dans la réservation ByWeek
+    bw_weekdays = ArrayField(models.CharField(max_length=2,
+                                              choices=Day.CHOICES),
+                                              help_text="m, tu, w, th, f",
+                                              blank=True, null=True)
+    # La réservation ByWeek sera reproduite toutes les n semaines (avec n = bw_weeks_nb)
+    bw_weeks_nb = models.PositiveSmallIntegerField(blank=True, null=True)
+
+
+bw_weekdays devrai être 5 checkbox [m] [tu] [w] [th] [f].
+bw_weeks_nb attend un nombre entier positif
+
+
+
+
+
+EachMonthSameDate
+Doit réserver chaque mois à la même date la réservation demandé
+
+
+
+
+### ByMonth Paramaters ###
+    # La réservation ByMonth est tous les Xe Y du mois
+    bm_x_choice = models.CharField(max_length=2, choices=ByMonthX.choices, blank=True, null=True)
+    bm_y_choice = models.CharField(max_length=2, choices=Day.CHOICES, blank=True, null=True)
+
+
+bm_x_choice renseigne si on veut réserver le 1er, l'avant dernier ou le dernier du mois
+Il pourrait être interessant d'ajouter plus de choix afin d'avoir le 1er, 2ème, 3ème, 4ème, 5ème, -1ème -2ème
+
+bm_y_choice renseigne le jours choisi pour la périodicite

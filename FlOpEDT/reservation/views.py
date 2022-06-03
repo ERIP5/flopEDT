@@ -24,9 +24,9 @@ def addReservation(request, department):
             periodicity_data = periodicity_form.cleaned_data
             if not reservation_data['has_periodicity']:
                 if save_reservation(reservation_data) == 'OK':
-                    messages.success(request, 'New reservation ')
-                    messages.success(request, reservation_data['title'])
-                    messages.success(request, ' added')
+                    #msg = _('New reservation %s added' % reservation_data['title'] )
+                    msg = 'New reservation %s added' % reservation_data['title']
+                    messages.success(request, msg)
                     # The URL and the file location may not be the same after our work,
                     # so I redirect the user in hard to where it should redirect
                     return redirect("http://localhost:8000/fr/reservation/INFO/listeReserv")
