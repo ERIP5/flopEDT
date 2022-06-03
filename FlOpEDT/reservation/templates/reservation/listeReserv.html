@@ -30,12 +30,12 @@
     <!-- div use for menu generation -->
 <div id="menu" class="menu">
          <div class="selectRoom">
-         <p>Choose a room : </p>
+         <p>{% trans "Choose a room" %} </p>
             <select id="selectRoom" onchange="getRoom(this)"><option>all</option></select>
          </div>
         <div id="filters">
             <div class="filterADD">
-                <p>ici c'est la liste des filtres : <select id="selectfilter" onchange="addFilter(this)"><option value="---">---</option></select></p>
+                <p>{% trans "List of filter" %} <select id="selectfilter" onchange="addFilter(this)"><option value="---">---</option></select></p>
             </div>
             <div class="filterAct" id="filterAct">
 
