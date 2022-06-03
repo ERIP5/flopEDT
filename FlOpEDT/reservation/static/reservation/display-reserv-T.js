@@ -282,7 +282,7 @@ function sortRoom() {
                         }
                     }
                 }else{
-                    if(room.attributes[filter] != filter_list[filter]){
+                    if((room.attributes[filter] != filter_list[filter]) && (filter_list[filter] !="all")){
                                 toadd = false
                         }
                     }

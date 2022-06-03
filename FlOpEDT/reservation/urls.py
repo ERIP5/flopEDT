@@ -7,7 +7,7 @@ app_name="reservation"
 urlpatterns=[
 
     #Show the reservation
-    url(r'^listeReserv$', views.listReserv ,name="reservationList"),
+    url(r'^listeReserv$', views.list_reserv, name="reservationList"),
     url(r'^addRes$', views.addReservation ,name="addReservation"),
 
 ]

@@ -8,7 +8,7 @@ from django.template.response import TemplateResponse
 from pip._internal import req
 from rest_framework.utils import json
 
-from base.models import Room, ScheduledCourse, Week
+from base.models import ScheduledCourse, Week
 from base.timing import days_list, time_to_floptime
 from django.http import HttpResponse
 from core.decorators import tutor_or_superuser_required
@@ -51,10 +51,13 @@ def addReservation(request, department):
 
 
 
-def listReserv(req, department):
+def list_reserv(req, department):
     user = req.user
-    if user.is_tutor or user.is_superuser:
-        button_add = True
+    if (user.is_authenticated):
+        if user.is_tutor or user.is_superuser:
+            button_add = True
+        else:
+            button_add = False
     else:
         button_add = False
     context = {'is_tutor': json.dumps(button_add)}
