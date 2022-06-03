@@ -17,6 +17,8 @@ from django.contrib import messages
 from reservation.forms import ReservationForm, ReservationPeriodicityForm
 from reservation.models import *
 
+from django.utils.translation import gettext_lazy as _
+
 @tutor_or_superuser_required
 def addReservation(request, department):
     if request.method == 'POST':
@@ -27,8 +29,7 @@ def addReservation(request, department):
             periodicity_data = periodicity_form.cleaned_data
             if not reservation_data['has_periodicity']:
                 if save_reservation(reservation_data) == 'OK':
-                    #msg = _('New reservation %s added' % reservation_data['title'] )
-                    msg = 'New reservation %s added' % reservation_data['title']
+                    msg = _('New reservation %s added' % reservation_data['title'])
                     messages.success(request, msg)
                     # The URL and the file location may not be the same after our work,
                     # so I redirect the user in hard to where it should redirect

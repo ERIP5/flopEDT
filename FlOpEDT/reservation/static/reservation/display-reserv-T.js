@@ -395,7 +395,6 @@ function rmv_grille() {
         .remove()
 }
 
-/* doesn't work ? */
 function rmv_roomT() {
     d3.select("svg")
         .select(".salles")
