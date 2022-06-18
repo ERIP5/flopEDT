@@ -494,7 +494,7 @@ class RoomPonderation(models.Model):
 
 
 class Module(models.Model):
-    name = models.CharField(max_length=100, null=True)
+    name = models.CharField(max_length=200, null=True)
     abbrev = models.CharField(max_length=100, verbose_name=_('Abbreviation'))
     head = models.ForeignKey('people.Tutor',
                              null=True,
@@ -502,7 +502,7 @@ class Module(models.Model):
                              blank=True,
                              on_delete=models.CASCADE,
                              verbose_name='responsable')
-    ppn = models.CharField(max_length=8, default='M')
+    ppn = models.CharField(max_length=30, default='M')
     train_prog = models.ForeignKey(
         'TrainingProgramme', on_delete=models.CASCADE)
     period = models.ForeignKey('Period', on_delete=models.CASCADE)
