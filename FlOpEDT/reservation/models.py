@@ -8,6 +8,7 @@ from base.timing import Day
 from django.utils.translation import gettext_lazy as _
 from datetime import datetime
 
+
 class Reservation(models.Model):
     responsible = models.ForeignKey('people.User',  on_delete=models.CASCADE, related_name='reservationResp')
     room = models.ForeignKey('base.Room', on_delete=models.CASCADE, related_name='reservationRoom')
@@ -37,10 +38,13 @@ class ReservationPeriodicity(models.Model):
         EachMonthSameDate = 'EM', _('Each month at the same date')
         ByMonth = 'BM', _('By Month')
 
-    class ByMonthX(models.TextChoices):
-        AnteLast = 'AL', _('Ante Last')
-        Last = 'L', _('Last')
-        First = 'F', _('First')
+    class ByMonthX(models.IntegerChoices):
+        First = 1, _('First')
+        Second = 2, _('Second')
+        Third = 3, _('Third')
+        Fourth = 4, _('Fourth')
+        AnteLast = -2, _('Ante Last')
+        Last = -1, _('Last')
 
     periodicity_type = models.CharField(
         max_length=2,
@@ -54,11 +58,11 @@ class ReservationPeriodicity(models.Model):
     # Jours de la semaine qui doivent être inclus dans la réservation ByWeek
     bw_weekdays = ArrayField(models.CharField(max_length=2,
                                               choices=Day.CHOICES), help_text="m, tu, w, th, f", blank=True, null=True)
-    # La réservation ByWeek sera reproduite toutes les n semaines (avec n = bw_weeks_nb)
-    bw_weeks_nb = models.PositiveSmallIntegerField(blank=True, null=True)
+    # La réservation ByWeek sera reproduite toutes les n semaines (avec n = bw_weeks_interval)
+    bw_weeks_interval = models.PositiveSmallIntegerField(blank=True, null=True)
 
     ### ByMonth Paramaters ###
     # La réservation ByMonth est tous les Xe Y du mois
     bm_x_choice = models.CharField(max_length=2, choices=ByMonthX.choices, blank=True, null=True)
-    bm_y_choice = models.CharField(max_length=2, choices=Day.CHOICES, blank=True, null=True)
+    bm_day_choice = models.CharField(max_length=2, choices=Day.CHOICES, blank=True, null=True)
 

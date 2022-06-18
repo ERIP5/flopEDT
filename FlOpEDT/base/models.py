@@ -405,6 +405,7 @@ class LinkRoomAttributes(models.Model):
     def __str__(self):
         return self.attribute.name + " : " + self.value
 
+
 class Room(models.Model):
     name = models.CharField(max_length=50)
     types = models.ManyToManyField(RoomType,
