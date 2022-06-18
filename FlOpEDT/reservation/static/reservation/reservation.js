@@ -178,6 +178,7 @@ function creationRooms(room){
     newRoom.courses = roomCourse
     roomCourse = new Object(listDays());
     newRoom.attributes = {}
+    let patate = new Object(listDays());
     newRoom.booking = roomCourse
     allRoom[room.name]= newRoom
 }

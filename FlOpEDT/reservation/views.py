@@ -34,12 +34,12 @@ def addReservation(request, department):
             periodicity_data = periodicity_form.cleaned_data
             if not reservation_data['has_periodicity']:
                 save_reservation_result = save_reservation(reservation_data)
-                if save_reservation_result is not None:
+                if type(save_reservation_result) is Reservation:
                     msg = _('New reservation %s added' % reservation_data['title'])
                     messages.success(request, msg)
                     # The URL and the file location may not be the same after our work,
                     # so I redirect the user in hard to where it should redirect
-                    return TemplateResponse(request, "reservation/listeReserv.html")
+                    return redirect("reservation:reservationList", department)
                 else:
                     return HttpResponse('Reservation impossible : %s' % save_reservation_result['more'])
             else:
@@ -50,7 +50,7 @@ def addReservation(request, department):
                     messages.success(request, msg)
                     # The URL and the file location may not be the same after our work,
                     # so I redirect the user in hard to where it should redirect
-                    return TemplateResponse(request, "reservation/listeReserv.html")
+                    return redirect("reservation:reservationList", department)
                 else:
                     return HttpResponse('Reservations impossibles : %s' % check_periodicity_result['nok_reservations'])
         else:
@@ -79,27 +79,36 @@ def list_reserv(req, department):
 
 def check_reservation(reservation_data):
     #convert time field in minute
-    start_min = time_to_floptime(reservation_data['start_time'])
-    end_min = time_to_floptime(reservation_data['end_time'])
+    start_time = reservation_data['start_time']
+    end_time = reservation_data['end_time']
+    start_min = time_to_floptime(start_time)
+    end_min = time_to_floptime(end_time)
 
     #date
-    reservation_day_nb = reservation_data['date'].weekday()
+    reservation_date = reservation_data['date']
+    reservation_day_nb = reservation_date.weekday()
     reservation_day = days_list[reservation_day_nb]
-    reservation_year_nb = reservation_data['date'].year
-    reservation_week_nb = reservation_data['date'].isocalendar()[1]
+    reservation_year_nb = reservation_date.year
+    reservation_week_nb = reservation_date.isocalendar()[1]
     reservation_week = Week.objects.get(nb=reservation_week_nb, year=reservation_year_nb)
+    room = reservation_data["room"]
 
     #filter
-    all_room_courses = ScheduledCourse.objects.filter(work_copy=0, room=reservation_data['room'])
+    all_room_courses = ScheduledCourse.objects.filter(work_copy=0, room__in=room.and_overrooms())
     same_day_room_scheduled_courses = all_room_courses.filter(day=reservation_day,
                                                               course__week=reservation_week
                                                               )
 
     simultaneous_room_scheduled_courses = same_day_room_scheduled_courses.filter(start_time__lt=end_min,
                                                                                  start_time__gt=start_min - F('course__type__duration'))
+    simultaneous_reservations = Reservation.objects.filter(room=room, date=reservation_date,
+                                                           start_time__lt=end_time,
+                                                           end_time__gt=start_time)
 
     if simultaneous_room_scheduled_courses.exists():
         return {'status': 'NOK', 'more': simultaneous_room_scheduled_courses}
+    if simultaneous_reservations.exists():
+        return {'status': 'NOK', 'more': simultaneous_reservations}
 
     return {'status': 'OK', 'more': ''}
 
@@ -119,7 +128,8 @@ def save_reservation(reservation_data):
                               end_time=reservation_data['end_time'])
         new_res.save()
         return new_res
-
+    else:
+        return check
 
 def check_periodicity(periodicity_data, reservation_data):
     result = {'status': 'OK', 'ok_reservations': [], 'nok_reservations': {}, 'periodicity_data':periodicity_data}

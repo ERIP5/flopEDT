@@ -259,7 +259,7 @@ function res_textS_tutor_y(course) {
 
 function colorS() {
     if (nbSday == 1) {
-        nbCS = allRoom[current_room].courses["m"].length
+        nbCS = allRoallRoom[current_room].courses["m"].length
         nbBS = allRoom[current_room].booking["m"].length
 
         nbCBtotalS = nbCS + nbBS

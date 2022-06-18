@@ -22,6 +22,9 @@ class Reservation(models.Model):
     end_time = models.TimeField()
     periodicity = models.ForeignKey("ReservationPeriodicity", null=True, blank=True, on_delete=models.SET_NULL)
 
+    def __str__(self):
+        return f"{self.room}-{self.date}  {self.start_time}/{self.end_time}"
+
 
 class ReservationType(models.Model):
     name = models.CharField(max_length=30)
