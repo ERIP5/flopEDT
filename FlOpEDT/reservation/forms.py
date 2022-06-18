@@ -13,13 +13,13 @@ class DateInput(forms.DateInput):
 class TimeInput(forms.TimeInput):
     input_type = 'time'
 
-class ReservationForm(ModelForm):
 
+class ReservationForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ReservationForm, self).__init__(*args, **kwargs)
         self.fields['has_periodicity'] = forms.BooleanField(required=False,
                                                             initial=False
-                                                            )
+                                                       )
 
     class Meta:
         model = Reservation
@@ -57,7 +57,7 @@ class ReservationPeriodicityForm(ModelForm):
             'start': _('Start'),
             'end': _('End'),
             'bw_weekdays': _('By weekdays'),
-            'bw_weeks_nb': _('By number of week'),
+            'bw_weeks_interval': _('Week interval'),
             'bm_x_choice': _('By X of the month'),
-            'bm_y_choice': _('By Y of the month')
+            'bm_day_choice': _('Which day')
         }

@@ -63,6 +63,6 @@ class ReservationPeriodicity(models.Model):
 
     ### ByMonth Paramaters ###
     # La réservation ByMonth est tous les Xe Y du mois
-    bm_x_choice = models.CharField(max_length=2, choices=ByMonthX.choices, blank=True, null=True)
+    bm_x_choice = models.SmallIntegerField(choices=ByMonthX.choices, blank=True, null=True)
     bm_day_choice = models.CharField(max_length=2, choices=Day.CHOICES, blank=True, null=True)
 

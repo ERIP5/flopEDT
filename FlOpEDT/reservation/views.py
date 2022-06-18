@@ -9,7 +9,7 @@ from pip._internal import req
 from rest_framework.utils import json
 
 from base.models import ScheduledCourse, Week
-from base.timing import days_list, time_to_floptime
+from base.timing import days_list, time_to_floptime, days_index
 from django.http import HttpResponse
 from core.decorators import tutor_or_superuser_required
 from django.contrib import messages
@@ -34,18 +34,25 @@ def addReservation(request, department):
             periodicity_data = periodicity_form.cleaned_data
             if not reservation_data['has_periodicity']:
                 save_reservation_result = save_reservation(reservation_data)
-                if save_reservation_result["status"] == 'OK':
+                if save_reservation_result is not None:
                     msg = _('New reservation %s added' % reservation_data['title'])
                     messages.success(request, msg)
                     # The URL and the file location may not be the same after our work,
                     # so I redirect the user in hard to where it should redirect
-                    return redirect("http://localhost:8000/fr/reservation/INFO/listeReserv")
+                    return TemplateResponse(request, "reservation/listeReserv.html")
                 else:
                     return HttpResponse('Reservation impossible : %s' % save_reservation_result['more'])
             else:
-                check_periodicity(periodicity_data, reservation_data)
-                #Appel à l'api pour toutes les réservations d'un coup.
-
+                check_periodicity_result = check_periodicity(periodicity_data, reservation_data)
+                if check_periodicity_result['status']=='OK':
+                    save_periodic_reservations(check_periodicity_result)
+                    msg = _('New reservation %s addeds' % check_periodicity_result['ok_reservations'])
+                    messages.success(request, msg)
+                    # The URL and the file location may not be the same after our work,
+                    # so I redirect the user in hard to where it should redirect
+                    return TemplateResponse(request, "reservation/listeReserv.html")
+                else:
+                    return HttpResponse('Reservations impossibles : %s' % check_periodicity_result['nok_reservations'])
         else:
             return render(request, 'reservation/form.html', {'reservation_form': reservation_form,
                                                              'periodicity_form': periodicity_form})
@@ -109,44 +116,69 @@ def save_reservation(reservation_data):
                               email=reservation_data['email'],
                               date=reservation_data['date'],
                               start_time=reservation_data['start_time'],
-                              end_time=reservation_data['end_time'],
-                              periodicity=reservation_data['periodicity'])
+                              end_time=reservation_data['end_time'])
         new_res.save()
-    return check
+        return new_res
 
 
 def check_periodicity(periodicity_data, reservation_data):
-    result = {'status': 'OK', 'ok_reservations': [], 'nok_reservations': []}
-    considered_reservations = []  # fabriquer la liste des dictionnaires de type reservation_data correspondant à la périodicité demandée
+    result = {'status': 'OK', 'ok_reservations': [], 'nok_reservations': {}, 'periodicity_data':periodicity_data}
     start = periodicity_data["start"]
     end = periodicity_data["end"]
     periodicity_type = periodicity_data["periodicity_type"]
     if periodicity_type == ReservationPeriodicity.PeriodicityType.ByWeek:
         bw_weekdays = periodicity_data["bw_weekdays"]
-        # A transformer en liste d'entiers (lundi = 0)
         bw_weeks_interval = periodicity_data["bw_weeks_interval"]
+        bw_integer_weekdays = [days_index[d] for d in bw_weekdays]
         considered_dates = list(rrule(WEEKLY,
                                       dtstart=start,
                                       until=end,
-                                      byweekday=bw_weekdays,
+                                      byweekday=bw_integer_weekdays,
                                       interval=bw_weeks_interval))
     elif periodicity_type == ReservationPeriodicity.PeriodicityType.ByMonth:
         bm_x_choice = periodicity_data["bm_x_choice"]
         bm_day_choice = periodicity_data["bm_day_choice"]
-        byweekday_parameter = rrule_days[bm_day_choice](bm_x_choice)
+        integer_bm_day_choice = days_index[bm_day_choice]
+        byweekday_parameter = rrule_days[integer_bm_day_choice](bm_x_choice)
         considered_dates = list(rrule(MONTHLY,
                                       dtstart=start,
                                       until=end,
                                       byweekday=byweekday_parameter))
     else:
-        date_nb = 1
+        date_nb = start.day
         considered_dates = list(rrule(MONTHLY,
                                       dtstart=start,
                                       until=end,
                                       bymonthday=date_nb))
-    print(considered_dates)
-    for considered_reservation in considered_reservations:
-        reservation_result = check_reservation(considered_reservation)
-        # if reservation_result['status'] == 'OK':
+    for date in considered_dates:
+        considered_reservation = reservation_data.copy()
+        considered_reservation['date'] = date
+        check = check_reservation(considered_reservation)
+        if check["status"] == 'OK':
+            result['ok_reservations'].append(considered_reservation)
+        else:
+            result['status']='NOK'
+            result['nok_reservations'][considered_reservation] = check['more']
+    return result
 
-    # return result
+
+def save_periodic_reservations(check_periodicity_result):
+    periodicity_data = check_periodicity_result["periodicity_data"]
+    start = periodicity_data["start"]
+    end = periodicity_data["end"]
+    periodicity_type = periodicity_data["periodicity_type"]
+    periodicity = ReservationPeriodicity(start=start, end=end, periodicity_type=periodicity_type)
+    if periodicity_type == ReservationPeriodicity.PeriodicityType.ByWeek:
+        periodicity.bw_weekdays = periodicity_data["bw_weekdays"]
+        periodicity.bw_weeks_interval = periodicity_data["bw_weeks_interval"]
+    elif periodicity_type == ReservationPeriodicity.PeriodicityType.ByMonth:
+        periodicity.bm_x_choice = periodicity_data["bm_x_choice"]
+        periodicity.bm_day_choice = periodicity_data["bm_day_choice"]
+    if check_periodicity_result["status"] == 'OK':
+        periodicity.save()
+        for reservation in check_periodicity_result['ok_reservations']:
+            new_res = save_reservation(reservation)
+        new_res.periodicity = periodicity
+        new_res.save()
+    else:
+        pass
