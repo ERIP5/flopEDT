@@ -1634,7 +1634,7 @@ def clean_train_prog(req):
     return promo
 
 
-def clean_edt_view_params(week, year):
+def clean_edt_view_params(week=None, year=None):
     if week is None or year is None:
         today = current_week()
         week = today['week']

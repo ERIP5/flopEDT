@@ -76,13 +76,23 @@ def current_week():
 
 
 # list of days
-def num_all_days(y, w, dept):
+def num_all_days(y, w, dept=None):
     if w == 0:
         return []
     monday = monday_w2(y) + datetime.timedelta(7 * (w - 2))
     day_list = []
-    dept_day_list = base.models.TimeGeneralSettings.objects.get(
-        department=dept).days
+    if dept is None:
+        depts_day_set = set()
+        for dept_tgs in base.models.TimeGeneralSettings.objects.all():
+            depts_day_set |= set(dept_tgs.days)
+        dept_day_list = list(depts_day_set)
+
+    else:
+
+        dept_day_list = base.models.TimeGeneralSettings.objects.get(
+            department=dept).days
+
+    dept_day_list.sort(key=lambda x: days_infos[x]['shift'])
     iday = 0
     for d_ref in dept_day_list:
         cur_day = monday + datetime.timedelta(days_infos[d_ref]['shift'])
