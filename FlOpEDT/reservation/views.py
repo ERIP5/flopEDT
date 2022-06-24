@@ -10,6 +10,8 @@ from rest_framework.utils import json
 
 from base.models import ScheduledCourse, Week
 from base.timing import days_list, time_to_floptime, days_index
+from base.weeks import week_list
+from base.views import clean_edt_view_params
 from django.http import HttpResponse
 from core.decorators import tutor_or_superuser_required
 from django.contrib import messages
@@ -65,6 +67,8 @@ def addReservation(request, department):
 
 
 def list_reserv(req, department):
+    week_nb, year = clean_edt_view_params()
+    context = {'week_nb': week_nb, 'year':year}
     user = req.user
     if (user.is_authenticated):
         if user.is_tutor or user.is_superuser:
@@ -73,7 +77,8 @@ def list_reserv(req, department):
             button_add = False
     else:
         button_add = False
-    context = {'is_tutor': json.dumps(button_add)}
+    context['is_tutor'] = json.dumps(button_add)
+    context['all_weeks'] = week_list()
     return TemplateResponse(req, "reservation/listeReserv.html", context)
 
 

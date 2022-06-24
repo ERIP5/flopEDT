@@ -2,21 +2,9 @@
     *Initialisation*
 **********************/
 
-var window_widthS = window.innerWidth -40;
-
-// width of a day
-var days_widthS = (window_widthS*0.9)/5
-
-//-- date --//
-// height of the date rectangle
-var date_heightS = 50
-// margin of the date from the top
-var date_margin_topS = 20
-
 //-- scale --//
-var scale_width_Total = window_widthS - (days_width_T*5)
-var scale_width = (window_widthS - (days_width_T*5))*0.6
-var scale_margin = (window_widthS - (days_width_T*5))*0.4
+var scale_width = room_width * 0.6
+var scale_margin = room_width - scale_width
 var scale_x = 100
 
 //-- add --//
@@ -40,26 +28,16 @@ var planB1 = 0
 var nbIdS_test = 0
 var nbSday = 1
 var captNb = 0
-
-var dateS =[{}]
 var scaleS =[{}]
 
 /**********************
 *variable's management*
 **********************/
 
-//-- date --//
-function date_widthS() {
-    return days_widthS*5
-}
 
 //-- days --//
 function days_durationS() {
     return (calc_scale_end_time()-calc_scale_start_time())
-}
-
-function days_xS(day) {
-    return days_widthS*(day.num)+scale_width_Total
 }
 
 function days_heightS() {
@@ -87,7 +65,7 @@ function calc_scale_end_time() {
 
 
 function cac_scale_y() {
-    return date_heightS+date_margin_topS
+    return date_height+date_margtop
 }
 
 function scale_y() {
@@ -153,13 +131,13 @@ function scale_textx_S()
 function course_xS(course) {
     for (element of days) {
         if (element["ref"] ==  course["day"]) {
-            return days_widthS*element["num"]+ scale_width_Total
+            return days_width*element["num"]+ room_width
         }
     }
 }
 
 function course_yS(course) {
-   return course.start+date_margin_topS+date_heightS-calc_scale_start_time()
+   return course.start+date_margtop+date_height-calc_scale_start_time()
 }
 
 function course_heightS(course) {
@@ -168,7 +146,7 @@ function course_heightS(course) {
 
 //-- add --//
 function addS_x(day) {
-    return days_widthS*(day.num)+scale_width_Total
+    return days_width*(day.num)+room_width
 }
 
 function addS_y() {
@@ -176,7 +154,7 @@ function addS_y() {
 }
 
 function addS_width() {
-    return days_widthS
+    return days_width
 }
 
 function addS_height() {
@@ -235,10 +213,10 @@ function res_textS_x(course) {
     for (day of days)
     {
         if (day.ref == course.day) {
-        return day.num*days_width_T+room_width_T+(days_width_T/2)
+        return day.num*days_width+room_width+(days_width/2)
         }
     }
-    return room_width_T+(days_width_T/2)
+    return room_width+(days_width/2)
 }
 
 function res_textS_y(course) {
@@ -252,113 +230,6 @@ function res_textS_hour_y(course) {
 function res_textS_tutor_y(course) {
     return course_yS(course)+course.duration*0.75
 }
-
-/*********************************
-*function color per courses/booking*
- *********************************/
-
-function colorS() {
-    if (nbSday == 1) {
-        nbCS = allRoallRoom[current_room].courses["m"].length
-        nbBS = allRoom[current_room].booking["m"].length
-
-        nbCBtotalS = nbCS + nbBS
-
-        nbSday = 2
-
-        if (nbCBtotalS >= nbCBhotS) {
-            return "red"
-        }
-        if (nbCBtotalS >= nbCBcoldS) {
-            return "yellow"
-        }
-        return "green"
-    }
-
-    if (nbSday == 2) {
-        nbCS = allRoom[current_room].courses["tu"].length
-        nbBS = allRoom[current_room].booking["tu"].length
-
-        nbCBtotalS = nbCS + nbBS
-
-        nbSday = 3
-
-        if (nbCBtotalS >= nbCBhotS) {
-            return "red"
-        }
-        if (nbCBtotalS >= nbCBcoldS) {
-            return "yellow"
-        }
-        return "green"
-    }
-
-    if (nbSday == 3) {
-        nbCS = allRoom[current_room].courses["w"].length
-        nbBS = allRoom[current_room].booking["w"].length
-
-        nbCBtotalS = nbCS + nbBS
-
-        nbSday = 4
-
-        if (nbCBtotalS >= nbCBhotS) {
-            return "red"
-        }
-        if (nbCBtotalS >= nbCBcoldS) {
-            return "yellow"
-        }
-        return "green"
-    }
-
-    if (nbSday == 4) {
-        nbCS = allRoom[current_room].courses["th"].length
-        nbBS = allRoom[current_room].booking["th"].length
-
-        nbCBtotalS = nbCS + nbBS
-
-        nbSday = 5
-
-        if (nbCBtotalS >= nbCBhotS) {
-            return "red"
-        }
-        if (nbCBtotalS >= nbCBcoldS) {
-            return "yellow"
-        }
-        return "green"
-    }
-
-    if (nbSday == 5) {
-        nbCS = allRoom[current_room].courses["f"].length
-        nbBS = allRoom[current_room].booking["f"].length
-
-        nbCBtotalS = nbCS + nbBS
-
-        nbSday = 1
-
-        if (nbCBtotalS >= nbCBhotS) {
-            return "red"
-        }
-        if (nbCBtotalS >= nbCBcoldS) {
-            return "yellow"
-        }
-        return "green"
-    }
-}
-
-/*
-//same function as reservS
-function colorS_resType(course) {
-    if (course.type == "type") {
-        return "green"
-    }
-    if (course.type == "partiel") {
-        return "red"
-    }
-    return "grey"
-}*/
-/*
-function colorS_resType(course) {
-    return course.color_bg
-}/*
 
 /***************
 *function caption*
@@ -374,7 +245,7 @@ function captionS_y() {
 }
 
 function captionS_xText() {
-    return captionS_x() + days_widthS/2
+    return captionS_x() + days_width/2
 }
 
 function captionS_yText() {
@@ -404,12 +275,6 @@ function rmv_grileS() {
         .remove()
 
     c_gridS
-        .remove()
-}
-
-function rmv_dateS() {
-    c_dateS
-        .data(dateS)
         .remove()
 }
 
@@ -445,7 +310,7 @@ function cleanS() {
 function rmv_reservS() {
     cleanS()
     rmv_scaleS()
-    rmv_dateS()
+    rmv_date()
     rmv_grileS()
     rmv_addS()
     rmv_captS()
@@ -455,26 +320,9 @@ function rmv_reservS() {
 *function display*
  ***************/
 
-// display the days
-function display_dateS() {
-    c_dateS = d3.select(".dateS")
-        .selectAll("rect")
-        .data(dateS)
-        .enter()
-        .append("rect")
-        .attr("class","rect_date")
-        .attr("fill","none")
-        .attr("stroke","black")
-        .attr("stroke-width",2)
-        .attr("x",scale_width_Total)
-        .attr("y",date_margin_topS)
-        .attr("width",date_widthS())
-        .attr("height",date_heightS)
-}
-
 // display the grid
 function display_gridS() {
-    c_gridallS = d3.select(".grilleS")
+    c_gridallS = svg.get_dom("grilleS")
         .selectAll("rect_grid")
         .data(days)
 
@@ -490,15 +338,15 @@ function display_gridS() {
         .attr("fill","none")
         .attr("stroke","black")
         .attr("stroke-width",2)
-        .attr("x",days_xS)
+        .attr("x",day_x)
         .attr("y",days_y_T)
-        .attr("width",days_widthS)
+        .attr("width",days_width)
         .attr("height",days_heightS())
   }
 
 // display the schedule with the hours
 function display_scaleS() {
-    c_scale = d3.select(".scaleS")
+    c_scale = svg.get_dom("scaleS")
         .selectAll("rect")
         .data(scaleS)
         .enter()
@@ -547,7 +395,7 @@ function display_scaleS() {
 // display the courses
 function display_coursesS() {
 
-    c_courses_day = d3.select(".grilleS");
+    c_courses_day = svg.get_dom("grilleS");
     for(room of Object.values(allRoom)) {
         if(room.name == current_room) {
             for (day of days) {
@@ -568,7 +416,7 @@ function display_coursesS() {
                     .attr("stroke-width",2)
                     .attr("x",course_xS)
                     .attr("y",course_yS)
-                    .attr("width",days_widthS)
+                    .attr("width",days_width)
                     .attr("height",course_heightS)
                     .attr("fill",color_courses) // function in reservT
 
@@ -607,7 +455,7 @@ function display_coursesS() {
 
 // display the reservation
 function display_reservationS() {
-    c_reservation_day = d3.select(".grilleS");
+    c_reservation_day = svg.get_dom("grilleS");
         for(room of Object.values(allRoom)) {
             if(room.name == current_room) {
                 for (day of days) {
@@ -628,7 +476,7 @@ function display_reservationS() {
                         .attr("stroke-width",2)
                         .attr("x",course_xS)
                         .attr("y",course_yS)
-                        .attr("width",days_widthS)
+                        .attr("width",days_width)
                         .attr("height",course_heightS)
                         //.attr("fill", colorS_resType)
                         .attr("fill", '#95a5a6')
@@ -666,7 +514,7 @@ function display_reservationS() {
 
 // display the add button
 function display_addS() {
-    c_addall = d3.select(".grilleS")
+    c_addall = svg.get_dom("grilleS")
         .selectAll("rect_add")
         .data(days)
         .enter()
@@ -679,7 +527,6 @@ function display_addS() {
         .data(days)
         .append("circle")
         .attr("class","circle_add")
-        //.attr("fill",colorS)
         .attr("fill","green")
         .attr("stroke","black")
         .attr("stroke-width",3)
@@ -722,9 +569,9 @@ function display_addS() {
 
 // display the caption for the booking
 function display_captionS() {
-    c_capt = d3.select(".captionS")
+    c_capt = svg.get_dom("captionS")
         .selectAll("rect")
-        .data(dateS)
+        .data(days)
         .enter()
 
     c_capt
@@ -735,7 +582,7 @@ function display_captionS() {
         .attr("stroke-width",2)
         .attr("x",captionS_x)
         .attr("y",captionS_y)
-        .attr("width",days_widthS)
+        .attr("width",days_width)
         .attr("height",100)
 
     c_capt
@@ -755,7 +602,7 @@ function display_captionS() {
         .attr("stroke-width",2)
         .attr("x",captionS_x)
         .attr("y",captionS_y)
-        .attr("width",days_widthS)
+        .attr("width",days_width)
         .attr("height",100)
 
     c_capt
@@ -775,7 +622,7 @@ function display_captionS() {
         .attr("stroke-width",2)
         .attr("x",captionS_x)
         .attr("y",captionS_y)
-        .attr("width",days_widthS)
+        .attr("width",days_width)
         .attr("height",100)
 
     c_capt
@@ -796,7 +643,7 @@ function display_captionS() {
 function mainS() {
 
     // display the days
-    display_dateS()
+    display_dates()
     // display the grid
     display_gridS()
     // display the schedule with the hours
