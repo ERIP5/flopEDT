@@ -387,12 +387,6 @@ class RoomAttribute(models.Model):
     def __str__(self):
         return self.name
 
-    def save(self, *args, **kwargs):
-        super(RoomAttribute, self).save(*args, **kwargs)
-        for r in Room.objects.all():
-            LinkRoomAttributes.objects.get_or_create(room=r, attribute=self,
-                                                     defaults={"value": self.default_value})
-
 
 class LinkRoomAttributes(models.Model):
     room = models.ForeignKey('Room', on_delete=models.CASCADE, related_name="valued_attributes")
