@@ -370,34 +370,8 @@ class RoomAttribute(models.Model):
     name = models.CharField(max_length=20)
     description = models.TextField(null=True)
 
-    class AttributeType(models.TextChoices):
-        Numeric = 'N', _('Numeric')
-        Boolean = 'B', _('Boolean')
-        Array = 'A', _('Arraylist')
-
-    attribute_type = models.CharField(
-        max_length=2,
-        choices=AttributeType.choices,
-        default=AttributeType.Boolean,
-    )
-
-    array_values = ArrayField(models.CharField(max_length=20), null=True)
-    default_value = models.CharField(max_length=20)
-
     def __str__(self):
         return self.name
-
-
-class LinkRoomAttributes(models.Model):
-    room = models.ForeignKey('Room', on_delete=models.CASCADE, related_name="valued_attributes")
-    attribute = models.ForeignKey('RoomAttribute', on_delete=models.CASCADE)
-    value = models.CharField(max_length=20)
-
-    class Meta:
-        constraints = [models.UniqueConstraint(fields=['room', 'attribute'], name='unique_room_attribute'),]
-
-    def __str__(self):
-        return self.attribute.name + " : " + self.value
 
 
 class Room(models.Model):
@@ -405,6 +379,9 @@ class Room(models.Model):
     types = models.ManyToManyField(RoomType,
                                    blank=True,
                                    related_name="members")
+    attributes = models.ManyToManyField(RoomAttribute,
+                                        blank=True,
+                                        related_name="rooms")
     subroom_of = models.ManyToManyField('self',
                                         symmetrical=False,
                                         blank=True,

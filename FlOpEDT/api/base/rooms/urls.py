@@ -32,5 +32,3 @@ routerRooms.register(r'room', views.RoomViewSet)
 routerRooms.register(r'all', views.RoomAllViewSet, basename='all')
 routerRooms.register(r'sorts', views.RoomSortsViewSet)
 routerRooms.register(r'allAttributes', views.RoomAttributeViewSet, basename='allAttribute')
-routerRooms.register(r'allAttributesByRoom', views.AttributeByRoomViewSet, basename='allRoomAttribute')
-

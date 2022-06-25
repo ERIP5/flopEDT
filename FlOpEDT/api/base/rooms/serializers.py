@@ -53,9 +53,3 @@ class RoomAttributeSerializer(serializers.ModelSerializer):
     class Meta:
         model = bm.RoomAttribute
         fields = '__all__'
-
-
-class AttributeByRoomSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = bm.LinkRoomAttributes
-        fields = ['room', 'attribute', 'value']
