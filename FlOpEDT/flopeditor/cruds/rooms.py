@@ -28,7 +28,7 @@ without disclosing the source code of your own applications.
 """
 
 from django.http import JsonResponse
-from base.models import Room, Department
+from base.models import Room, Department, RoomAttribute
 from flopeditor.validator import OK_RESPONSE, ERROR_RESPONSE
 
 
@@ -66,9 +66,21 @@ def set_values_for_room(room, i, new_name, entries):
             ])
             return False
         depts.append(depts_found[0])
+    attributes = []
+    for attribute_name in entries['new_values'][i][3]:
+        attributes_found = RoomAttribute.objects.filter(name=attribute_name)
+        if len(attributes_found) != 1:
+            entries['result'].append([
+                ERROR_RESPONSE,
+                "Erreur en base de données."
+            ])
+            return False
+        attributes.append(attributes_found[0])
+
     room.name = new_name
     room.subrooms.set(subrooms)
     room.departments.set(depts)
+    room.attributes.set(attributes)
     return True
 
 
@@ -153,6 +165,8 @@ def read():
     # Chips options
     rooms_available = list(Room.objects.values_list('name', flat=True))
     departments = list(Department.objects.values_list('name', flat=True))
+    all_attributes = list(RoomAttribute.objects.values_list('name', flat=True))
+
 
     # Rows
     rooms = Room.objects.all()
@@ -164,7 +178,10 @@ def read():
         room_departments = []
         for dept in room.departments.all():
             room_departments.append(dept.name)
-        values.append((room.name, subrooms, room_departments))
+        attributes = []
+        for attribute in room.attributes.all():
+            attributes.append(attribute.name)
+        values.append((room.name, subrooms, room_departments, attributes))
 
     return JsonResponse({
         "columns":  [{
@@ -179,13 +196,17 @@ def read():
             'name': 'Départements associés',
             "type": "select-chips",
             "options": {'values': departments}
+        }, {
+            'name': 'Attributs',
+            "type": "select-chips",
+            "options": {'values': all_attributes}
         }],
         "values": values,
         "options": {
             "examples": [
-                ["Étage entier", [], []],
-                ["E101", ["Étage entier"], []],
-                ["E102", ["Étage entier"], []]
+                ["Étage entier", [], [], []],
+                ["E101", ["Étage entier"], [], []],
+                ["E102", ["Étage entier"], [], []]
             ]
         }
     })
