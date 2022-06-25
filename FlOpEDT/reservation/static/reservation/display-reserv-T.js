@@ -10,11 +10,6 @@ var room_width = window_width - date_width
 var date_height = 50
 var date_margtop = 20
 
-var nbCBcold = 2*5
-var nbCBhot = 4*5
-
-var each_room_y_T = days_y_T()
-
 var mini_add_button_height_T = 40
 
 var res_height_T = 70

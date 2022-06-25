@@ -51,15 +51,8 @@ function showfilters() {
 function addFilter(filter) {
     if(filter.value != "---") {
         select = document.getElementById("filterAct")
-        elemg = document.createElement("g")
-        elemg.id = filter[filter.selectedIndex].textContent + "-" + filter[filter.selectedIndex].value
-        select.appendChild(elemg)
 
-        elemp = document.createElement("p")
-        elemp.innerText = "filter by : " + filter[filter.selectedIndex].textContent
-        elemg.appendChild(elemp)
-
-        generateSelect(elemg, filter.value)
+        buttonSuppr(select, filter[filter.selectedIndex].textContent)
 
         removeAddFilterOption("remove", filter)
 
@@ -85,86 +78,11 @@ function removeAddFilterOption(adr, object) {
     }
 }
 
-function generateSelect(parent, idAttribute) {
-    switch (allAttributes[idAttribute].attribute_type) {
 
-        case "B" :
-            elemS = document.createElement("select")
-            elemS.id = allAttributes[idAttribute].name
-            elemS.onchange = addFilterChange
-            parent.appendChild(elemS)
-
-            elemO = document.createElement("option")
-                elemO.value = "all"
-                elemO.textContent = "all"
-                elemS.appendChild(elemO)
-
-            for (el of truefalse) {
-                elemO = document.createElement("option")
-                elemO.value = el
-                elemO.textContent = el
-                elemS.appendChild(elemO)
-            }
-
-            parent.appendChild(document.createElement("p"))
-            break;
-
-        case "A" :
-            elemS = document.createElement("select")
-            elemS.id = allAttributes[idAttribute].name
-            elemS.onchange = addFilterChange
-            parent.appendChild(elemS)
-
-            elemO = document.createElement("option")
-                elemO.value = "all"
-                elemO.textContent = "all"
-                elemS.appendChild(elemO)
-
-            for (el of allAttributes[idAttribute].array_values) {
-                elemO = document.createElement("option")
-                elemO.ngValue = el
-                elemO.textContent = el
-                elemS.appendChild(elemO)
-            }
-
-            parent.appendChild(document.createElement("p"))
-            break;
-
-        case "N" :
-
-            elemp = document.createElement("p")
-            elemp.innerText = "mini :"
-            parent.appendChild(elemp)
-
-            elemp = document.createElement("input")
-            elemp.id = allAttributes[idAttribute].name
-            elemp.type = "number"
-            elemp.oninput = addFilterNumberMinChange
-            parent.appendChild(elemp)
-
-            elemp = document.createElement("p")
-            elemp.innerText = "max :"
-            parent.appendChild(elemp)
-
-            elemp = document.createElement("input")
-            elemp.id = allAttributes[idAttribute].name
-            elemp.type = "number"
-            elemp.oninput = addFilterNumberMaxChange
-            parent.appendChild(elemp)
-
-            parent.appendChild(document.createElement("p"))
-
-            filter_list[allAttributes[idAttribute].name] = {}
-
-            break;
-    }
-    buttonSuppr(parent)
-}
-
-function buttonSuppr(parent) {
+function buttonSuppr(parent, text) {
     elemp = document.createElement("input")
     elemp.type = "button"
-    elemp.value = "supprimer filtre"
+    elemp.value = text+" x"
     elemp.id = "suppr"+nb_filter;
     nb_filter+=1;
     elemp.onclick = supprFilter

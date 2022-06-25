@@ -10,12 +10,6 @@ var scale_x = 100
 //-- add --//
 var addS_val = 80 //should be 40 but the rectangle doesn't work
 
-//-- color per courses/booking --//
-// the number of course/booking is still acceptable
-var nbCBcoldS = 3
-// there is too much course/booking
-var nbCBhotS = 4
-
 
 // variable or cpt not defined reset in cleanS
 var min_start_time = 99999
