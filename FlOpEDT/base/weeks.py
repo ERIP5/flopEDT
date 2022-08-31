@@ -44,7 +44,7 @@ days_infos = {
 def get_current_school_year():
     now = datetime.datetime.now()
     # TODO find a alternative way to test the swap month
-    if now.month <= 6:
+    if now.month <= 8:
         school_year = now.year - 1
     else:
         school_year = now.year
@@ -122,7 +122,7 @@ def week_list():
         return li
     else:
         # should start 1 week before the first week
-        for i in list(range(35, 53)):
+        for i in list(range(1, 53)):
             li.append({'week': i, 'year': actual_year})
         for i in list(range(1, 31)):
             li.append({'week': i, 'year': actual_year+1})

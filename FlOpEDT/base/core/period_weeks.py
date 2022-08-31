@@ -101,7 +101,7 @@ class PeriodWeeks():
     def get_current_school_year(cls):
         now = datetime.datetime.now()
         # TODO find a alternative way to test the swap month
-        if now.month <= 6:
+        if now.month <= 8:
             school_year = now.year - 1
         else:
             school_year = now.year

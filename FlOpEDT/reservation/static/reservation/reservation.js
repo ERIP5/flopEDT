@@ -215,10 +215,10 @@ function creationRooms(room) {
     newRoom.is_basic = room.is_basic
     newRoom.name = room.name
     newRoom.types = room.types
-    newRoom.attributes = room.attributes
     roomCourse = new Object(listDays());
     newRoom.courses = roomCourse
     roomCourse = new Object(listDays());
+    newRoom.attributes = room.attributes
     let patate = new Object(listDays());
     newRoom.booking = roomCourse
     allRoom[room.name] = newRoom

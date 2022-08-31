@@ -57,6 +57,8 @@ function addFilter(filter) {
         removeAddFilterOption("remove", filter)
 
         document.getElementById("selectfilter").selectedIndex = 0;
+
+        // il faudrait recalculer les salles à afficher...
     }
 }
 
@@ -82,7 +84,7 @@ function removeAddFilterOption(adr, object) {
 function buttonSuppr(parent, text) {
     elemp = document.createElement("input")
     elemp.type = "button"
-    elemp.value = text+" x"
+    elemp.value = text + " x"
     elemp.id = "suppr"+nb_filter;
     nb_filter+=1;
     elemp.onclick = supprFilter
