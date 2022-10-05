@@ -10,49 +10,72 @@
                         <!-- Filters -->
                         <div class="col">
                             <!-- Room filter -->
-                            <div class="mb-3">
+                            <div class="row mb-3">
                                 <label for="select-room" class="form-label">Room:</label>
-                                <select
-                                    id="select-room"
-                                    v-model="selectedRoom"
-                                    class="form-select w-auto"
-                                    aria-label="Select room"
-                                >
-                                    <option :value="undefined">All rooms</option>
-                                    <option
-                                        v-for="room in Object.values(rooms.perIdFilterBySelectedDepartments.value)
-                                            .filter((r) => r.is_basic)
-                                            .sort((r1, r2) => {
-                                                return r1.name.toLowerCase().localeCompare(r2.name.toLowerCase())
-                                            })"
-                                        :key="room.id"
-                                        :value="room"
+                                <div v-if="selectedRoom" class="col-auto pe-0">
+                                    <button type="button" class="btn-close" @click="handleRoomNameClick(-1)"></button>
+                                </div>
+
+                                <div class="col-auto">
+                                    <select
+                                        id="select-room"
+                                        v-model="selectedRoom"
+                                        class="form-select w-auto"
+                                        aria-label="Select room"
                                     >
-                                        {{ room.name }}
-                                    </option>
-                                </select>
+                                        <option :value="undefined">All rooms</option>
+                                        <option
+                                            v-for="room in Object.values(rooms.perIdFilterBySelectedDepartments.value)
+                                                .filter((r) => r.is_basic)
+                                                .sort((r1, r2) => {
+                                                    return r1.name.toLowerCase().localeCompare(r2.name.toLowerCase())
+                                                })"
+                                            :key="room.id"
+                                            :value="room"
+                                        >
+                                            {{ room.name }}
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
                             <!-- Department filter -->
-                            <div class="mb-3">
+                            <div class="row mb-3">
                                 <label for="select-department" class="form-label">Department:</label>
-                                <select
-                                    id="select-department"
-                                    v-model="selectedDepartment"
-                                    class="form-select w-auto ms-1"
-                                    aria-label="Select department"
-                                >
-                                    <option :value="undefined">All departments</option>
-                                    <option v-for="dept in departments.list.value" :key="dept.id" :value="dept">
-                                        {{ dept.abbrev }}
-                                    </option>
-                                </select>
+                                <div v-if="selectedDepartment" class="col-auto pe-0">
+                                    <button
+                                        type="button"
+                                        class="btn-close"
+                                        @click="handleDepartmentNameClick(-1)"
+                                    ></button>
+                                </div>
+
+                                <div class="col-auto">
+                                    <select
+                                        id="select-department"
+                                        v-model="selectedDepartment"
+                                        class="form-select w-auto ms-1"
+                                        aria-label="Select department"
+                                    >
+                                        <option :value="undefined">All departments</option>
+                                        <option v-for="dept in departments.list.value" :key="dept.id" :value="dept">
+                                            {{ dept.abbrev }}
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
-                            <!-- Room attribute filters -->
-                            <div v-if="!selectedRoom">
+                            <!-- Room attribute and name filters -->
+                            <div v-if="!selectedRoom" class="row">
+                                <div class="mb-3">
+                                    <ClearableInput
+                                        :input-id="'filter-input-roomName'"
+                                        :label="'Filter by room name:'"
+                                        v-model:text="roomNameFilter"
+                                    ></ClearableInput>
+                                </div>
                                 <div class="mb-3">
                                     <DynamicSelect
                                         v-bind="{
-                                            id: 'select-attribute-bool',
+                                            id: 'filter-select-attribute',
                                             label: 'Filter by attributes:',
                                             values: createFiltersValues(),
                                         }"
@@ -66,7 +89,12 @@
                 <!-- Calendar -->
                 <div class="col">
                     <HourCalendar v-if="selectedRoom" @drag="handleDrag" :values="hourCalendarValues"></HourCalendar>
-                    <RoomCalendar v-else @new-slot="handleNewSlot" :values="roomCalendarValues"></RoomCalendar>
+                    <RoomCalendar
+                        v-else
+                        @new-slot="handleNewSlot"
+                        :values="roomCalendarValues"
+                        @row-header-click="handleRoomNameClick"
+                    ></RoomCalendar>
                 </div>
             </div>
         </div>
@@ -115,10 +143,12 @@ import RoomCalendarScheduledCourseSlot from '@/components/calendar/RoomCalendarS
 import DynamicSelect from '@/components/dynamicSelect/DynamicSelect.vue'
 import DynamicSelectedElementNumeric from '@/components/dynamicSelect/DynamicSelectedElementNumeric.vue'
 import DynamicSelectedElementBoolean from '@/components/dynamicSelect/DynamicSelectedElementBoolean.vue'
+import ClearableInput from '@/components/ClearableInput.vue'
 
 const api = ref<FlopAPI>(requireInjection(apiKey))
 const currentWeek = ref(requireInjection(currentWeekKey))
 let currentDepartment = ''
+let currentUserId = -1
 let loadingCounter = 0
 
 interface RoomAttributeEntry {
@@ -222,7 +252,7 @@ const rooms: Rooms = {
         return Object.fromEntries(rooms.list.value.map((r) => [r.id, r]))
     }),
     listFilterBySelectedDepartmentsAndFilters: computed(() => {
-        const filters: Array<
+        const attributeFilters: Array<
             [
                 Array<DynamicSelectElementValue>,
                 Array<RoomAttributeValue>,
@@ -244,11 +274,18 @@ const rooms: Rooms = {
                 },
             ],
         ]
-        return Object.values(rooms.perIdFilterBySelectedDepartments.value).filter((room) => {
+
+        // Filter by room name
+        let out = Object.values(rooms.perIdFilterBySelectedDepartments.value).filter((room) =>
+            room.name.toLowerCase().includes(roomNameFilter.value.toLowerCase())
+        )
+
+        // Filter by attributes
+        out = out.filter((room) => {
             const roomId = room.id
             let matchFilters = true
 
-            filters.forEach((filterEntry) => {
+            attributeFilters.forEach((filterEntry) => {
                 if (!matchFilters) {
                     // Skip the next checks if one failed
                     return
@@ -278,6 +315,7 @@ const rooms: Rooms = {
             })
             return matchFilters
         })
+        return out
     }),
 }
 
@@ -437,6 +475,8 @@ const selectedNumericAttributes = computed(() => {
         .filter((entry) => entry.component === markRaw(DynamicSelectedElementNumeric))
         .map((entry) => entry.value)
 })
+
+const roomNameFilter = ref('')
 
 /**
  * Computes the slots to display all the room reservations, grouped by day.
@@ -939,6 +979,14 @@ function showLoading(): void {
     loaderIsVisible.value = true
 }
 
+function handleRoomNameClick(roomId: number) {
+    selectedRoom.value = rooms.list.value.find((r) => r.id === roomId)
+}
+
+function handleDepartmentNameClick(deptId: number) {
+    selectedDepartment.value = departments.list.value.find((dept) => dept.id === deptId)
+}
+
 let newReservationId = -1
 
 function handleDrag(drag: CalendarDragEvent) {
@@ -958,7 +1006,7 @@ function handleDrag(drag: CalendarDragEvent) {
         id: newReservationId--,
         periodicity: -1,
         reservation_type: -1,
-        responsible: 553,
+        responsible: currentUserId,
         room: selectedRoom.value?.id ?? -1,
         start_time: drag.startTime.text,
         title: '',
@@ -982,7 +1030,7 @@ function handleNewSlot(date: Date, roomId: string) {
         id: newReservationId--,
         periodicity: -1,
         reservation_type: -1,
-        responsible: 553,
+        responsible: currentUserId,
         room: parseInt(roomId, 10),
         start_time: now.toTimeString(),
         title: '',
@@ -1028,8 +1076,12 @@ onMounted(() => {
     const dbDataElement = document.getElementById('json_data')
     if (dbDataElement && dbDataElement.textContent) {
         const data = JSON.parse(dbDataElement.textContent)
+
         if ('dept' in data) {
             currentDepartment = data.dept
+        }
+        if ('user_id' in data) {
+            currentUserId = data.user_id
         }
     }
     fetchDepartments().then((value) => {
