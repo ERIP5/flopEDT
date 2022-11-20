@@ -9,6 +9,6 @@ from .types import BknewsType
 class Query (BaseQuery):
     bknews = DjangoFilterConnectionField(
         BknewsType,
-        description = "A list of breanking news",
+        description = "A list of breaking news",
         resolver = resolve.all_bknews
     )

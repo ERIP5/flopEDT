@@ -9,7 +9,7 @@ from .types import DepartmentType
 class Query(BaseQuery):
     departments = DjangoFilterConnectionField(
         DepartmentType,
-        description = "A list of tutors",
+        description = "A list of departments",
         resolver = resolve.all_departments
     )
 
