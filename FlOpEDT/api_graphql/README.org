@@ -34,6 +34,12 @@ données :
   #+end_src
 - Cette exécution-ci ne doit conduire à aucune erreur. Lors de la phase d'ajout
   de tests, une autre exécution conduira sûrement à une erreur.
+- Quand il n'y a pas de modification de la structure de la base de données (en
+  gros, pas de changement dans le =models.py= des applications), on peut utiliser
+  #+begin_src shell
+    pytest api_graphql --reuse-db
+  #+end_src
+  pour [[https://pytest-django.readthedocs.io/en/latest/database.html#reuse-db-reuse-the-testing-database-between-test-runs][accélérer l'exécution du test]]
 
 * Nodes (/Serializers)
 - Un exemple dans =dummy/types.py=
@@ -44,7 +50,7 @@ données :
   =filter_fields= de la classe =Meta= de =DepartmentNode= -- dans
   =api_graphql/dummy/types.py=). Pour un exemple de requête, voir
   =api_graphql/dummy/test=
-  
+
 * Resolvers
 - Un exemple dans =dummy/resolvers.py=
 - Pour résoudre des champs (calculer leurs valeurs)
@@ -56,11 +62,14 @@ données :
 * Organisation
 - Sous le répertoire =api_graphql=, on split en sous-répertoires, dont la
   structure peut ressembler à =dummy=.
-  - Un sous-répertoire =types.py= pour définir les types de données manipulées
+  - Un fichier =types.py= pour définir les types de données manipulées
     (qui font le lien entre les objets en base (ou plutôt des objets vus via
     l'ORM (Object Relational Mapping)) et la machine cliente)
-  - Un sous-répertoire =resolvers.py= pour définir
-- Pour l'organisation du travail, une proposition :
+  - Un fichier =query.py= pour définir la requête principale du sous-répertoire
+    considéré.
+  - Un fichier =resolvers.py= pour définir la manière dont les champs de la
+    requête seront remplis.
+- *@L3 MIASHS :* Pour l'organisation du travail, une proposition :
   - composition de binômes
     - un rôle de conception de tests
     - un rôle de conception des requêtes
@@ -69,6 +78,13 @@ données :
     - quelles requêtes seront traitées dans la journée
     - une spécification précise des requêtes
   - lorsque les deux personnes ont fini une requête donnée, tester et corriger
+- *@Léo :* proposition
+  - peut-être écrire quelque part (éventuellement dans ce fichier) une
+    liste de toutes les classes qui sont dans les =models.py=, et indiquer en
+    face de chaque item par où on peut y accéder, où rien si pas encore
+    accessible.
+  - si classes très similaires, possibilité de faire la première pour donner un
+    exemple, et de laisser les autres pour les MIASHS
 
 * Remarques
 - Attention, les erreurs ne sont pas toujours très explicites. Plutôt que de
@@ -80,3 +96,35 @@ données :
   #+begin_src python
     from api_graphql.dummy import types, query, resolvers
   #+end_src
+- A priori, utiliser =fields = '__all__'= est déconseillé.
+
+
+* TODO Après la première phase [0/7]
+- [ ] =BreakingNews=
+  - [ ] Rendre cohérente la gestion des semaines avec le reste du projet
+    - [ ] Modifier =displayweb.models.py= (s'inspirer de =ScheduledCourse dans
+      =base.models.py=, par exemple)
+    - [ ] Modifier =api_graphql/bknews/types.py= en conséquence
+    - [ ] Il manque des champs utiles
+- [ ] Rassembler la construction des fixtures communes dans un ou des fichiers,
+  dans le•s•quel•s• tous les tests pourront piocher.
+- [ ] Nettoyer les imports et l'organisation : par exemple, =client_query= n'a
+  pas grand chose à faire dans le test pour les modules. Il devrait être dans un
+  truc commun.
+- [ ] Virer les =fields = '__all__'=
+- [ ] Tests pour =department=
+- [ ] Si on continue à utiliser l'idée de =api_graphql/lib.py=, il faudrait que
+  l'histoire des =edges= et =node= soit plus explicite dans les noms. Là, on a
+  l'impression qu'une =query= récupère forcément un élément =edges= (via
+  =execute_query=). Mais cela ne vaut que pour des =DjangoConnectionField=.
+- [ ] Plus globalement, il y a une réflexion à avoir sur la manière dont on
+  nomme les requêtes. Dans la précédente =API= (dans le répertoire =api=), grâce
+  aux routeurs et aux URLs, on avait un moyen assez propre de gérer les
+  namespaces. Avec le système semi-artisanal de =api_graphql/auto.py=,
+  =api_graphql/base.py= et =api_graphql/schema.py=, on a perdu ça. Il faut sans
+  doute réfléchir à un système avec des préfixes pour éviter les conflits entre
+  toutes les requêtes qu'on va ramener dans la requête principale.
+
+* TODO Dans un second temps [0/2]
+- [ ] Gestion des droits
+- [ ] Optimisation des requêtes
