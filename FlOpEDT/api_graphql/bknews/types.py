@@ -12,11 +12,9 @@ class BknewsType(DjangoObjectType):
         model = BreakingNews
         filter_fields = {
             'department__name' : ['icontains', 'istartswith'],
+            'department__abbrev' : ['icontains', 'istartswith'],
             'week' : ['exact'],
             'year' : ['exact'],
-            'x_beg' : ['exact'],
-            'x_end' : ['exact'],
-            'y' : ['exact'],
             'txt' : ['icontains', 'istartswith'],
             'is_linked' : ['icontains', 'istartswith']
         }
