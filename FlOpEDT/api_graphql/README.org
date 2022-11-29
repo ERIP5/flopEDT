@@ -128,3 +128,28 @@ données :
 * TODO Dans un second temps [0/2]
 - [ ] Gestion des droits
 - [ ] Optimisation des requêtes
+  - [ ] =select_related= et =prefetch_related=
+  - [ ] dataloader
+
+* Docs
+https://blog.octo.com/graphql-et-pourquoi-faire/
+[[https://www.apollographql.com/blog/backend/auth/access-control-in-graphql/][dans les noeuds]]
+[[https://blog.logrocket.com/a-complete-guide-to-permissions-in-a-graphql-api/][un peu partout]]
+
+[[https://www.apollographql.com/blog/graphql/basics/the-concepts-of-graphql/][normalisation ?]]
+[[https://www.apollographql.com/blog/graphql/basics/graphql-explained/][GraphQL Explained]]
+
+** COMMENT Notes
+- data loader: éviter le n+1
+- union utile pour les contraintes
+- Sécurité https://www.howtographql.com/advanced/4-security/
+  - tiemout
+  - max query depth
+  - complexity throttling
+- cache: cf global ids
+- pourquoi on n'envoie pas les données promo par promo ?
+
+  https://medium.com/@marion.schleifer/how-to-connect-your-graphql-api-to-your-vuejs-frontend-61d8e8e455db
+  https://rapidapi.com/guides/call-graphql-apis-vue
+  https://apollo.vuejs.org/guide/#become-a-sponsor
+  https://www.apollographql.com/blog/frontend/getting-started-with-vue-apollo/
