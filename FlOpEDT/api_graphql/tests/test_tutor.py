@@ -1,22 +1,13 @@
-from distutils.command.build_scripts import first_line_re
-import json
 from _pytest.fixtures import fixture
 import pytest
 from graphene_django.utils.testing import graphql_query
 from people.models import Tutor
-from base.models import Department, Week, ModuleTutorRepartition
-import lib
-
-
-
-@pytest.fixture
-def client_query(client):
-    def func(*args, **kwargs):
-        return graphql_query(*args, **kwargs,
-                             client=client,
-                             graphql_url="/graphql")
-
-    return func
+from base.models import Week, Course,Room, ScheduledCourse, CourseType, Module, TrainingProgramme, Department, Period
+from test_scheduled_course import week1, week7, module_algo_prog, module_conception_log, training_l3_miashs ,training_l2_miashs, \
+department_miashs, period_1 , period_2, tutor_algo_prog, tutor_conception, \
+course_type_algo, room_algo, course_algo, scheduled1, \
+course_type_conception, room_conception, course_conception, scheduled2
+from lib import *
 
 @pytest.fixture
 def department_info(db) -> Department:
@@ -29,21 +20,25 @@ def department_reseaux(db) -> Department:
 @pytest.fixture
 def tutor_info(db, department_info : Department) -> Tutor:
     res = Tutor.objects.create(username="LN",  first_name="Laurent")
+    res.save()
     res.departments.add(department_info)
+    res.save()
     return res
 
 @pytest.fixture
 def tutor_reseaux(db, department_reseaux : Department) -> Tutor:
     res = Tutor.objects.create(username="ADES",  first_name="Arnaud")
+    res.save()
     res.departments.add(department_reseaux)
+    res.save()
     return res
 
-def test_all_tutors(client_query,
+def test_all_tutors_dept(client_query,
                     tutor_info : Tutor, 
                     tutor_reseaux : Tutor):
     query='''
         query {
-            tutors {
+            tutors (dept : \"RT\") {
                 edges {
                     node {
                         username
@@ -52,27 +47,27 @@ def test_all_tutors(client_query,
             }
         }
     '''
-    res = lib.execute_query (client_query, query, "tutors")
-    data = lib.get_data(res)
-    assert tutor_info.username in data["username"]
+    res = execute_query (client_query, query, "tutors")
+    data = get_data(res)
     assert tutor_reseaux.username in data["username"]
+    assert tutor_info.username not in data["username"]
 
-def test_tutors_one_filter(client_query,
-                           tutor_info: Tutor):
+def test_tutors_algo(client_query,
+                           tutor_algo_prog: Tutor, scheduled1 : ScheduledCourse, scheduled2 : ScheduledCourse):
     query='''
         query {
-            tutors (firstName_Istartswith : \"la\"){
+            tutors (dept : \"MIASHS\", week : 7, year : 2021){
                 edges {
                     node {
-                        firstName
                         username
+                        firstName
                     }
                 }
             }
         }
     '''
-    res = lib.execute_query (client_query, query, "tutors")
-    data = lib.get_data(res)
-    assert tutor_info.first_name in data["firstName"]
-    assert tutor_info.username in data["username"]
+    res = execute_query (client_query, query, "tutors")
+    data = get_data(res)
+    assert tutor_algo_prog.first_name in data["firstName"]
+    assert tutor_algo_prog.username in data["username"]
     

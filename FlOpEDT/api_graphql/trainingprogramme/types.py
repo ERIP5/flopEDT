@@ -1,15 +1,10 @@
-from graphene import ObjectType, Int, String, List, lazy_import, relay
+from graphene import relay
 from graphene_django import DjangoObjectType
-
-from . import resolvers as resolve
-
 from base.models import TrainingProgramme
+from .filter import TrainingProgrammeFilter
 
 class TrainingProgrammeType(DjangoObjectType):
     class Meta:
         model = TrainingProgramme
-        filter_fields = {
-            'abbrev': ['exact']
-        }
-        fields = ('abbrev',)
+        filterset_class = TrainingProgrammeFilter
         interfaces = (relay.Node, )

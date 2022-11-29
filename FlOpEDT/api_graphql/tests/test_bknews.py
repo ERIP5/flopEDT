@@ -1,14 +1,10 @@
-from distutils.command.build_scripts import first_line_re
-import json
 from _pytest.fixtures import fixture
 import pytest
 from graphene_django.utils.testing import graphql_query
 from displayweb.models import BreakingNews
 from base.models import Department, Week, ModuleTutorRepartition
-from api_graphql.tests.test_modules import client_query as client_query
-from api_graphql.tests.test_tutor import department_info as department_info, \
-department_reseaux as department_reseaux
-import lib
+from test_tutor import department_info, department_reseaux
+from lib import *
 
 
 
@@ -37,8 +33,8 @@ def test_bknews(client_query,
             }
         }
     '''
-    res = lib.execute_query (client_query, query, "bknews")
-    data = lib.get_data(res)
+    res = execute_query (client_query, query, "bknews")
+    data = get_data(res)
     assert y1.y in data["y"]
     assert y2.y in data["y"]
     assert y1.txt in data["txt"]
@@ -57,6 +53,6 @@ def test_bknews_filters1(client_query,
             }
         }
     '''
-    res = lib.execute_query (client_query, query, "bknews")
-    data = lib.get_data(res)
+    res = execute_query (client_query, query, "bknews")
+    data = get_data(res)
     assert y1.txt in data["txt"]

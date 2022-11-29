@@ -1,14 +1,12 @@
-import json
 from _pytest.fixtures import fixture
 import pytest
 from graphene_django.utils.testing import graphql_query
-import lib
-
 from base.models import UserPreference, Week
 from people.models import Tutor
-from api_graphql.tests.test_modules import tutor_algo_prog as tutor_algo_prog, \
-tutor_conception as tutor_conception, client_query as client_query
 from base.timing import Day
+from base.models import Week, Course,Room, ScheduledCourse, CourseType, Module, TrainingProgramme, Department, Period
+from test_modules import department_miashs, tutor_algo_prog, tutor_conception
+from lib import *
 
 @pytest.fixture
 def week1(db) -> Week:
@@ -50,8 +48,8 @@ def test_all_user_pref(client_query,
             }
         }
     '''
-    res = lib.execute_query (client_query, query, "userPreferences")
-    data = lib.get_data(res)
+    res = execute_query (client_query, query, "userPreferences")
+    data = get_data(res)
     assert user_pref_algo_prog.day.upper() in data["day"]
     assert user_pref_conception.day.upper() in data["day"]
 
@@ -59,8 +57,7 @@ def test_user_pref_with_filters_1(client_query,
                                 user_pref_conception : UserPreference):
     query = '''
         query {
-            userPreferences (week_Year : 2022,
-            user_FirstName_Icontains : \"hn\") {
+            userPreferences (dept : \"MIASHS\", week_Year : 2022) {
                 edges {
                     node {
                         value
@@ -69,25 +66,6 @@ def test_user_pref_with_filters_1(client_query,
             }
         }
     '''
-    res = lib.execute_query (client_query, query, "userPreferences")
-    data = lib.get_data(res)
+    res = execute_query (client_query, query, "userPreferences")
+    data = get_data(res)
     assert user_pref_conception.value in data["value"]
-
-def test_user_pref_with_filters_2(client_query,
-                                user_pref_algo_prog : UserPreference):
-    query = '''
-        query {
-            userPreferences (user_Username : \"EM\") {
-                edges {
-                    node {
-                        user {
-                            firstName
-                        }
-                    }
-                }
-            }
-        }
-    '''
-    res = lib.execute_query (client_query, query, "userPreferences")
-    data = lib.get_data(res)
-    assert user_pref_algo_prog.user.first_name in data["firstName"]

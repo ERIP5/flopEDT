@@ -1,20 +1,9 @@
-import json
 from _pytest.fixtures import fixture
 import pytest
 from graphene_django.utils.testing import graphql_query
-import lib
-
 from base.models import Module, TrainingProgramme, Department, Period
 from people.models import Tutor
-
-@pytest.fixture
-def client_query(client):
-    def func(*args, **kwargs):
-        return graphql_query(*args, **kwargs,
-                             client=client,
-                             graphql_url="/graphql")
-
-    return func
+from lib import *
 
 @pytest.fixture
 def department_miashs(db) -> Department:
@@ -45,12 +34,20 @@ def period_2(db, department_miashs: Department)-> Period:
         starting_week=1, ending_week=4)
 
 @pytest.fixture
-def tutor_conception(db) -> Tutor:
-    return Tutor.objects.create(username="JD", first_name="John")
+def tutor_conception(db, department_miashs : Department) -> Tutor:
+    res = Tutor.objects.create(username="JD", first_name="John")
+    res.save()
+    res.departments.add(department_miashs)
+    res.save()
+    return res
 
 @pytest.fixture
-def tutor_algo_prog(db) -> Tutor:
-    return Tutor.objects.create(username="EM", first_name="Elon")
+def tutor_algo_prog(db, department_miashs : Department) -> Tutor:
+    res = Tutor.objects.create(username="EM", first_name="Elon")
+    res.save()
+    res.departments.add(department_miashs)
+    res.save()
+    return res
 
 @pytest.fixture
 def module_conception_log(db, 
@@ -76,7 +73,7 @@ def test_all_modules(client_query,
                     module_algo_prog : Module):
     query = '''
         query {
-            modules {
+            modules (dept :\"MIASHS\"){
                 edges {
                     node {
                         abbrev
@@ -88,19 +85,18 @@ def test_all_modules(client_query,
             }
         }
     '''
-    res = lib.execute_query (client_query, query, "modules")
-    data = lib.get_data(res)
+    res = execute_query (client_query, query, "modules")
+    data = get_data(res)
     assert module_conception_log.abbrev in data["abbrev"]
     assert module_algo_prog.abbrev in data["abbrev"]
     assert module_conception_log.head.username in data["username"]
     assert module_algo_prog.head.username in data["username"]
 
 def test_modules_with_filters_1(client_query,
-                                module_algo_prog: Module):
+                                module_conception_log: Module):
     query = '''
         query {
-            modules (name_Icontains : \"l\",
-            head_FirstName_Icontains : \"on\") {
+            modules (dept :\"MIASHS\", week : 5) {
                 edges {
                     node {
                         url
@@ -109,15 +105,15 @@ def test_modules_with_filters_1(client_query,
             }
         }
     '''
-    res = lib.execute_query (client_query, query, "modules")
-    data = lib.get_data(res)
-    assert module_algo_prog.url in data["url"]
+    res = execute_query (client_query, query, "modules")
+    data = get_data(res)
+    assert module_conception_log.url in data["url"]
 
 def test_modules_with_filters_2(client_query,
                                 module_algo_prog: Module):
     query = '''
         query {
-            modules (name_Icontains : \"l\",
+            modules (dept :\"MIASHS\", name_Icontains : \"l\",
             trainProg_Abbrev : \"L2M\") {
                 edges {
                     node {
@@ -127,6 +123,6 @@ def test_modules_with_filters_2(client_query,
             }
         }
     '''
-    res = lib.execute_query (client_query, query, "modules")
-    data = lib.get_data(res)
+    res = execute_query (client_query, query, "modules")
+    data = get_data(res)
     assert module_algo_prog.url in data["url"]

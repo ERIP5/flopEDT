@@ -4,21 +4,14 @@ import json
 from _pytest.fixtures import fixture
 import pytest
 from graphene_django.utils.testing import graphql_query
-
 from base.models import Department, TrainingProgramme
+from lib import *
+
 
 
 # Pour pouvoir faire des requêtes sur graphQL pendant les tests
 # Insatisfaisant car graphql_url devrait venir de la configuration globale
 # mais on s'en contentera
-@pytest.fixture
-def client_query(client):
-    def func(*args, **kwargs):
-        return graphql_query(*args, **kwargs,
-                             client=client,
-                             graphql_url="/graphql")
-
-    return func
 
 # Des fixtures pour des départements
 @pytest.fixture
