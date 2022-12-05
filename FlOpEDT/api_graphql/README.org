@@ -101,17 +101,17 @@ données :
 
 * TODO Après la première phase [0/7]
 - [ ] =BreakingNews=
-  - [ ] Rendre cohérente la gestion des semaines avec le reste du projet
-    - [ ] Modifier =displayweb.models.py= (s'inspirer de =ScheduledCourse dans
+  - [X] Rendre cohérente la gestion des semaines avec le reste du projet
+    - [X] Modifier =displayweb.models.py= (s'inspirer de =ScheduledCourse dans
       =base.models.py=, par exemple)
-    - [ ] Modifier =api_graphql/bknews/types.py= en conséquence
-    - [ ] Il manque des champs utiles
-- [ ] Rassembler la construction des fixtures communes dans un ou des fichiers,
+    - [X] Modifier =api_graphql/bknews/types.py= en conséquence
+    - [X] Il manque des champs utiles
+- [X] Rassembler la construction des fixtures communes dans un ou des fichiers,
   dans le•s•quel•s• tous les tests pourront piocher.
 - [ ] Nettoyer les imports et l'organisation : par exemple, =client_query= n'a
   pas grand chose à faire dans le test pour les modules. Il devrait être dans un
   truc commun.
-- [ ] Virer les =fields = '__all__'=
+- [X] Virer les =fields = '__all__'=
 - [ ] Tests pour =department=
 - [ ] Si on continue à utiliser l'idée de =api_graphql/lib.py=, il faudrait que
   l'histoire des =edges= et =node= soit plus explicite dans les noms. Là, on a
