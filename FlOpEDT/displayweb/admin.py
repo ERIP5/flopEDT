@@ -15,9 +15,9 @@ class BreakingNewsResource(resources.ModelResource):
 
         
 class BreakingNewsAdmin(DepartmentModelAdmin):
-    list_display = ('week', 'year', 'x_beg', 'x_end', 'y', 'txt',
+    list_display = ('week', 'x_beg', 'x_end', 'y', 'txt',
                     'fill_color', 'strk_color')
-    ordering = ('-year', '-week')
+    ordering = ('-week',)
 
 
 class TutorDisplayResource(resources.ModelResource):

@@ -12,11 +12,11 @@ from lib import *
 #parametre test
 @pytest.fixture
 def y1(db, department_info:Department) -> BreakingNews:
-    return BreakingNews.objects.create(department= department_info , week = 11, year = 2021,y=5, txt = "Lorem ipsum dolor sit amet.")
+    return BreakingNews.objects.create(department= department_info , week = Week(year=2021, nb=11), y=5, txt = "Lorem ipsum dolor sit amet.")
 
 @pytest.fixture
 def y2(db, department_reseaux:Department) -> BreakingNews:
-    return BreakingNews.objects.create(department= department_reseaux,week = 15, year = 2022, y=10, txt = "In atque alias et eveniet provident eos")
+    return BreakingNews.objects.create(department= department_reseaux, week = Week(year=2022, nb=15), y=10, txt = "In atque alias et eveniet provident eos")
 
 def test_bknews(client_query,
                     y1 : BreakingNews,

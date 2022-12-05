@@ -11,10 +11,7 @@ class BreakingNews(models.Model):
     department =  models.ForeignKey('base.Department',
                                     on_delete=models.CASCADE,
                                     null=True)
-    week = models.PositiveSmallIntegerField(
-        validators=[MinValueValidator(0), MaxValueValidator(53)],
-        null=True, blank=True)
-    year = models.PositiveSmallIntegerField()
+    week = models.ForeignKey('base.Week', null=True, blank=True, on_delete=models.SET_NULL)
     # x_beg and x_end in terms of day width
     x_beg = models.FloatField(default=2., blank=True)
     x_end = models.FloatField(default=3., blank=True)
