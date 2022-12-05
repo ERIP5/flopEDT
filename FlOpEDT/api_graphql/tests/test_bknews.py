@@ -26,6 +26,7 @@ def test_bknews(client_query,
             bknews {
                 edges {
                     node {
+                        week
                         y
                         txt
                     }
@@ -39,6 +40,8 @@ def test_bknews(client_query,
     assert y2.y in data["y"]
     assert y1.txt in data["txt"]
     assert y2.txt in data["txt"]
+    assert y1.week in data["week"]
+    assert y2.week in data["week"]
 
 def test_bknews_filters1(client_query,
                     y1 : BreakingNews):
