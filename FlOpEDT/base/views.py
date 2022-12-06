@@ -719,19 +719,6 @@ def fetch_decale(req, **kwargs):
                          'jours': days})
 
 
-def fetch_bknews(req, year, week, **kwargs):
-    week_object = Week(year=year, nb=week)
-    dataset = BreakingNewsResource() \
-        .export(BreakingNews.objects.filter(
-            department=req.department,
-            week=week_object))
-    response = HttpResponse(dataset.csv,
-                            content_type='text/csv')
-    response['week'] = week
-    response['year'] = year
-    return response
-
-
 def fetch_all_versions(req, **kwargs):
     """
     Export all EdtVersions in json

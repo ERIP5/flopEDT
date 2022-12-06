@@ -13,7 +13,7 @@ class ScheduledCourseFilter(FilterSet):
             'course__module__abbrev': ['icontains', 'istartswith'],
             'tutor__username': ['icontains', 'istartswith'],
             'start_time' : ['exact'],
-            'no' : ['exact'],
+            'number' : ['exact'],
             'noprec': ['exact'],
             'work_copy': ['exact']
         }

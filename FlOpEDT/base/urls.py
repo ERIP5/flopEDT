@@ -64,7 +64,6 @@ urlpatterns = [
     path('fetch_course_default_week/<str:train_prog>/<str:course_type>', views.fetch_course_default_week, name="fetch_course_dweek"),
     path('fetch_room_default_week/<str:room>', views.fetch_room_default_week, name="fetch_room_dweek"),
     url(r'^fetch_decale$', views.fetch_decale, name="fetch_decale"),
-    url(r'^fetch_bknews/(?P<year>\d+)/(?P<week>\d+)$', views.fetch_bknews, name="fetch_bknews"),
     url(r'^fetch_groups$', views.fetch_groups, name="fetch_groups"),    
     url(r'^fetch_rooms$', views.fetch_rooms, name="fetch_rooms"),    
     url(r'^fetch_flat_rooms$', views.fetch_flat_rooms, name="fetch_flat_rooms"),    

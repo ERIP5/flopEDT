@@ -8,7 +8,6 @@ class CourseFilter(FilterSet):
         fields = {
                     'type__name' : ['icontains', 'istartswith'],
                     'room_type__name' : ['icontains', 'istartswith'],
-                    'no' : ['exact'],
                     'tutor__username' : ['exact'],
                     'tutor__first_name' : ['icontains', 'istartswith'],
                     'supp_tutor__username' : ['exact'],

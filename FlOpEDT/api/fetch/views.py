@@ -421,8 +421,8 @@ class BKNewsFilterSet(filters.FilterSet):
     permission_classes = [IsTutorOrReadOnly]
     dept = filters.CharFilter(field_name='department__abbrev', required=True)
     # makes the fields required
-    week = filters.NumberFilter(field_name='week', required=True)
-    year = filters.NumberFilter(field_name='year', required=True)
+    week = filters.NumberFilter(field_name='week__nb', required=True)
+    year = filters.NumberFilter(field_name='week__year', required=True)
 
     class Meta:
         model = dwm.BreakingNews

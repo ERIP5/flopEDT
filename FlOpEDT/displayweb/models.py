@@ -26,8 +26,8 @@ class BreakingNews(models.Model):
     def __str__(self):
         return '@(' + str(self.x_beg) + '--' + str(self.x_end) \
                + ',' + str(self.y) \
-               + ')-W' + str(self.week) + ',Y' \
-               + str(self.year) + ': ' + str(self.txt)
+               + ')-W' + str(self.week.nb) + ',Y' \
+               + str(self.week.year) + ': ' + str(self.txt)
 
 
 class TutorDisplay(models.Model):

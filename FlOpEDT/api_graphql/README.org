@@ -106,7 +106,7 @@ données :
       =base.models.py=, par exemple)
     - [X] Modifier =api_graphql/bknews/types.py= en conséquence
     - [X] Il manque des champs utiles
-- [X] Rassembler la construction des fixtures communes dans un ou des fichiers,
+- [ ] Rassembler la construction des fixtures communes dans un ou des fichiers,
   dans le•s•quel•s• tous les tests pourront piocher.
 - [ ] Nettoyer les imports et l'organisation : par exemple, =client_query= n'a
   pas grand chose à faire dans le test pour les modules. Il devrait être dans un

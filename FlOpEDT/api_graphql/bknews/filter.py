@@ -8,7 +8,7 @@ class BknewsFilter(FilterSet):
             'department__name' : ['icontains', 'istartswith'],
             'department__abbrev' : ['exact'],
             'week__nb' : ['exact'],
-            'week_year' : ['exact'],
+            'week__year' : ['exact'],
             'x_beg' : ['exact'],
             'x_end' : ['exact'],
             'y' : ['exact'],

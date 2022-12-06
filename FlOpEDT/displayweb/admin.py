@@ -4,7 +4,7 @@ from import_export.widgets import ForeignKeyWidget
 from django.contrib import admin
 
 from base.admin import DepartmentModelAdmin
-from base.models import Module
+from base.models import Module, Week
 from people.models import Tutor
 from displayweb.models import BreakingNews, TutorDisplay, ModuleDisplay
 
@@ -15,9 +15,16 @@ class BreakingNewsResource(resources.ModelResource):
 
         
 class BreakingNewsAdmin(DepartmentModelAdmin):
-    list_display = ('week', 'x_beg', 'x_end', 'y', 'txt',
+    def week_nb(o):
+        return o.week.nb
+    def week_year(o):
+        return o.week.year
+
+    week_nb.admin_order_field = 'week__nb'
+    week_year.admin_order_field = 'week__year'
+    list_display = (week_year, week_nb, 'x_beg', 'x_end', 'y', 'txt',
                     'fill_color', 'strk_color')
-    ordering = ('-week',)
+    ordering = ('-week__year', '-week__nb')
 
 
 class TutorDisplayResource(resources.ModelResource):
