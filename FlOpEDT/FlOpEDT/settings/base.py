@@ -71,7 +71,7 @@ INSTALLED_APPS = [
     'configuration',
     'easter_egg',
     'MyFlOp',
-#    'importation'
+    #    'importation'
     'api',
     'rest_framework.authtoken',
     'rest_auth',
@@ -80,14 +80,16 @@ INSTALLED_APPS = [
     'corsheaders',
     'cstmanager',
     'notifications',
-    'django_crontab'
+    'django_crontab',
+    'roomreservation',
+    'acme_challenge',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -189,8 +191,14 @@ LOCALE_PATHS = (
 # ASSETS Settings
 #
 
+# Url used by static files in templates
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+# Folder used to store collected static files
+STATIC_ROOT = os.path.join(BASE_DIR, "var/static")
+
+# Folders used to find some additional static files
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
@@ -230,8 +238,8 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',  # <-- And here
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ],
 
     'DEFAULT_PERMISSION_CLASSES': [
@@ -240,6 +248,8 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 }
 
+# Use the host domain and port instead of Django's
+USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # LOG IN-AND-OUT

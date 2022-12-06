@@ -43,6 +43,10 @@ from TTapp.RoomConstraints.RoomConstraint import LocateAllCourses, \
     LimitGroupMoves, LimitTutorMoves, ConsiderRoomSorts
 from TTapp.FlopConstraint import max_weight
 
+from base.timing import  flopday_to_date, floptime_to_time
+
+from roomreservation.models import RoomReservation
+
 
 class RoomModel(FlopModel):
     @timer
@@ -137,10 +141,15 @@ class RoomModel(FlopModel):
         for tutor in tutors:
             courses_for_tutor[tutor] = set(self.courses.filter(Q(tutor=tutor) | Q(supp_tutor=tutor)))
 
+        common_room_sorts = RoomSort.objects.filter(for_type__department=self.department,
+                                                    tutor__isnull=True)
         tutor_room_sorts = {}
         for tutor in tutors:
-            tutor_room_sorts[tutor] = RoomSort.objects.filter(for_type__department=self.department,
-                                                              tutor=tutor)
+            declared_room_sorts = RoomSort.objects.filter(for_type__department=self.department,
+                                                          tutor=tutor)
+            declared_types = set([rs.for_type for rs in declared_room_sorts.distinct('for_type')])
+            tutor_room_sorts[tutor] = set(declared_room_sorts) | \
+                set(common_room_sorts.exclude(for_type__in=declared_types))
 
         groups = set()
         for course in self.courses.distinct("groups"):
@@ -237,6 +246,12 @@ class RoomModel(FlopModel):
                         day=sl.day.day,
                         week=sl.day.week,
                         room=room, value=0).exists():
+                    avail_room[room][sl] = 0
+                elif RoomReservation.objects.filter(
+                        start_time__lt=floptime_to_time(sl.start_time + sl.duration),
+                        end_time__gt=floptime_to_time(sl.start_time),
+                        date=flopday_to_date(sl.day),
+                        room=room).exists():
                     avail_room[room][sl] = 0
                 else:
                     avail_room[room][sl] = 1

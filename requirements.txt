@@ -35,3 +35,4 @@ django-crontab
 pytest
 pytest-django
 graphene-django
+python-dateutil
