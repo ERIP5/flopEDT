@@ -95,9 +95,9 @@
                 <div v-if="current_conflict && current_conflict.possible_reservations.length > 0">
                     <span>The following reservations can be made, <b>do you want to create them?</b></span>
                     <ul class="text-start mb-2">
-                        <li v-for="reservation in current_conflict.possible_reservations" :key="reservation.id">
+                        <li v-for="resa in current_conflict.possible_reservations" :key="resa.id">
                             {{
-                                new Date(reservation.date).toLocaleDateString()
+                                new Date(resa.date).toLocaleDateString()
                                 /*`The ${new Date(reservation.date).toLocaleDateString()} in room ${
                                     reservation.room
                                 } from ${reservation.start_time} to ${reservation.end_time}`*/
@@ -359,11 +359,11 @@ import type {
     User,
     WeekDay,
 } from '@/assets/js/types'
-import { Time } from '@/assets/js/types'
+import type { Time } from '@/assets/js/types'
 import DayPicker from '@/components/DayPicker.vue'
 import ModalForm from '@/components/ModalForm.vue'
 import TimePicker from '@/components/TimePicker.vue'
-import { computed, ComputedRef, defineProps, Ref, ref, watch, watchEffect } from 'vue'
+import { computed, type ComputedRef, defineProps, type Ref, ref, watch, watchEffect } from 'vue'
 import PeriodicitySelect from '@/components/PeriodicitySelect.vue'
 import ModalDialog from '@/components/ModalDialog.vue'
 import type { Room } from '@/stores/room'
